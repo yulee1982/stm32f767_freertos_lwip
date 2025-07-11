@@ -1,0 +1,6 @@
+tool : STM32CubeIDE Version: 1.19.0 Build: 25607_20250703_0907 (UTC)
+boards : NUCLEO-F767ZI
+
+build:
+lwip-2.2.2/src/apps/http/fsdata.c  --> right click --> Resource Configurations --> Exclude from Build...
+lwip-2.2.2/src/apps/http/makefsdata  --> right click --> Exclude from Build...
