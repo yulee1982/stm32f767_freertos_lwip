@@ -1,0 +1,12 @@
+../lwip-2.2.2/src/apps/http/http_client.c:391:1:httpc_tcp_sent	0	static
+../lwip-2.2.2/src/apps/http/http_client.c:425:1:httpc_get_internal_addr	16	static
+../lwip-2.2.2/src/apps/http/http_client.c:157:1:httpc_free_state	16	static
+../lwip-2.2.2/src/apps/http/http_client.c:192:1:httpc_close	24	static
+../lwip-2.2.2/src/apps/http/http_client.c:286:1:httpc_tcp_recv	72	static
+../lwip-2.2.2/src/apps/http/http_client.c:373:1:httpc_tcp_poll	0	static
+../lwip-2.2.2/src/apps/http/http_client.c:361:1:httpc_tcp_err	4	static
+../lwip-2.2.2/src/apps/http/http_client.c:402:1:httpc_tcp_connected	16	static
+../lwip-2.2.2/src/apps/http/http_client.c:495:1:httpc_create_request_string.constprop	48	static
+../lwip-2.2.2/src/apps/http/http_client.c:515:1:httpc_init_connection_common.constprop	56	static
+../lwip-2.2.2/src/apps/http/http_client.c:641:1:httpc_get_file	56	static
+../lwip-2.2.2/src/apps/http/http_client.c:686:1:httpc_get_file_dns	48	static

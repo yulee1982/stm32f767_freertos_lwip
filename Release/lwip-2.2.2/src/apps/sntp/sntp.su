@@ -1,0 +1,12 @@
+../lwip-2.2.2/src/apps/sntp/sntp.c:371:1:sntp_retry	8	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:457:1:sntp_recv	24	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:626:1:sntp_request	24	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:672:1:sntp_init	16	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:711:1:sntp_stop	16	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:732:6:sntp_enabled	0	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:743:1:sntp_setoperatingmode	8	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:756:1:sntp_getoperatingmode	0	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:769:1:sntp_getreachability	0	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:802:1:sntp_setserver	0	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:883:1:sntp_getserver	0	static
+../lwip-2.2.2/src/apps/sntp/sntp.c:900:1:sntp_getkodreceived	0	static

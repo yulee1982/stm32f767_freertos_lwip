@@ -1,0 +1,10 @@
+../lwip-2.2.2/src/apps/http/httpd.c:503:1:http_state_eof	8	static
+../lwip-2.2.2/src/apps/http/httpd.c:1710:1:http_get_404_file	16	static
+../lwip-2.2.2/src/apps/http/httpd.c:2637:1:http_accept	16	static
+../lwip-2.2.2/src/apps/http/httpd.c:2460:1:http_err	8	static
+../lwip-2.2.2/src/apps/http/httpd.c:659:1:http_close_conn.isra	16	static
+../lwip-2.2.2/src/apps/http/httpd.c:1588:1:http_send	24	static
+../lwip-2.2.2/src/apps/http/httpd.c:2477:1:http_sent	8	static
+../lwip-2.2.2/src/apps/http/httpd.c:2504:1:http_poll	8	static
+../lwip-2.2.2/src/apps/http/httpd.c:2552:1:http_recv	72	static
+../lwip-2.2.2/src/apps/http/httpd.c:2695:1:httpd_init	8	static

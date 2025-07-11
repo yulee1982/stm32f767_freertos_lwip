@@ -1,0 +1,10 @@
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_adc.c:283:13:LL_ADC_CommonDeInit	1
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_adc.c:313:13:LL_ADC_CommonInit	3
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_adc.c:389:6:LL_ADC_CommonStructInit	1
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_adc.c:412:13:LL_ADC_DeInit	3
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_adc.c:571:13:LL_ADC_Init	2
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_adc.c:619:6:LL_ADC_StructInit	1
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_adc.c:666:13:LL_ADC_REG_Init	3
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_adc.c:757:6:LL_ADC_REG_StructInit	1
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_adc.c:803:13:LL_ADC_INJ_Init	3
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_adc.c:881:6:LL_ADC_INJ_StructInit	1

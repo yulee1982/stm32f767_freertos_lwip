@@ -1,0 +1,2 @@
+../Bsp/button.c:68:6:prvLedBreathTask	8	static
+../Bsp/button.c:84:6:prvButtonTask	24	static,ignoring_inline_asm

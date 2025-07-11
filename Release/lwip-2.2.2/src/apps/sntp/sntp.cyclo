@@ -1,0 +1,12 @@
+../lwip-2.2.2/src/apps/sntp/sntp.c:371:1:sntp_retry	2
+../lwip-2.2.2/src/apps/sntp/sntp.c:457:1:sntp_recv	11
+../lwip-2.2.2/src/apps/sntp/sntp.c:626:1:sntp_request	3
+../lwip-2.2.2/src/apps/sntp/sntp.c:672:1:sntp_init	6
+../lwip-2.2.2/src/apps/sntp/sntp.c:711:1:sntp_stop	2
+../lwip-2.2.2/src/apps/sntp/sntp.c:732:6:sntp_enabled	1
+../lwip-2.2.2/src/apps/sntp/sntp.c:743:1:sntp_setoperatingmode	3
+../lwip-2.2.2/src/apps/sntp/sntp.c:756:1:sntp_getoperatingmode	1
+../lwip-2.2.2/src/apps/sntp/sntp.c:769:1:sntp_getreachability	2
+../lwip-2.2.2/src/apps/sntp/sntp.c:802:1:sntp_setserver	3
+../lwip-2.2.2/src/apps/sntp/sntp.c:883:1:sntp_getserver	1
+../lwip-2.2.2/src/apps/sntp/sntp.c:900:1:sntp_getkodreceived	1

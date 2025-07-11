@@ -1,0 +1,11 @@
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:132:13:LL_DMA2D_DeInit	2
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:244:6:LL_DMA2D_StructInit	1
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:274:6:LL_DMA2D_ConfigLayer	2
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:366:6:LL_DMA2D_LayerCfgStructInit	1
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:394:6:LL_DMA2D_ConfigOutputColor	5
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:453:10:LL_DMA2D_GetOutputBlueColor	5
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:497:10:LL_DMA2D_GetOutputGreenColor	5
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:541:10:LL_DMA2D_GetOutputRedColor	5
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:585:10:LL_DMA2D_GetOutputAlphaColor	4
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:621:6:LL_DMA2D_ConfigSize	1
+../Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_dma2d.c:166:13:LL_DMA2D_Init	2

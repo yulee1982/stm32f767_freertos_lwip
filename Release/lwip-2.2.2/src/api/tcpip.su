@@ -1,0 +1,16 @@
+../lwip-2.2.2/src/api/tcpip.c:684:1:pbuf_free_int	0	static
+../lwip-2.2.2/src/api/tcpip.c:136:1:tcpip_thread	16	static
+../lwip-2.2.2/src/api/tcpip.c:254:1:tcpip_inpkt	24	static
+../lwip-2.2.2/src/api/tcpip.c:297:1:tcpip_input	0	static
+../lwip-2.2.2/src/api/tcpip.c:323:1:tcpip_callback	16	static
+../lwip-2.2.2/src/api/tcpip.c:359:1:tcpip_try_callback	16	static
+../lwip-2.2.2/src/api/tcpip.c:451:1:tcpip_send_msg_wait_sem	16	static
+../lwip-2.2.2/src/api/tcpip.c:487:1:tcpip_api_call	16	static
+../lwip-2.2.2/src/api/tcpip.c:545:1:tcpip_callbackmsg_new	16	static
+../lwip-2.2.2/src/api/tcpip.c:566:1:tcpip_callbackmsg_delete	0	static
+../lwip-2.2.2/src/api/tcpip.c:581:1:tcpip_callbackmsg_trycallback	8	static
+../lwip-2.2.2/src/api/tcpip.c:600:1:tcpip_callbackmsg_trycallback_fromisr	8	static
+../lwip-2.2.2/src/api/tcpip.c:619:1:tcpip_callback_wait	16	static
+../lwip-2.2.2/src/api/tcpip.c:659:1:tcpip_init	24	static
+../lwip-2.2.2/src/api/tcpip.c:697:1:pbuf_free_callback	0	static
+../lwip-2.2.2/src/api/tcpip.c:710:1:mem_free_callback	0	static
