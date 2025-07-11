@@ -6,15 +6,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Bsp/button.c \
-../Bsp/lan8742.c 
+../Bsp/lan8742.c \
+../Bsp/sdio_sd.c 
 
 OBJS += \
 ./Bsp/button.o \
-./Bsp/lan8742.o 
+./Bsp/lan8742.o \
+./Bsp/sdio_sd.o 
 
 C_DEPS += \
 ./Bsp/button.d \
-./Bsp/lan8742.d 
+./Bsp/lan8742.d \
+./Bsp/sdio_sd.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -24,7 +27,7 @@ Bsp/%.o Bsp/%.su Bsp/%.cyclo: ../Bsp/%.c Bsp/subdir.mk
 clean: clean-Bsp
 
 clean-Bsp:
-	-$(RM) ./Bsp/button.cyclo ./Bsp/button.d ./Bsp/button.o ./Bsp/button.su ./Bsp/lan8742.cyclo ./Bsp/lan8742.d ./Bsp/lan8742.o ./Bsp/lan8742.su
+	-$(RM) ./Bsp/button.cyclo ./Bsp/button.d ./Bsp/button.o ./Bsp/button.su ./Bsp/lan8742.cyclo ./Bsp/lan8742.d ./Bsp/lan8742.o ./Bsp/lan8742.su ./Bsp/sdio_sd.cyclo ./Bsp/sdio_sd.d ./Bsp/sdio_sd.o ./Bsp/sdio_sd.su
 
 .PHONY: clean-Bsp
 

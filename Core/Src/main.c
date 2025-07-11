@@ -56,7 +56,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
-SD_HandleTypeDef uSdHandle;
+//SD_HandleTypeDef uSdHandle;
 
 /* USER CODE BEGIN PV */
 __IO uint8_t ubButtonPress = 0;
@@ -85,10 +85,9 @@ static void MX_USART3_UART_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 /* USER CODE BEGIN PFP */
 void MX_LED_Init(void);
-void LED_On(void);
-void LED_Reverse(void);
-void LED_Off(void);
-//void UserButton_Init(void);
+//void LED_On(void);
+//void LED_Reverse(void);
+//void LED_Off(void);
 void MX_USART2_UART_Init(void);
 //void BufferTransfer(uint8_t* pBuffer);
 void MX_USART2_DMA(void);
@@ -509,6 +508,7 @@ void MX_LED_Init(void)
   /* Reset value is LL_GPIO_PULL_NO */
   //LL_GPIO_SetPinPull(LED1_GPIO_PORT, LED1_PIN, LL_GPIO_PULL_NO);
 }
+#if 0
 void LED_On(void)
 {
   /* Turn LED1 on */
@@ -523,6 +523,7 @@ void LED_Reverse(void)
 {
   LL_GPIO_TogglePin(LED1_GPIO_PORT, LED1_PIN);
 }
+#endif
 void MX_SDIO_Init(void)
 {
 
@@ -734,6 +735,7 @@ void MX_USART2_DMA(void)
   LL_DMA_EnableIT_TE(DMA1, LL_DMA_STREAM_6);
   LL_DMA_EnableIT_TC(DMA1, LL_DMA_STREAM_5);
   LL_DMA_EnableIT_TE(DMA1, LL_DMA_STREAM_5);
+  printf(aTxBuffer);
 }
 void StartTransfers(void)
 {

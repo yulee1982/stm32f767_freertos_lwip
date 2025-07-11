@@ -1,5 +1,6 @@
 "./Bsp/button.o"
 "./Bsp/lan8742.o"
+"./Bsp/sdio_sd.o"
 "./Core/Src/app_ethernet.o"
 "./Core/Src/ethernetif.o"
 "./Core/Src/httpserver-netconn.o"
