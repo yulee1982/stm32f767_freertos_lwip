@@ -94,7 +94,29 @@ void prvButtonTask( void * pvParameters )
   }
 
 }
+#if 0
+void UserButton_Init(void)
+{
+  /* Enable the BUTTON Clock */
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
 
+  /* Configure GPIO for BUTTON */
+  LL_GPIO_SetPinMode(GPIOC, LL_GPIO_PIN_13, LL_GPIO_MODE_INPUT);
+  LL_GPIO_SetPinPull(GPIOC, LL_GPIO_PIN_13, LL_GPIO_PULL_NO);
+
+  /* Connect External Line to the GPIO*/
+  LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
+  LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE13);
+
+  /* Enable a rising trigger EXTI_Line15_10 Interrupt */
+  LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_13);
+  LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_13);
+
+  /* Configure NVIC for USER_BUTTON_EXTI_IRQn */
+  NVIC_SetPriority(EXTI15_10_IRQn, 3);
+  NVIC_EnableIRQ(EXTI15_10_IRQn);
+}
+#endif
 static void user_button_init(void)
 {
   /* Enable the BUTTON Clock */
@@ -112,7 +134,7 @@ static void user_button_init(void)
   USER_BUTTON_EXTI_FALLING_TRIG_ENABLE();
 
   /* Configure NVIC for USER_BUTTON_EXTI_IRQn */
-  NVIC_SetPriority(USER_BUTTON_EXTI_IRQn, 3);
+  NVIC_SetPriority(USER_BUTTON_EXTI_IRQn, 5);
   NVIC_EnableIRQ(USER_BUTTON_EXTI_IRQn);
 }
 

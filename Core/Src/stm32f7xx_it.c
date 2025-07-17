@@ -274,4 +274,60 @@ void ETH_IRQHandler(void)
 {
   HAL_ETH_IRQHandler(&EthHandle);
 }
+
+/******************************************************************************/
+/* STM32F7xx Peripheral Interrupt Handlers                                    */
+/* Add here the Interrupt Handlers for the used peripherals.                  */
+/* For the available peripheral interrupt handler names,                      */
+/* please refer to the startup file (startup_stm32f7xx.s).                    */
+/******************************************************************************/
+
+/**
+* @brief This function handles SDMMC1 global interrupt.
+*/
+#if 0
+void SDMMC1_IRQHandler(void)   //move to sdio_sd.c
+{
+  /* USER CODE BEGIN SDMMC1_IRQn 0 */
+
+  /* USER CODE END SDMMC1_IRQn 0 */
+  //HAL_SD_IRQHandler(&hsd1);
+  SD_ProcessIRQSrc();
+  /* USER CODE BEGIN SDMMC1_IRQn 1 */
+
+  /* USER CODE END SDMMC1_IRQn 1 */
+}
+//SDIO_DMA IRQHandler
+void DMA2_Stream4_IRQHandler(void) //move to sdio_sd.c
+{
+  SD_ProcessDMAIRQ();
+}
+#endif
+/**
+* @brief This function handles DMA2 stream3 global interrupt.
+*/
+void DMA2_Stream3_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA2_Stream3_IRQn 0 */
+
+  /* USER CODE END DMA2_Stream3_IRQn 0 */
+  //HAL_DMA_IRQHandler(&hdma_sdmmc1_rx);
+  /* USER CODE BEGIN DMA2_Stream3_IRQn 1 */
+
+  /* USER CODE END DMA2_Stream3_IRQn 1 */
+}
+
+/**
+* @brief This function handles DMA2 stream6 global interrupt.
+*/
+void DMA2_Stream6_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA2_Stream6_IRQn 0 */
+
+  /* USER CODE END DMA2_Stream6_IRQn 0 */
+  //HAL_DMA_IRQHandler(&hdma_sdmmc1_tx);
+  /* USER CODE BEGIN DMA2_Stream6_IRQn 1 */
+
+  /* USER CODE END DMA2_Stream6_IRQn 1 */
+}
 /* USER CODE END 1 */

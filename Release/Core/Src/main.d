@@ -26,6 +26,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr_ex.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_sd.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd.h \
@@ -76,7 +78,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/priv/memp_priv.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/priv/mem_priv.h \
  ../Core/Inc/ethernetif.h ../Core/Inc/app_ethernet.h \
- ../Core/Inc/httpserver-netconn.h ../Core/Inc/lwiperf_example.h
+ ../Core/Inc/httpserver-netconn.h ../Core/Inc/lwiperf_example.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/Bsp/sdio_sd.h \
+ ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
@@ -105,6 +110,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c_ex.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr_ex.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_sd.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd.h:
@@ -158,3 +165,6 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/priv/me
 ../Core/Inc/app_ethernet.h:
 ../Core/Inc/httpserver-netconn.h:
 ../Core/Inc/lwiperf_example.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/Bsp/sdio_sd.h:
+../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h:

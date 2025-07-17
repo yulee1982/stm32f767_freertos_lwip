@@ -34,7 +34,7 @@
 #include "httpserver-netconn.h"
 #include "lwiperf_example.h"
 
-//#include "wrapper.h"
+#include "sdio_sd.h"
 
 /* USER CODE END Includes */
 
@@ -63,7 +63,7 @@ __IO uint8_t ubButtonPress = 0;
 __IO uint8_t ubSend = 0;
 const uint8_t aTxBuffer_init[] = "STM32F7xx USART initial ...\r\n";
 /* Buffer used for transmission */
-const uint8_t aTxBuffer[] = "STM32F7xx USART LL API Example : TX/RX in DMA mode\r\nConfiguration UART 115200 bps, 8 data bit/1 stop bit/No parity/No HW flow control\r\nPlease enter 'END' string ...\r\n";
+const uint8_t aTxBuffer[] = "STM32F7xx USART LL API Example : TX/RX in DMA mode\r\nConfiguration UART 115200 bps, 8 data bit/1 stop bit/No parity/No HW flow control\r\n";
 uint8_t ubNbDataToTransmit = sizeof(aTxBuffer);
 __IO uint8_t ubTransmissionComplete = 0;
 
@@ -74,7 +74,6 @@ uint8_t aRxBuffer[sizeof(aStringToReceive) - 1];
 __IO uint8_t ubReceptionComplete = 0;
 
 struct netif gnetif;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -91,7 +90,6 @@ void MX_LED_Init(void);
 void MX_USART2_UART_Init(void);
 //void BufferTransfer(uint8_t* pBuffer);
 void MX_USART2_DMA(void);
-void MX_SDIO_Init(void);
 void StartTransfers(void);
 static void MPU_Config(void);
 static void CPU_CACHE_Enable(void);
@@ -111,7 +109,6 @@ static void netif_config(void);
   */
 int main(void)
 {
-
   /* USER CODE BEGIN 1 */
 
   /* Configure the MPU attributes as Device memory for ETH DMA descriptors */
@@ -139,14 +136,14 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_LED_Init();
   //MX_ETH_Init();
+  MX_USART2_UART_Init();
+  MX_USART2_DMA();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
-  MX_LED_Init();
-  MX_SDIO_Init();
-  MX_USART2_UART_Init();
-  MX_USART2_DMA();
+  SD_Init();
 
   /* Start the task that executes on the M7 core. */
   xTaskCreate(prvButtonTask, 			/* Function that implements the task. */
@@ -524,34 +521,7 @@ void LED_Reverse(void)
   LL_GPIO_TogglePin(LED1_GPIO_PORT, LED1_PIN);
 }
 #endif
-void MX_SDIO_Init(void)
-{
 
-}
-#if 0
-void UserButton_Init(void)
-{
-  /* Enable the BUTTON Clock */
-  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
-
-  /* Configure GPIO for BUTTON */
-  LL_GPIO_SetPinMode(GPIOC, LL_GPIO_PIN_13, LL_GPIO_MODE_INPUT);
-  LL_GPIO_SetPinPull(GPIOC, LL_GPIO_PIN_13, LL_GPIO_PULL_NO);
-
-  /* Connect External Line to the GPIO*/
-  //USER_BUTTON_SYSCFG_SET_EXTI();
-  LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
-  LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE13);
-
-  /* Enable a rising trigger EXTI_Line15_10 Interrupt */
-  LL_EXTI_EnableIT_0_31(LL_EXTI_LINE_13);
-  LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_13);
-
-  /* Configure NVIC for USER_BUTTON_EXTI_IRQn */
-  NVIC_SetPriority(EXTI15_10_IRQn, 3);
-  NVIC_EnableIRQ(EXTI15_10_IRQn);
-}
-#endif
 void MX_USART2_UART_Init(void)
 {
   /* (1) Enable GPIO clock and configures the USART pins **********************/
@@ -838,7 +808,6 @@ void vApplicationIdleHook( void )
 	memory allocated by the kernel to any task that has since been deleted. */
 }
 /*-----------------------------------------------------------*/
-#if 1
 void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
 {
 	( void ) pcTaskName;
@@ -850,7 +819,6 @@ void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
 	taskDISABLE_INTERRUPTS();
 	for( ;; );
 }
-#endif
 /*-----------------------------------------------------------*/
 /**
   * @brief  Setup the network interface
@@ -906,7 +874,6 @@ void lwipinitTask( void *pvParameters )
   {
     /* Delete the Init Thread */
     vTaskDelete(NULL);
-    //vTaskDelay(1000);
   }
 }
 
@@ -955,7 +922,7 @@ static void MPU_Config(void)
   /* Configure the MPU as Device for Ethernet Descriptors in the SRAM2 */
   MPU_InitStruct.Enable = MPU_REGION_ENABLE;
   MPU_InitStruct.BaseAddress = 0x2007C000;
-  MPU_InitStruct.Size = MPU_REGION_SIZE_1KB;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_16KB; //MPU_REGION_SIZE_1KB
   MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
   MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
   MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
