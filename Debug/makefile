@@ -81,7 +81,7 @@ all: main-build
 main-build: stm32f767_freertos.elf secondary-outputs
 
 dependents:
-	-cd D:/stm32/workspace_1.12.1/stm32f767_freertos/Release && $(MAKE) clean all
+	-cd D:/stm32/workspace_1.12.1/stm32f767_freertos/Release && $(MAKE) all
 
 # Tool invocations
 stm32f767_freertos.elf stm32f767_freertos.map: $(OBJS) $(USER_OBJS) D:/stm32/workspace_1.12.1/stm32f767_freertos/Release/stm32f767_freertos.elf D:\stm32\workspace_1.12.1\stm32f767_freertos\STM32F767ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)

@@ -212,32 +212,7 @@
 #define SDIO_STATIC_FLAGS               ((uint32_t)0x000005FF)
 #define SDIO_CMD0TIMEOUT                ((uint32_t)0x00010000)
 
-/**
-  * @brief  Mask for errors Card Status R1 (OCR Register)
-  */
-#if 0
-//Replace with a macro definition in stm32f7xx_ll_sdmmc.h 259 line
-#define SD_OCR_ADDR_OUT_OF_RANGE        ((uint32_t)0x80000000)
-#define SD_OCR_ADDR_MISALIGNED          ((uint32_t)0x40000000)
-#define SD_OCR_BLOCK_LEN_ERR            ((uint32_t)0x20000000)
-#define SD_OCR_ERASE_SEQ_ERR            ((uint32_t)0x10000000)
-#define SD_OCR_BAD_ERASE_PARAM          ((uint32_t)0x08000000)
-#define SD_OCR_WRITE_PROT_VIOLATION     ((uint32_t)0x04000000)
-#define SD_OCR_LOCK_UNLOCK_FAILED       ((uint32_t)0x01000000)
-#define SD_OCR_COM_CRC_FAILED           ((uint32_t)0x00800000)
-#define SD_OCR_ILLEGAL_CMD              ((uint32_t)0x00400000)
-#define SD_OCR_CARD_ECC_FAILED          ((uint32_t)0x00200000)
-#define SD_OCR_CC_ERROR                 ((uint32_t)0x00100000)
-#define SD_OCR_GENERAL_UNKNOWN_ERROR    ((uint32_t)0x00080000)
-#define SD_OCR_STREAM_READ_UNDERRUN     ((uint32_t)0x00040000)
-#define SD_OCR_STREAM_WRITE_OVERRUN     ((uint32_t)0x00020000)
-#define SD_OCR_CID_CSD_OVERWRIETE       ((uint32_t)0x00010000)
-#define SD_OCR_WP_ERASE_SKIP            ((uint32_t)0x00008000)
-#define SD_OCR_CARD_ECC_DISABLED        ((uint32_t)0x00004000)
-#define SD_OCR_ERASE_RESET              ((uint32_t)0x00002000)
-#define SD_OCR_AKE_SEQ_ERROR            ((uint32_t)0x00000008)
-#define SD_OCR_ERRORBITS                ((uint32_t)0xFDFFE008)
-#endif
+
 /**
   * @brief  Masks for R6 Response
   */
@@ -292,7 +267,10 @@ SDMMC_InitTypeDef SDIO_InitStructure;
 SDMMC_CmdInitTypeDef SDIO_CmdInitStructure;
 SDMMC_DataInitTypeDef SDIO_DataInitStructure;
 
-
+uint32_t *pTxBuffPtr;      /*!< Pointer to SD Tx transfer Buffer    */
+uint32_t TxXferSize;       /*!< SD Tx Transfer size                 */
+uint32_t *pRxBuffPtr;      /*!< Pointer to SD Rx transfer Buffer    */
+uint32_t RxXferSize;       /*!< SD Rx Transfer size                 */
 /** @defgroup STM32F4_DISCOVERY_SDIO_SD_Private_Function_Prototypes
   * @{
   */
@@ -306,6 +284,7 @@ static HAL_SD_ErrorTypedef SDEnWideBus(FunctionalState NewState);
 static HAL_SD_ErrorTypedef IsCardProgramming(uint8_t *pstatus);
 static HAL_SD_ErrorTypedef FindSCR(uint16_t rca, uint32_t *pscr);
 static uint32_t SDMMC1_Command(uint32_t cmd, uint32_t resp, uint32_t arg);
+static void MX_SDMMC1_DMA(void);
 uint8_t convert_from_bytes_to_power_of_two(uint16_t NumberOfBytes);
 
 /**
@@ -378,20 +357,19 @@ HAL_SD_ErrorTypedef SD_Init(void)
   /*----------------- Read CSD/CID MSD registers ------------------*/
   errorstatus = SD_GetCardInfo(&SDCardInfo);
 
-  if (errorstatus == SD_OK)
-  {
-    /*----------------- Select Card --------------------------------*/
-    errorstatus = SD_SelectDeselect((uint32_t) (SDCardInfo.RCA << 16));
-  }
+  //if (errorstatus == SD_OK)
+  //{
+    /*-------------- Select Card ----------A dead loop occurs in this step validation. */
+  //  errorstatus = SD_SelectDeselect((uint32_t) (SDCardInfo.RCA << 16));
+  //}
 
+  //The above code runs OK, and the following steps are not verified.
   if (errorstatus == SD_OK)
   {
     errorstatus = SD_EnableWideBusOperation(SDMMC_BUS_WIDE_4B); //4 bit data width
   }
   return(errorstatus);
 }
-
-
 
 
 
@@ -477,7 +455,7 @@ void SD_LowLevel_Init(void)
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SDMMC1);
 
   /* Enable the DMA2 Clock */
-  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA2);
+  //LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA2);
 
   //Initialize the SDIO (with initial <400Khz Clock)
   //tempreg = 0;  //Reset value
@@ -491,14 +469,15 @@ void SD_LowLevel_Init(void)
 
   /* Peripheral interrupt init */
   //Configure SDIO Global Interrupt
-  NVIC_SetPriority(SDMMC1_IRQn, 3);
+  NVIC_SetPriority(SDMMC1_IRQn, 5);
   NVIC_EnableIRQ(SDMMC1_IRQn);
 
-#ifdef SD_DMA_MODE
+  MX_SDMMC1_DMA();
+//#ifdef SD_DMA_MODE
   //Configure SDIO_DMA Global Interrupt
-  NVIC_SetPriority(DMA2_Stream4_IRQn, 4);
-  NVIC_EnableIRQ(DMA2_Stream4_IRQn);
-#endif
+//  NVIC_SetPriority(DMA2_Stream4_IRQn, 4);
+//  NVIC_EnableIRQ(DMA2_Stream4_IRQn);
+//#endif
 }
 
 /**
@@ -534,14 +513,17 @@ HAL_SD_ErrorTypedef SD_PowerON(void)
   /*!< Set Power State to ON */
   SDMMC1->POWER = 0x3UL;
 
+  /* 1ms: required power up waiting time before starting the SD initialization sequence */
+  //tempreg = 10000;
+  //while(tempreg--){}
+  HAL_Delay(2);
+
   /*!< Enable SDIO Clock */
   SDMMC1->CLKCR |= (0x1UL<<8) & SDMMC_CLKCR_CLKEN_Msk;  //SDMMC_CK en
 
+
   /*!< CMD0: GO_IDLE_STATE ---------------------------------------------------*/
   /*!< No CMD response required */
-  //SDMMC1->CMD = (1<<10)|(0<<0);  // CPSMEN|SD_CMD_GO_IDLE_STATE  cmd0
-  //while(!(SDMMC1->STA & (1<<7))); // SDMMC_STA_CMDSENT
-  //SDMMC1->ICR = (1<<7); // clear flag
   SDMMC1_Command(SDMMC_CMD_GO_IDLE_STATE, SDMMC_RESPONSE_NO, 0);
   errorstatus = CmdError();
   if (errorstatus != SD_OK)
@@ -556,24 +538,15 @@ HAL_SD_ErrorTypedef SD_PowerON(void)
                - [11:8]: Supply Voltage (VHS) 0x1 (Range: 2.7-3.6 V)
                - [7:0]: Check Pattern (recommended 0xAA) */
   /*!< CMD Response: R7 */
-  //SDMMC1->ARG = ((uint32_t)0x000001AAU);
-  //SDMMC1->CMD = (1<<10)|(1<<6)|(8<<0);  // CPSMEN|SD_CMD_HS_SEND_EXT_CSD  cmd8
-  //while(!(SDMMC1->STA & (1<<7))); // SDMMC_STA_CMDSENT
-  //SDMMC1->ICR = (1<<7); // clear flag
   SDMMC1_Command(SDMMC_CMD_HS_SEND_EXT_CSD, SDMMC_RESPONSE_SHORT, SD_CHECK_PATTERN);
   errorstatus = CmdResp7Error();
-
   if (errorstatus == SD_OK)
   {
-    CardType = SDIO_STD_CAPACITY_SD_CARD_V2_0; /*!< SD Card 2.0 */
+    /* SD Card 2.0 */
+    CardType = SDIO_STD_CAPACITY_SD_CARD_V2_0;
     SDType = SD_HIGH_CAPACITY;
   }
-  else
-  {
-    /*!< CMD55 */
-    SDMMC1_Command(SDMMC_CMD_APP_CMD, SDMMC_RESPONSE_SHORT, 0x00); //stm32f7xx_ll_sdmmc.h 218 SDMMC_CMD_APP_CMD = 55
-    errorstatus = CmdResp1Error(SDMMC_CMD_APP_CMD); //SD_CMD_APP_CMD
-  }
+
   /*!< CMD55 */
   SDMMC1_Command(SDMMC_CMD_APP_CMD, SDMMC_RESPONSE_SHORT, 0x00);
   errorstatus = CmdResp1Error(SDMMC_CMD_APP_CMD);
@@ -587,15 +560,14 @@ HAL_SD_ErrorTypedef SD_PowerON(void)
     /*!< Send ACMD41 SD_APP_OP_COND with Argument 0x80100000 */
     while ((!validvoltage) && (count < SD_MAX_VOLT_TRIAL))
     {
-
       /*!< SEND CMD55 APP_CMD with RCA as 0 */
       SDMMC1_Command(SDMMC_CMD_APP_CMD, SDMMC_RESPONSE_SHORT, 0x00);
       errorstatus = CmdResp1Error(SDMMC_CMD_APP_CMD);
-
       if (errorstatus != SD_OK)
       {
         return(errorstatus);
       }
+
       //ACMD41
       SDMMC1_Command(SDMMC_CMD_SD_APP_OP_COND, SDMMC_RESPONSE_SHORT, (SD_VOLTAGE_WINDOW_SD | SDType));
       errorstatus = CmdResp3Error();
@@ -608,13 +580,14 @@ HAL_SD_ErrorTypedef SD_PowerON(void)
       validvoltage = (((response >> 31) == 1) ? 1 : 0);
       count++;
     }
+
     if (count >= SD_MAX_VOLT_TRIAL)
     {
       errorstatus = SD_INVALID_VOLTRANGE;
       return(errorstatus);
     }
 
-    if (response &= SD_HIGH_CAPACITY)
+    if((response & SDMMC_HIGH_CAPACITY) == SDMMC_HIGH_CAPACITY) //if (response &= SD_HIGH_CAPACITY)
     {
       CardType = SDIO_HIGH_CAPACITY_SD_CARD;
     }
@@ -635,7 +608,7 @@ static uint32_t SDMMC1_Command(uint32_t cmd, uint32_t resp, uint32_t arg)
   //HAL_SD_ErrorTypedef errorstatus = SD_OK;
 
   //Clear the Command Flags
-  SDMMC1->ICR = (SDMMC_ICR_CCRCFAILC | SDMMC_ICR_CTIMEOUTC | SDMMC_ICR_CMDRENDC | SDMMC_ICR_CMDSENTC);
+  //SDMMC1->ICR = (SDMMC_ICR_CCRCFAILC | SDMMC_ICR_CTIMEOUTC | SDMMC_ICR_CMDRENDC | SDMMC_ICR_CMDSENTC);
 
   SDMMC1->ARG = arg;  //First adjust the argument (because I will immediately enable CPSM next)
   SDMMC1->CMD = (uint32_t)(cmd & SDMMC_CMD_CMDINDEX) | (SDMMC_WAIT_NO & SDMMC_CMD_WAITRESP) | (resp & SDMMC_CMD_WAITRESP) | (0x0400);  //The last argument is to enable CSPM SDMMC_CPSM_ENABLE
@@ -716,7 +689,6 @@ static HAL_SD_ErrorTypedef CmdResp7Error(void)
   uint32_t timeout = SDIO_CMD0TIMEOUT;
 
   status = SDMMC1->STA;
-
   while (!(status & (SDMMC_STA_CCRCFAIL | SDMMC_STA_CMDREND | SDMMC_STA_CTIMEOUT)) && (timeout > 0))
   {
     timeout--;
@@ -1033,7 +1005,7 @@ HAL_SD_ErrorTypedef SD_InitializeCards(void)
     return(errorstatus);
   }
 
-  if (SDIO_SECURE_DIGITAL_IO_CARD != CardType)
+  if (CardType != SDIO_SECURE_DIGITAL_IO_CARD)
   {
     /*!< Send CMD2 ALL_SEND_CID */
     SDMMC1_Command(SDMMC_CMD_ALL_SEND_CID, SDMMC_RESPONSE_LONG, 0x00);
@@ -1043,6 +1015,7 @@ HAL_SD_ErrorTypedef SD_InitializeCards(void)
     {
       return(errorstatus);
     }
+    /* Get Card identification number data */
     CID_Tab[0] = SDMMC_GetResponse(SDMMC1, SDMMC_RESP1);
     CID_Tab[1] = SDMMC_GetResponse(SDMMC1, SDMMC_RESP2);
     CID_Tab[2] = SDMMC_GetResponse(SDMMC1, SDMMC_RESP3);
@@ -1075,6 +1048,7 @@ HAL_SD_ErrorTypedef SD_InitializeCards(void)
       return(errorstatus);
     }
 
+    /* Get Card Specific Data */
     CID_Tab[0] = SDMMC_GetResponse(SDMMC1, SDMMC_RESP1);
     CID_Tab[1] = SDMMC_GetResponse(SDMMC1, SDMMC_RESP2);
     CID_Tab[2] = SDMMC_GetResponse(SDMMC1, SDMMC_RESP3);
@@ -1571,6 +1545,59 @@ static HAL_SD_ErrorTypedef FindSCR(uint16_t rca, uint32_t *pscr)
 
   return(errorstatus);
 }
+
+static void MX_SDMMC1_DMA(void)
+{
+  /* DMA2 used for SDMMC1 Transmission and Reception
+   */
+  /* (1) Enable the clock of DMA2 */
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA2);
+
+  /* (2) Configure NVIC for DMA transfer complete/error interrupts */
+  NVIC_SetPriority(DMA2_Stream3_IRQn, 6); //0
+  NVIC_EnableIRQ(DMA2_Stream3_IRQn);
+  NVIC_SetPriority(DMA2_Stream6_IRQn, 6); //0
+  NVIC_EnableIRQ(DMA2_Stream6_IRQn);
+
+  /* (3) Configure the DMA functional DMA Rx parameters for transmission */
+  LL_DMA_SetChannelSelection(DMA2, LL_DMA_STREAM_3, LL_DMA_CHANNEL_4);
+  LL_DMA_ConfigTransfer(DMA2, LL_DMA_STREAM_3,
+                        LL_DMA_DIRECTION_PERIPH_TO_MEMORY |  /*设备 to memory bit:6  */
+						LL_DMA_PRIORITY_HIGH              |  /*优先级   */
+						LL_DMA_MODE_PFCTRL                |  /*外设流量控制模式   */
+                        LL_DMA_PERIPH_NOINCREMENT         |  /*外设地址指针固定，不增量 bit:9  */
+						LL_DMA_MEMORY_INCREMENT           |  /*memory地址指针增量   */
+						LL_DMA_PDATAALIGN_WORD            |  /*外设数据大小32位，bit:12-11   */
+						LL_DMA_PDATAALIGN_WORD);             /*memory数据大小32位，bit:14-13   */
+  LL_DMA_ConfigAddresses(DMA2, LL_DMA_STREAM_3,
+                         (uint32_t) &(SDMMC1->FIFO),
+						 (uint32_t)pRxBuffPtr,
+                         LL_DMA_GetDataTransferDirection(DMA2, LL_DMA_STREAM_3));
+  //LL_DMA_SetDataLength(DMA2, LL_DMA_STREAM_3, ubNbDataToTransmit);
+
+  /* (4) Configure the DMA functional parameters for reception */
+  LL_DMA_SetChannelSelection(DMA2, LL_DMA_STREAM_6, LL_DMA_CHANNEL_4);
+  LL_DMA_ConfigTransfer(DMA1, LL_DMA_STREAM_6,
+                        LL_DMA_DIRECTION_MEMORY_TO_PERIPH |
+						LL_DMA_PRIORITY_HIGH              |
+						LL_DMA_MODE_PFCTRL                |
+                        LL_DMA_PERIPH_NOINCREMENT         |
+						LL_DMA_MEMORY_INCREMENT           |
+						LL_DMA_PDATAALIGN_WORD            |
+						LL_DMA_PDATAALIGN_WORD);
+  LL_DMA_ConfigAddresses(DMA2, LL_DMA_STREAM_6,
+		                 (uint32_t)pTxBuffPtr,
+						 (uint32_t) &(SDMMC1->FIFO),
+                         LL_DMA_GetDataTransferDirection(DMA2, LL_DMA_STREAM_6));
+  //LL_DMA_SetDataLength(DMA2, LL_DMA_STREAM_6, ubNbDataToReceive);
+
+  /* (5) Enable DMA transfer complete/error interrupts  */
+  LL_DMA_EnableIT_TC(DMA2, LL_DMA_STREAM_3);
+  //LL_DMA_EnableIT_TE(DMA2, LL_DMA_STREAM_3);
+  LL_DMA_EnableIT_TC(DMA2, LL_DMA_STREAM_6);
+  //LL_DMA_EnableIT_TE(DMA2, LL_DMA_STREAM_6);
+
+}
 /**
   * @brief  Allows to process all the interrupts that are high.
   * @param  None
@@ -1636,264 +1663,6 @@ void SD_ProcessDMAIRQ(void)
 
 
 #if 0
-/*上电并进行卡识别流程，确认卡的操作电压  */
-static int32_t SD_PowerON(void)
-{
-  int32_t errorstatus = 0;
-  uint32_t response = 0, count = 0, validvoltage = 0;
-  uint32_t SDType = 0; //SD_STD_CAPACITY;
-#if defined(HAL_SD_MODULE_ENABLED)
-  SDMMC_InitTypeDef sdmmc1_sdcard;
-  SDMMC_CmdInitTypeDef sdmmc1_cmd_init;
-#endif
-
-  /*!< Power ON Sequence -----------------------------------------------------*/
-  /*!< Configure the SDIO peripheral */
-  /*!< SDMMCCLK = 48M, SDMMC_CK = SDMMCCLK / [CLKDIV + 2] */
-  /*!< SDIO_CK for initialization should not exceed 400 KHz */
-  /*初始化时的时钟不能大于400KHz*/
-  //SDMMC1_BASE=0x4001 2c00
-  SDMMC1->CLKCR = 0x00000076;  // SDIO_CK = 48M/(118 + 2) = 400 KHz;
-
-  /*!< Set Power State to ON */
-  //SDMMC1->POWER = SDMMC_POWER_PWRCTRL;
-  SDMMC1->POWER = 0x00000003;  // 通电，为卡提供时钟
-
-  /* en SDMMC_CK SDIO_CK output */
-  SDMMC1->CLKCR |= 0x00000100;
-  count = 0xffff;
-  while(count--); // 等待5mS
-  //MX_SDMMC1_DMA();
-
-  /*下面发送一系列命令,开始卡识别流程*/
-  /*!< CMD0: GO_IDLE_STATE ---------------------------------------------------*/
-  /*!< No CMD response required */
-  //sdmmc1_cmd_init.Argument = 0; // 命令参数
-  //sdmmc1_cmd_init.CmdIndex = SD_CMD_GO_IDLE_STATE; //cmd0
-  //sdmmc1_cmd_init.Response = 0;  //无响应 SDIO_Response_No
-  //sdmmc1_cmd_init.WaitForInterrupt = 0; //SDIO_Wait_No //SDMMC wait interrupt request enabled or disabled.
-  //sdmmc1_cmd_init.CPSM = 1<<10; //则CPSM在开始发送命令之前等待数据传输结束。 SDIO_CPSM_Enable
-  //SDMMC_SendCommand(SDMMC1, &sdmmc1_cmd_init);  //写命令进命令寄存器
-  SDMMC1->CMD = (1<<10)|(0<<0);  // CPSMEN|SD_CMD_GO_IDLE_STATE  cmd0
-  while(!(SDMMC1->STA & (1<<7))); // SDMMC_STA_CMDSENT
-  SDMMC1->ICR = (1<<7); // clear flag
-
-  /*!< CMD8: SEND_IF_COND ----------------------------------------------------*/
-  /*!< Send CMD8 to verify SD card interface operating condition */
-  /*!< Argument: - [31:12]: Reserved (shall be set to '0')
-  - [11:8]: Supply Voltage (VHS) 0x1 (Range: 2.7-3.6 V)
-  - [7:0]: Check Pattern (recommended 0xAA) */
-  /*!< CMD Response: R7 */
-  //sdmmc1_cmd_init.Argument =  ((uint32_t)0x000001AAU); //SD_CHECK_PATTERN;   //接收到命令sd会返回这个参数
-  //sdmmc1_cmd_init.CmdIndex = SD_CMD_HS_SEND_EXT_CSD;  //cmd8 SDIO_SEND_IF_COND
-  //sdmmc1_cmd_init.Response = 1<<6;     //r7  SDIO_Response_Short
-  //sdmmc1_cmd_init.WaitForInterrupt = 0;            //关闭等待中断 SDIO_Wait_No
-  //sdmmc1_cmd_init.CPSM = 1<<10; //SDIO_CPSM_Enable
-  //SDMMC_SendCommand(SDMMC1, &sdmmc1_cmd_init);
-  SDMMC1->ARG = ((uint32_t)0x000001AAU);
-  SDMMC1->CMD = (1<<10)|(8<<0);  // CPSMEN|SD_CMD_HS_SEND_EXT_CSD  cmd8
-  while(!(SDMMC1->STA & (1<<7))); // SDMMC_STA_CMDSENT
-  SDMMC1->ICR = (1<<7); // clear flag
-
-  /*检查是否接收到命令*/
-  errorstatus = SDMMC_GetCommandResponse(SDMMC1);//检测是否正确接收到cmd8
-
-  if (errorstatus == SD_OK)     //有响应则card遵循sd协议2.0版本
-  {
-	//CardType = 2; //SDIO_STD_CAPACITY_SD_CARD_V2_0; /*!< SD Card 2.0 ，先把它定义会sdsc类型的卡*/
-
-	SDType = 1;//SD_HIGH_CAPACITY;  //这个变量用作acmd41的参数，用来询问是sdsc卡还是sdhc卡
-
-  }
-  else  //无响应，说明是1.x的或mmc的卡
-  {
-    /*!< CMD55 */
-    sdmmc1_cmd_init.Argument = 0x00;
-    sdmmc1_cmd_init.CmdIndex = SD_CMD_APP_CMD;
-    sdmmc1_cmd_init.Response = 1<<6;
-    sdmmc1_cmd_init.WaitForInterrupt = 0;
-    sdmmc1_cmd_init.CPSM = 1<<10;
-    SDMMC_SendCommand(SDMMC1, &sdmmc1_cmd_init);
-	errorstatus = SDMMC_GetCommandResponse(SDMMC1);//检测是否正确接收到SD_CMD_APP_CMD
-  }
-
-
-	/*!< CMD55 */     //为什么在else里和else外面都要发送CMD55?
-
-	//发送cmd55，用于检测是sd卡还是mmc卡，或是不支持的卡
-
-	SDIO_CmdInitStructure.SDIO_Argument = 0x00;
-
-	SDIO_CmdInitStructure.SDIO_CmdIndex = SD_CMD_APP_CMD;
-
-	SDIO_CmdInitStructure.SDIO_Response = SDIO_Response_Short; //r1
-
-	SDIO_CmdInitStructure.SDIO_Wait = SDIO_Wait_No;
-
-	SDIO_CmdInitStructure.SDIO_CPSM = SDIO_CPSM_Enable;
-
-	SDIO_SendCommand(&SDIO_CmdInitStructure);
-
-	errorstatus = CmdResp1Error(SD_CMD_APP_CMD);  //是否响应，没响应的是mmc或不支持的卡
-
-	/*!< If errorstatus is Command TimeOut, it is a MMC card */
-
-	/*!< If errorstatus is SD_OK it is a SD card: SD card 2.0 (voltage range mismatch)
-
-	or SD card 1.x */
-
-	if (errorstatus == SD_OK) //响应了cmd55，是sd卡，可能为1.x,可能为2.0
-
-	{
-
-	/*下面开始循环地发送sdio支持的电压范围，循环一定次数*/
-
-	/*!< SD CARD */
-
-	/*!< Send ACMD41 SD_APP_OP_COND with Argument 0x80100000 */
-
-	while ((!validvoltage) && (count < SD_MAX_VOLT_TRIAL))
-
-	{
-
-	//因为下面要用到ACMD41，是ACMD命令，在发送ACMD命令前都要先向卡发送CMD55
-
-	/*!< SEND CMD55 APP_CMD with RCA as 0 */
-
-	SDIO_CmdInitStructure.SDIO_Argument = 0x00;
-
-	SDIO_CmdInitStructure.SDIO_CmdIndex = SD_CMD_APP_CMD;   //CMD55
-
-	SDIO_CmdInitStructure.SDIO_Response = SDIO_Response_Short;
-
-	SDIO_CmdInitStructure.SDIO_Wait = SDIO_Wait_No;
-
-	SDIO_CmdInitStructure.SDIO_CPSM = SDIO_CPSM_Enable;
-
-	SDIO_SendCommand(&SDIO_CmdInitStructure);
-
-	errorstatus = CmdResp1Error(SD_CMD_APP_CMD); //检测响应
-
-	if (errorstatus != SD_OK)
-
-	{
-
-	return(errorstatus);//没响应CMD55，返回
-
-	}
-
-	//acmd41，命令参数由支持的电压范围及HCS位组成，HCS位置一来区分卡是SDSc还是sdhc
-
-	SDIO_CmdInitStructure.SDIO_Argument = SD_VOLTAGE_WINDOW_SD | SDType;    //参数为主机可供电压范围及hcs位
-
-	SDIO_CmdInitStructure.SDIO_CmdIndex = SD_CMD_SD_APP_OP_COND;
-
-	SDIO_CmdInitStructure.SDIO_Response = SDIO_Response_Short;  //r3
-
-	SDIO_CmdInitStructure.SDIO_Wait = SDIO_Wait_No;
-
-	SDIO_CmdInitStructure.SDIO_CPSM = SDIO_CPSM_Enable;
-
-	SDIO_SendCommand(&SDIO_CmdInitStructure);
-
-	errorstatus = CmdResp3Error();    //检测是否正确接收到数据
-
-	if (errorstatus != SD_OK)
-
-	{
-
-	return(errorstatus);  //没正确接收到acmd41，出错，返回
-
-	}
-
-	/*若卡需求电压在SDIO的供电电压范围内，会自动上电并标志pwr_up位*/
-
-	response = SDIO_GetResponse(SDIO_RESP1);   //读取卡寄存器，卡状态
-
-	validvoltage = (((response >> 31) == 1) ? 1 : 0); //读取卡的ocr寄存器的pwr_up位，看是否已工作在正常电压
-
-	count++;            //计算循环次数
-
-	}
-
-	if (count >= SD_MAX_VOLT_TRIAL) //循环检测超过一定次数还没上电
-
-	{
-
-	errorstatus = SD_INVALID_VOLTRANGE;      //SDIO不支持card的供电电压
-
-	return(errorstatus);
-
-	}
-
-	/*检查卡返回信息中的HCS位*/
-
-	if (response &= SD_HIGH_CAPACITY)  //判断ocr中的ccs位 ，如果是sdsc卡则不执行下面的语句
-
-	{
-
-	CardType = SDIO_HIGH_CAPACITY_SD_CARD;  //把卡类型从初始化的sdsc型改为sdhc型
-
-	}
-
-	}/*!< else MMC Card */
-
-	return(errorstatus);
-}
-
-static void MX_SDMMC1_DMA(void)
-{
-  /* DMA2 used for SDMMC1 Transmission and Reception
-   */
-  /* (1) Enable the clock of DMA2 */
-  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA2);
-
-  /* (2) Configure NVIC for DMA transfer complete/error interrupts */
-  NVIC_SetPriority(DMA2_Stream3_IRQn, 0);
-  NVIC_EnableIRQ(DMA2_Stream3_IRQn);
-  NVIC_SetPriority(DMA2_Stream6_IRQn, 0);
-  NVIC_EnableIRQ(DMA2_Stream6_IRQn);
-
-  /* (3) Configure the DMA functional parameters for transmission */
-  LL_DMA_SetChannelSelection(DMA2, LL_DMA_STREAM_3, LL_DMA_CHANNEL_4);
-  LL_DMA_ConfigTransfer(DMA1, LL_DMA_STREAM_3,
-                        LL_DMA_DIRECTION_MEMORY_TO_PERIPH |  /*设备 to memory bit:6  */
-                        LL_DMA_PRIORITY_HIGH              |  /*优先级   */
-                        LL_DMA_MODE_NORMAL                |  /*   */
-                        LL_DMA_PERIPH_NOINCREMENT         |  /*外设地址指针固定，不增量 bit:9  */
-                        LL_DMA_MEMORY_INCREMENT           |  /*memory地址指针增量   */
-                        LL_DMA_PDATAALIGN_BYTE            |  /*外设数据大小8位，bit:12-11   */
-                        LL_DMA_MDATAALIGN_BYTE);             /*memory数据大小8位，bit:14-13   */
-  LL_DMA_ConfigAddresses(DMA1, LL_DMA_STREAM_3,
-                         (uint32_t)aTxBuffer,
-                         LL_USART_DMA_GetRegAddr(SDMMC1, LL_USART_DMA_REG_DATA_TRANSMIT),
-                         LL_DMA_GetDataTransferDirection(DMA1, LL_DMA_STREAM_3));
-  LL_DMA_SetDataLength(DMA1, LL_DMA_STREAM_3, ubNbDataToTransmit);
-
-  /* (4) Configure the DMA functional parameters for reception */
-  LL_DMA_SetChannelSelection(DMA2, LL_DMA_STREAM_6, LL_DMA_CHANNEL_4);
-  LL_DMA_ConfigTransfer(DMA1, LL_DMA_STREAM_6,
-                        LL_DMA_DIRECTION_PERIPH_TO_MEMORY |
-                        LL_DMA_PRIORITY_HIGH              |
-                        LL_DMA_MODE_NORMAL                |
-                        LL_DMA_PERIPH_NOINCREMENT         |
-                        LL_DMA_MEMORY_INCREMENT           |
-                        LL_DMA_PDATAALIGN_BYTE            |
-                        LL_DMA_MDATAALIGN_BYTE);
-  LL_DMA_ConfigAddresses(DMA1, LL_DMA_STREAM_6,
-                         LL_USART_DMA_GetRegAddr(SDMMC1, LL_USART_DMA_REG_DATA_RECEIVE),
-                         (uint32_t)aRxBuffer,
-                         LL_DMA_GetDataTransferDirection(DMA1, LL_DMA_STREAM_6));
-  LL_DMA_SetDataLength(DMA1, LL_DMA_STREAM_6, ubNbDataToReceive);
-
-  /* (5) Enable DMA transfer complete/error interrupts  */
-  LL_DMA_EnableIT_TC(DMA2, LL_DMA_STREAM_3);
-  LL_DMA_EnableIT_TE(DMA2, LL_DMA_STREAM_3);
-  LL_DMA_EnableIT_TC(DMA2, LL_DMA_STREAM_6);
-  LL_DMA_EnableIT_TE(DMA2, LL_DMA_STREAM_6);
-
-}
-
 
 
 static uint32_t SD_Response(uint32_t *response, uint32_t type)
