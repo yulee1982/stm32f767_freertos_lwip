@@ -13,9 +13,10 @@
 #include "stm32f7xx_ll_sdmmc.h"
 #include "stm32f7xx_hal_sd.h"
 
- extern SD_HandleTypeDef hsd;
+extern SD_HandleTypeDef hsd;
 
- void SD_Init(void);
+void SD_Init(void);
+uint8_t Find_SD_IsDetected(void);
 
 #ifdef __cplusplus
 }

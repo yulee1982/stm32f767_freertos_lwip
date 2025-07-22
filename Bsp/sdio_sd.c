@@ -3,8 +3,9 @@
 #include "sdio_sd.h"
 #include "main.h"
 
-static void SD_LowLevel_Init(void);
-static void MX_SDMMC1_DMA(void);
+
+#define SD_PRESENT               ((uint8_t)0x01)
+#define SD_NOT_PRESENT           ((uint8_t)0x00)
 
 SD_HandleTypeDef hsd;
 DMA_HandleTypeDef hdma_sdio_rx;
@@ -16,6 +17,10 @@ HAL_SD_CardInfoTypedef sdcardinfo;
 #define BUFFER_WORDS_SIZE        ((512 * NUM_OF_BLOCKS) >> 2) /* Total data size in bytes */
 uint32_t aTxBuffer_sd[BUFFER_WORDS_SIZE];
 uint32_t aRxBuffer_sd[BUFFER_WORDS_SIZE];
+
+static void SD_LowLevel_Init(void);
+static void MX_SDMMC1_DMA(void);
+
 /**
   * @brief  Initializes the SD Card and put it into StandBy State (Ready for data
   *         transfer).
@@ -25,6 +30,13 @@ uint32_t aRxBuffer_sd[BUFFER_WORDS_SIZE];
 void SD_Init(void)
 {
   HAL_SD_ErrorTypedef errorstate = SD_OK;
+
+  /* Check if the SD card is plugged in the slot */
+  if (Find_SD_IsDetected() != SD_PRESENT)
+  {
+    printf("SD card is not plugged in the slot !\r\n");
+    return;
+  }
 
   /* USER CODE END SDIO_Init 1 */
   hsd.Instance = SDMMC1;
@@ -109,7 +121,6 @@ static void SD_LowLevel_Init(void)
 
   LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
   LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOD);
-  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOG);
 
   /**SDIO GPIO Configuration
   PC8    ------> SDMMC_D0
@@ -134,14 +145,6 @@ static void SD_LowLevel_Init(void)
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;    // 无上下拉
   GPIO_InitStruct.Alternate = GPIO_AF12_SDMMC1;
   LL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-  /*!< Configure SD_DETECT_PIN pin: SD Card detect pin */
-  GPIO_InitStruct.Pin = LL_GPIO_PIN_2;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-  //GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
-  GPIO_InitStruct.Alternate = GPIO_AF0_MCO;
-  LL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
   /* Enable the SDIO APB2 Clock */
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SDMMC1);
@@ -260,7 +263,32 @@ static void MX_SDMMC1_DMA(void)
 }
 
 
+/**
+ * @brief  Detects if SD card is correctly plugged in the memory slot or not.
+ * @param  None
+ * @retval Returns if SD is detected or not
+ */
+uint8_t Find_SD_IsDetected(void)
+{
+  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+  __IO uint8_t status = SD_PRESENT;
+  uint32_t tempreg;
 
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOG);
+  /*!< Configure SD_DETECT_PIN pin: SD Card detect pin */
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_2;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
+  //GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+  GPIO_InitStruct.Alternate = GPIO_AF0_MCO;
+  LL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+
+  HAL_Delay(1);
+  tempreg = GPIOG->IDR;
+  if(tempreg & 0x0004)
+	  status = SD_NOT_PRESENT;
+  return status;
+}
 
 
 /////////////////////////////////////////////////////////////////////
