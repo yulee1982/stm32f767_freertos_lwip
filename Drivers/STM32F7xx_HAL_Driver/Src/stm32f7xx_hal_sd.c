@@ -201,11 +201,12 @@
 /** 
   * @brief  SDMMC Static flags, Timeout, FIFO Address  
   */
+/*
 #define SDMMC_STATIC_FLAGS               ((uint32_t)(SDMMC_FLAG_CCRCFAIL | SDMMC_FLAG_DCRCFAIL | SDMMC_FLAG_CTIMEOUT |\
                                                     SDMMC_FLAG_DTIMEOUT | SDMMC_FLAG_TXUNDERR | SDMMC_FLAG_RXOVERR  |\
                                                     SDMMC_FLAG_CMDREND  | SDMMC_FLAG_CMDSENT  | SDMMC_FLAG_DATAEND  |\
                                                     SDMMC_FLAG_DBCKEND))  
-
+*/
 #define SDMMC_CMD0TIMEOUT                ((uint32_t)0x00010000U)
 
 /** 
@@ -505,8 +506,8 @@ HAL_SD_ErrorTypedef HAL_SD_ReadBlocks(SD_HandleTypeDef *hsd, uint32_t *pReadBuff
   sdmmc_datainitstructure.TransferDir   = SDMMC_TRANSFER_DIR_TO_SDMMC;
   sdmmc_datainitstructure.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
   sdmmc_datainitstructure.DPSM          = SDMMC_DPSM_ENABLE;
-  SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
-  
+  //SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
+  SDMMC_ConfigData(hsd->Instance, &sdmmc_datainitstructure);
   if(NumberOfBlocks > 1)
   {
     /* Send CMD18 READ_MULT_BLOCK with argument data address */
@@ -715,8 +716,8 @@ HAL_SD_ErrorTypedef HAL_SD_WriteBlocks(SD_HandleTypeDef *hsd, uint32_t *pWriteBu
   sdmmc_datainitstructure.TransferDir   = SDMMC_TRANSFER_DIR_TO_CARD;
   sdmmc_datainitstructure.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
   sdmmc_datainitstructure.DPSM          = SDMMC_DPSM_ENABLE;
-  SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
-  
+  //SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
+  SDMMC_ConfigData(hsd->Instance, &sdmmc_datainitstructure);
   /* Write block(s) in polling mode */
   if(NumberOfBlocks > 1)
   {
@@ -921,8 +922,8 @@ HAL_SD_ErrorTypedef HAL_SD_ReadBlocks_DMA(SD_HandleTypeDef *hsd, uint32_t *pRead
   sdmmc_datainitstructure.TransferDir   = SDMMC_TRANSFER_DIR_TO_SDMMC;
   sdmmc_datainitstructure.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
   sdmmc_datainitstructure.DPSM          = SDMMC_DPSM_ENABLE;
-  SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
-  
+  //SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
+  SDMMC_ConfigData(hsd->Instance, &sdmmc_datainitstructure);
   /* Check number of blocks command */
   if(NumberOfBlocks > 1)
   {
@@ -1067,8 +1068,8 @@ HAL_SD_ErrorTypedef HAL_SD_WriteBlocks_DMA(SD_HandleTypeDef *hsd, uint32_t *pWri
   sdmmc_datainitstructure.TransferDir   = SDMMC_TRANSFER_DIR_TO_CARD;
   sdmmc_datainitstructure.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
   sdmmc_datainitstructure.DPSM          = SDMMC_DPSM_ENABLE;
-  SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
-  
+  //SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
+  SDMMC_ConfigData(hsd->Instance, &sdmmc_datainitstructure);
   hsd->SdTransferErr = errorstate;
   
   return errorstate;
@@ -1837,8 +1838,8 @@ HAL_SD_ErrorTypedef HAL_SD_HighSpeed (SD_HandleTypeDef *hsd)
     sdmmc_datainitstructure.TransferDir   = SDMMC_TRANSFER_DIR_TO_SDMMC;
     sdmmc_datainitstructure.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
     sdmmc_datainitstructure.DPSM          = SDMMC_DPSM_ENABLE;
-    SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
-    
+    //SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
+    SDMMC_ConfigData(hsd->Instance, &sdmmc_datainitstructure);
     /* Send CMD6 switch mode */
     sdmmc_cmdinitstructure.Argument         = 0x80FFFF01U;
     sdmmc_cmdinitstructure.CmdIndex         = SD_CMD_HS_SWITCH;
@@ -1993,8 +1994,8 @@ HAL_SD_ErrorTypedef HAL_SD_SendSDStatus(SD_HandleTypeDef *hsd, uint32_t *pSDstat
   sdmmc_datainitstructure.TransferDir   = SDMMC_TRANSFER_DIR_TO_SDMMC;
   sdmmc_datainitstructure.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
   sdmmc_datainitstructure.DPSM          = SDMMC_DPSM_ENABLE;
-  SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
-  
+  //SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
+  SDMMC_ConfigData(hsd->Instance, &sdmmc_datainitstructure);
   /* Send ACMD13 (SD_APP_STAUS)  with argument as card's RCA */
   sdmmc_cmdinitstructure.Argument         = 0;
   sdmmc_cmdinitstructure.CmdIndex         = SD_CMD_SD_APP_STATUS;
@@ -3158,8 +3159,8 @@ static HAL_SD_ErrorTypedef SD_FindSCR(SD_HandleTypeDef *hsd, uint32_t *pSCR)
   sdmmc_datainitstructure.TransferDir   = SDMMC_TRANSFER_DIR_TO_SDMMC;
   sdmmc_datainitstructure.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
   sdmmc_datainitstructure.DPSM          = SDMMC_DPSM_ENABLE;
-  SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
-  
+  //SDMMC_DataConfig(hsd->Instance, &sdmmc_datainitstructure);
+  SDMMC_ConfigData(hsd->Instance, &sdmmc_datainitstructure);
   /* Send ACMD51 SD_APP_SEND_SCR with argument as 0 */
   sdmmc_cmdinitstructure.Argument         = 0;
   sdmmc_cmdinitstructure.CmdIndex         = SD_CMD_SD_APP_SEND_SCR;
