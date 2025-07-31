@@ -1,5 +1,8 @@
-tool : STM32CubeIDE Version: 1.19.0 Build: 25607_20250703_0907 (UTC)
+tool : STM32CubeIDE Version: 1.19.0
 boards : NUCLEO-F767ZI
+
+printf ：use uart2 interface CN9 :  PD6(CN9_4) PD5(CN9_6)
+sdio sdcard :  CN8 SDMMC1 PG2(CN8_14 SD_DETECT_PIN) 
 
 build:
 lwip-2.2.2/src/apps/http/fsdata.c  --> right click --> Resource Configurations --> Exclude from Build...

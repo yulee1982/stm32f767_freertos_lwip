@@ -81,7 +81,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Inc/httpserver-netconn.h ../Core/Inc/lwiperf_example.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/Bsp/sdio_sd.h \
  ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h \
- ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/diskio.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ffconf.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
@@ -168,3 +171,6 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/priv/me
 D:/stm32/workspace_1.12.1/stm32f767_freertos/Bsp/sdio_sd.h:
 ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/diskio.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ffconf.h:

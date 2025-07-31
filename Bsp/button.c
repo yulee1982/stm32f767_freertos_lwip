@@ -72,13 +72,13 @@ void prvLedBreathTask( void * pvParameters )
     //LL_GPIO_TogglePin(LED1_GPIO_PORT, LED1_PIN);
     //vTaskDelay(400);
     LL_GPIO_SetOutputPin(LED1_GPIO_PORT, LED1_PIN);
-    vTaskDelay(100);
+    vTaskDelay(80);
     LL_GPIO_ResetOutputPin(LED1_GPIO_PORT, LED1_PIN);
-    vTaskDelay(100);
+    vTaskDelay(80);
     LL_GPIO_SetOutputPin(LED1_GPIO_PORT, LED1_PIN);
-    vTaskDelay(100);
+    vTaskDelay(80);
     LL_GPIO_ResetOutputPin(LED1_GPIO_PORT, LED1_PIN);
-    vTaskDelay(1200);
+    vTaskDelay(760);
   }
 }
 void prvButtonTask( void * pvParameters )

@@ -187,11 +187,11 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-  LL_FLASH_SetLatency(LL_FLASH_LATENCY_7);
+  LL_FLASH_SetLatency(LL_FLASH_LATENCY_7); //flash访问延迟 周期比
   while(LL_FLASH_GetLatency()!= LL_FLASH_LATENCY_7)
   {
   }
-  LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
+  LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1); //内部主调压器输出级别，使最大主频下功耗与性能平衡，当前为默认值(复位值)
   LL_PWR_EnableOverDriveMode();
   LL_RCC_HSI_SetCalibTrimming(16);
   LL_RCC_HSI_Enable();
@@ -201,8 +201,8 @@ void SystemClock_Config(void)
   {
 
   }
-  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_16, 432, LL_RCC_PLLP_DIV_2);
-  LL_RCC_PLL_ConfigDomain_48M(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_16, 432, LL_RCC_PLLQ_DIV_9);
+  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_8, 216, LL_RCC_PLLP_DIV_2);
+  LL_RCC_PLL_ConfigDomain_48M(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_8, 216, LL_RCC_PLLQ_DIV_9);
   LL_RCC_PLL_Enable();
 
    /* Wait till PLL is ready */
