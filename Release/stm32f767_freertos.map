@@ -172,8 +172,12 @@ Discarded input sections
                 0x00000000       0x24 ./Bsp/sdio_sd.o
  .text.SD_DeInit
                 0x00000000        0x4 ./Bsp/sdio_sd.o
+ .text.SD_PowerOFF
+                0x00000000        0xc ./Bsp/sdio_sd.o
  .text.SD_HighSpeed
                 0x00000000      0x118 ./Bsp/sdio_sd.o
+ .text.SD_GetCardStatus
+                0x00000000       0x80 ./Bsp/sdio_sd.o
  .text.SD_SendStatus
                 0x00000000       0x3c ./Bsp/sdio_sd.o
  .text.SD_GetState
@@ -208,12 +212,8 @@ Discarded input sections
                 0x00000000       0xa4 ./Bsp/sdio_sd.o
  .data.TM_FATFS_SD_SDIO_Stat
                 0x00000000        0x1 ./Bsp/sdio_sd.o
- .bss.SDIO_DataInitStructure
-                0x00000000       0x18 ./Bsp/sdio_sd.o
- .bss.SDIO_CmdInitStructure
-                0x00000000       0x14 ./Bsp/sdio_sd.o
- .bss.SDIO_InitStructure
-                0x00000000       0x18 ./Bsp/sdio_sd.o
+ .bss.SDSTATUS_Tab
+                0x00000000       0x10 ./Bsp/sdio_sd.o
  .text          0x00000000        0x0 ./Core/Src/app_ethernet.o
  .data          0x00000000        0x0 ./Core/Src/app_ethernet.o
  .bss           0x00000000        0x0 ./Core/Src/app_ethernet.o

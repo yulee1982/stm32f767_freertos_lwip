@@ -243,9 +243,9 @@ __IO SD_Error TransferError = SDMMC_OK;
 __IO uint32_t TransferEnd = 0, DMAEndOfTransfer = 0;
 SD_CardInfo SDCardInfo;
 
-SDMMC_InitTypeDef SDIO_InitStructure;
-SDMMC_CmdInitTypeDef SDIO_CmdInitStructure;
-SDMMC_DataInitTypeDef SDIO_DataInitStructure;
+//SDMMC_InitTypeDef SDIO_InitStructure;
+//SDMMC_CmdInitTypeDef SDIO_CmdInitStructure;
+//SDMMC_DataInitTypeDef SDIO_DataInitStructure;
 
 uint32_t aRxBuffer_sd[512];
 /** @defgroup STM32F4_DISCOVERY_SDIO_SD_Private_Function_Prototypes
@@ -1248,6 +1248,22 @@ static SD_Error CmdResp6Error(uint8_t cmd, uint16_t *prca)
 
   return(errorstatus);
 }
+
+/**
+ * @brief  Turns the SDIO output signals off.
+ * @param  None
+ * @retval SD_Error: SD Card Error code.
+ */
+SD_Error SD_PowerOFF(void)
+{
+  SD_Error errorstatus = SDMMC_OK;
+
+  /* Set power state to OFF */
+  SDMMC1->POWER = (uint32_t)0x00000000;
+
+  return (errorstatus);
+}
+
 /**
   * @brief  Intialises all cards or single card as the case may be Card(s) come
   *         into standby state.
@@ -1674,6 +1690,90 @@ SD_Error SD_SelectDeselect(uint64_t addr)
 
   return(errorstatus);
 }
+
+/**
+ * @brief  Enables wide bus opeartion for the requeseted card if supported by
+ *         card.
+ * @param  WideMode: Specifies the SD card wide bus mode.
+ *   This parameter can be one of the following values:
+ *     @arg SDIO_BusWide_8b: 8-bit data transfer (Only for MMC)
+ *     @arg SDIO_BusWide_4b: 4-bit data transfer
+ *     @arg SDIO_BusWide_1b: 1-bit data transfer
+ * @retval SD_Error: SD Card Error code.
+ */
+SD_Error SD_GetCardStatus (SD_CardStatus *cardstatus)
+{
+  SD_Error errorstatus = SDMMC_OK;
+  uint8_t tmp = 0;
+
+  errorstatus = SD_SendSDStatus((uint32_t *) SDSTATUS_Tab);
+  if(errorstatus != SDMMC_OK){
+    return (errorstatus);
+  }
+
+  /*!< Byte 0 */
+  tmp = (uint8_t) ((SDSTATUS_Tab[0] & 0xC0) >> 6);
+  cardstatus->DAT_BUS_WIDTH = tmp;
+
+  /*!< Byte 0 */
+  tmp = (uint8_t) ((SDSTATUS_Tab[0] & 0x20) >> 5);
+  cardstatus->SECURED_MODE = tmp;
+
+  /*!< Byte 2 */
+  tmp = (uint8_t) ((SDSTATUS_Tab[2] & 0xFF));
+  cardstatus->SD_CARD_TYPE = tmp << 8;
+
+  /*!< Byte 3 */
+  tmp = (uint8_t) ((SDSTATUS_Tab[3] & 0xFF));
+  cardstatus->SD_CARD_TYPE |= tmp;
+
+  /*!< Byte 4 */
+  tmp = (uint8_t) (SDSTATUS_Tab[4] & 0xFF);
+  cardstatus->SIZE_OF_PROTECTED_AREA = tmp << 24;
+
+  /*!< Byte 5 */
+  tmp = (uint8_t) (SDSTATUS_Tab[5] & 0xFF);
+  cardstatus->SIZE_OF_PROTECTED_AREA |= tmp << 16;
+
+  /*!< Byte 6 */
+  tmp = (uint8_t) (SDSTATUS_Tab[6] & 0xFF);
+  cardstatus->SIZE_OF_PROTECTED_AREA |= tmp << 8;
+
+  /*!< Byte 7 */
+  tmp = (uint8_t) (SDSTATUS_Tab[7] & 0xFF);
+  cardstatus->SIZE_OF_PROTECTED_AREA |= tmp;
+
+  /*!< Byte 8 */
+  tmp = (uint8_t) ((SDSTATUS_Tab[8] & 0xFF));
+  cardstatus->SPEED_CLASS = tmp;
+
+  /*!< Byte 9 */
+  tmp = (uint8_t) ((SDSTATUS_Tab[9] & 0xFF));
+  cardstatus->PERFORMANCE_MOVE = tmp;
+
+  /*!< Byte 10 */
+  tmp = (uint8_t) ((SDSTATUS_Tab[10] & 0xF0) >> 4);
+  cardstatus->AU_SIZE = tmp;
+
+  /*!< Byte 11 */
+  tmp = (uint8_t) (SDSTATUS_Tab[11] & 0xFF);
+  cardstatus->ERASE_SIZE = tmp << 8;
+
+  /*!< Byte 12 */
+  tmp = (uint8_t) (SDSTATUS_Tab[12] & 0xFF);
+  cardstatus->ERASE_SIZE |= tmp;
+
+  /*!< Byte 13 */
+  tmp = (uint8_t) ((SDSTATUS_Tab[13] & 0xFC) >> 2);
+  cardstatus->ERASE_TIMEOUT = tmp;
+
+  /*!< Byte 13 */
+  tmp = (uint8_t) ((SDSTATUS_Tab[13] & 0x3));
+  cardstatus->ERASE_OFFSET = tmp;
+
+  return (errorstatus);
+}
+
 /**
   * @brief  Enables wide bus opeartion for the requeseted card if supported by
   *         card.
