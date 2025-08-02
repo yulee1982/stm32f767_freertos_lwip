@@ -655,7 +655,7 @@ uint8_t TM_FATFS_CheckCardDetectPin(void)
 }
 
 #else
-static uint32_t CardType =  SDIO_STD_CAPACITY_SD_CARD_V1_1;
+static uint32_t CardType = SDIO_STD_CAPACITY_SD_CARD_V1_1;
 static uint32_t CSD_Tab[4], CID_Tab[4], RCA = 0;
 static uint8_t SDSTATUS_Tab[16];
 __IO uint32_t StopCondition = 0;
@@ -667,8 +667,6 @@ SD_CardInfo SDCardInfo;
 //SDMMC_CmdInitTypeDef SDIO_CmdInitStructure;
 //SDMMC_DataInitTypeDef SDIO_DataInitStructure;
 
-//test
-uint8_t aRxBuffer_sd[512];
 /** @defgroup STM32F4_DISCOVERY_SDIO_SD_Private_Function_Prototypes
   * @{
   */
@@ -1166,7 +1164,7 @@ SD_Error SD_Init(void)
   tempreg = 0;
   tempreg |= (0x0UL<<14) & SDMMC_CLKCR_HWFC_EN; //SDMMC_HardwareFlowControl_Disable
   tempreg |= (0x0UL<<13) & SDMMC_CLKCR_NEGEDGE; //在 SDMMC_CK 上升沿后的 SDMMCCLK 下降沿更改命令和数据
-  tempreg |= (0x0UL<<11) & SDMMC_CLKCR_WIDBUS;  //BusWide_1b
+  tempreg |= (0x0UL<<11) & SDMMC_CLKCR_WIDBUS;  //BusWide_4b err
   tempreg |= (0x0UL<<10) & SDMMC_CLKCR_BYPASS;  //SDIO_ClockBypass_Disable
   tempreg |= (0x0UL<<9) & SDMMC_CLKCR_PWRSAV;   //SDIO_ClockPowerSave_Disable 非节能模式始终使能 SDMMC_CK 时钟
   tempreg |= (0x1UL<<8) & SDMMC_CLKCR_CLKEN_Msk;  //SDMMC_CK
@@ -1188,11 +1186,11 @@ SD_Error SD_Init(void)
     //errorstatus = HAL_SD_WideBusOperation_Config(&hsd, SDMMC_BUS_WIDE_4B);
     //printf("SD_SelectDeselect OK\r\n");
 #if FATFS_SDIO_4BIT == 1
-    //errorstatus = SD_EnableWideBusOperation(SDMMC_BUS_WIDE_4B); //4 bit data width
+    errorstatus = SD_EnableWideBusOperation(SDMMC_BUS_WIDE_4B); //4 bit data width
 #else
     errorstatus = SD_EnableWideBusOperation(SDMMC_BUS_WIDE_1B);
 #endif
-    errorstatus = SD_EnableWideBusOperation(SDMMC_BUS_WIDE_1B);
+
   }else{
     //printf("SD_EnableWideBusOperation failed\r\n");
   }
@@ -1202,8 +1200,6 @@ SD_Error SD_Init(void)
     //printf("SD_EnableWideBusOperation OK\r\n");
   }
 
-  //test
-  errorstatus = SD_ReadBlock(aRxBuffer_sd, 0, 512);
   return(errorstatus);
 }
 

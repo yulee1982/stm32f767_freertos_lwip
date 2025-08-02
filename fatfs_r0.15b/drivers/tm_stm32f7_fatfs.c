@@ -288,6 +288,7 @@ static FRESULT scan_files(char* path, uint16_t tmp_buffer_size, TM_FATFS_Search_
 #define TEST_RW_SD
 
 #ifdef TEST_RW_SD
+
 static FATFS fs;                         /* FatFs文件系统对象 */
 static FIL fnew;                         /* 文件对象 */
 static FRESULT res_sd;                   /* 文件操作结果 */
@@ -295,10 +296,12 @@ static UINT fnum;                        /* 文件成功读写数量 */
 static BYTE ReadBuffer[256]= {0};        /* 读缓冲区 */
 static BYTE WriteBuffer[] =              /* 写缓冲区*/
         "Welcome to STM32 FatFs, This is a test file!";
+
+
 void sd_card_fatfs_test(void)
 {
   printf("%s\t%d\r\n", __FUNCTION__ , __LINE__);
-  res_sd = f_mount(&fs,"0:", 1);
+  res_sd = f_mount(&fs, "1:", 1);
   printf("%s\t%d\r\n", __FUNCTION__ , __LINE__);
   /*----------------------- 格式化测试 -----------------------*/
   /* 如果没有文件系统就格式化创建创建文件系统 */
@@ -317,15 +320,15 @@ void sd_card_fatfs_test(void)
     //res_sd = f_mkfs("0:", &opt, NULL, 0);
     #define FORMAT_WORK_BUF_SZ 4096         // 根据需要调整
     BYTE formatWorkBuf[FORMAT_WORK_BUF_SZ];
-    res_sd = f_mkfs("0:", &opt, formatWorkBuf, FORMAT_WORK_BUF_SZ);
+    res_sd = f_mkfs("1:", &opt, formatWorkBuf, FORMAT_WORK_BUF_SZ);
     //res_sd = f_mkfs("0:", &opt, NULL, 4096); //根据实际需求调整
     if(res_sd == FR_OK)
     {
       printf(">> SD Card Create File System success! \r\n");
       /* 格式化后，先取消挂载 */
-      res_sd = f_mount(NULL,"0:",0);
+      res_sd = f_mount(NULL,"1:",0);
       /* 重新挂载 */
-      res_sd = f_mount(&fs,"0:",1);
+      res_sd = f_mount(&fs,"1:",1);
     }else{
       printf(">> Create file system failed! %d \r\n", res_sd);
       while(1);
@@ -342,7 +345,7 @@ void sd_card_fatfs_test(void)
   /*----------------------- 文件系统测试：写测试 -----------------------*/
   printf("\r\n---------------FatFs Write Test---------------\r\n");
   /* 打开文件，如果文件不存在则创建它 */
-  res_sd = f_open(&fnew, "0:FatFs_test.txt",FA_CREATE_ALWAYS | FA_WRITE );
+  res_sd = f_open(&fnew, "1:FatFs_test.txt",FA_CREATE_ALWAYS | FA_WRITE );
   if(res_sd == FR_OK)
   {
     printf(">> Open Or Create file success, write data...\r\n");
@@ -362,7 +365,7 @@ void sd_card_fatfs_test(void)
   }
   /*----------------------- 文件系统测试：读测试 -----------------------*/
   printf("--------------- Read file test ---------------\r\n");
-  res_sd = f_open(&fnew, "0:FatFs_test.txt", FA_OPEN_EXISTING | FA_READ);
+  res_sd = f_open(&fnew, "1:FatFs_test.txt", FA_OPEN_EXISTING | FA_READ);
   if(res_sd == FR_OK)
   {
     printf(">> Open success...\r\n");
@@ -382,11 +385,11 @@ void sd_card_fatfs_test(void)
   f_close(&fnew);
 
   /* 不再使用文件系统，取消挂载文件系统 */
-  f_mount(NULL,"0:",1);
+  f_mount(NULL,"1:",1);
 
-  while(1)
-  {
+  //while(1)
+  //{
 
-  }
+  //}
 }
 #endif
