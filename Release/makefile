@@ -29,6 +29,8 @@ RM := rm -rf
 -include lwip-2.2.2/src/api/subdir.mk
 -include freertos/portable/subdir.mk
 -include freertos/subdir.mk
+-include fatfs_r0.15b/source/subdir.mk
+-include fatfs_r0.15b/drivers/subdir.mk
 -include Drivers/STM32F7xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk

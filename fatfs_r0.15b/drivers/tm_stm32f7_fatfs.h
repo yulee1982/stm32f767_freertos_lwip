@@ -569,7 +569,7 @@ FRESULT TM_FATFS_TruncateBeginning(FIL* fil, uint32_t index);
  *            - 0: Card is not inserted
  *            - > 0: Card is inserted
  */
-uint8_t TM_FATFS_CheckCardDetectPin(void);
+//uint8_t TM_FATFS_CheckCardDetectPin(void);
 
 /**
  * @brief  Searches on SD card for files and folders
@@ -628,7 +628,7 @@ FRESULT TM_FATFS_Search(char* Folder, char* tmp_buffer, uint16_t tmp_buffer_size
  * @note   With __weak parameter to prevent link errors if not defined by user
  */
 uint8_t TM_FATFS_SearchCallback(char* path, uint8_t is_file, TM_FATFS_Search_t* FindStructure);
-
+void sd_card_fatfs_test(void);
 /**
  * @}
  */

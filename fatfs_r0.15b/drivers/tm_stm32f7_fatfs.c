@@ -131,23 +131,7 @@ FRESULT TM_FATFS_TruncateBeginning(FIL* fil, uint32_t index) {
 	return f_lseek(fil, 0);									/* Move pointer to the beginning */
 }
 
-uint8_t TM_FATFS_CheckCardDetectPin(void)
-{
-  uint8_t status = 1;
-  uint32_t tempreg;
 
-#if FATFS_USE_DETECT_PIN > 0
-  //if (TM_GPIO_GetInputPinValue(FATFS_USE_DETECT_PIN_PORT, FATFS_USE_DETECT_PIN_PIN) != 0) {
-  //  status = 0;
-  //}
-  tempreg = GPIOG->IDR;
-  if ((tempreg & 0x0004) != 0)
-    status = 0;
-#endif
-	
-	/* Return status */
-	return status;
-}
 
 FRESULT TM_FATFS_Search(char* Folder, char* tmp_buffer, uint16_t tmp_buffer_size, TM_FATFS_Search_t* FindStructure) {
 	uint8_t malloc_used = 0;
@@ -298,3 +282,111 @@ static FRESULT scan_files(char* path, uint16_t tmp_buffer_size, TM_FATFS_Search_
 	/* Return result */
 	return res;
 }
+
+
+//---------------for test
+#define TEST_RW_SD
+
+#ifdef TEST_RW_SD
+static FATFS fs;                         /* FatFs文件系统对象 */
+static FIL fnew;                         /* 文件对象 */
+static FRESULT res_sd;                   /* 文件操作结果 */
+static UINT fnum;                        /* 文件成功读写数量 */
+static BYTE ReadBuffer[256]= {0};        /* 读缓冲区 */
+static BYTE WriteBuffer[] =              /* 写缓冲区*/
+        "Welcome to STM32 FatFs, This is a test file!";
+void sd_card_fatfs_test(void)
+{
+  printf("%s\t%d\r\n", __FUNCTION__ , __LINE__);
+  res_sd = f_mount(&fs,"0:", 1);
+  printf("%s\t%d\r\n", __FUNCTION__ , __LINE__);
+  /*----------------------- 格式化测试 -----------------------*/
+  /* 如果没有文件系统就格式化创建创建文件系统 */
+  if(res_sd == FR_NO_FILESYSTEM)
+  {
+    printf(">> SD Card don't have FatFs Type File System!\r\nCreate SD Card FAT32 File System...\r\nPlease Wait some time!\r\n");
+    /* 格式化 */
+    //res_sd=f_mkfs("0:", 0, NULL, 0);
+    MKFS_PARM opt = {0};
+    opt.fmt = FM_FAT32; // 选择FAT32格式
+    opt.n_fat = 2; // 设定FAT副本数量，通常为2
+    opt.align = 1; // 数据区域对齐，默认为1，表示按扇区对齐
+    // opt.n_root     不需要设置，因为我们使用的是FAT32，它没有固定大小的根目录
+    opt.au_size = 512; // 每簇大小，以字节为单位，这里是假设每簇为1个扇区，即512字节
+
+    //res_sd = f_mkfs("0:", &opt, NULL, 0);
+    #define FORMAT_WORK_BUF_SZ 4096         // 根据需要调整
+    BYTE formatWorkBuf[FORMAT_WORK_BUF_SZ];
+    res_sd = f_mkfs("0:", &opt, formatWorkBuf, FORMAT_WORK_BUF_SZ);
+    //res_sd = f_mkfs("0:", &opt, NULL, 4096); //根据实际需求调整
+    if(res_sd == FR_OK)
+    {
+      printf(">> SD Card Create File System success! \r\n");
+      /* 格式化后，先取消挂载 */
+      res_sd = f_mount(NULL,"0:",0);
+      /* 重新挂载 */
+      res_sd = f_mount(&fs,"0:",1);
+    }else{
+      printf(">> Create file system failed! %d \r\n", res_sd);
+      while(1);
+    }
+  }
+  else if(res_sd != FR_OK) {
+    printf(">> SD Card Mount File System failed! %d \r\n",res_sd);
+    while(1);
+  }
+  else{
+    printf(">> Mount file system success! \r\n");
+  }
+
+  /*----------------------- 文件系统测试：写测试 -----------------------*/
+  printf("\r\n---------------FatFs Write Test---------------\r\n");
+  /* 打开文件，如果文件不存在则创建它 */
+  res_sd = f_open(&fnew, "0:FatFs_test.txt",FA_CREATE_ALWAYS | FA_WRITE );
+  if(res_sd == FR_OK)
+  {
+    printf(">> Open Or Create file success, write data...\r\n");
+    /* 将指定存储区内容写入到文件内 */
+    res_sd = f_write(&fnew,WriteBuffer,sizeof(WriteBuffer),&fnum);
+    if(res_sd==FR_OK)
+    {
+      printf(">> Write data Success：%d\r\n",fnum);
+      printf(">> Write data:\r\n%s\r\n",WriteBuffer);
+    }else{
+      printf("Write data failed! (%d)\r\n",res_sd);
+    }
+    /* 不再读写，关闭文件 */
+    f_close(&fnew);
+  }else{
+    printf("Open Or Create file failed!\r\n");
+  }
+  /*----------------------- 文件系统测试：读测试 -----------------------*/
+  printf("--------------- Read file test ---------------\r\n");
+  res_sd = f_open(&fnew, "0:FatFs_test.txt", FA_OPEN_EXISTING | FA_READ);
+  if(res_sd == FR_OK)
+  {
+    printf(">> Open success...\r\n");
+    res_sd = f_read(&fnew, ReadBuffer, sizeof(ReadBuffer), &fnum);
+    if(res_sd == FR_OK)
+    {
+      printf(">>Read file data success%d\r\n",fnum);
+      printf(">>Read data:\r\n%s \r\n", ReadBuffer);
+    }else{
+      printf("Read file failed! (%d)\r\n",res_sd);
+    }
+  }else{
+    printf("Open file failed!\r\n");
+  }
+
+  /* 不再读写，关闭文件 */
+  f_close(&fnew);
+
+  /* 不再使用文件系统，取消挂载文件系统 */
+  f_mount(NULL,"0:",1);
+
+  while(1)
+  {
+
+  }
+}
+#endif

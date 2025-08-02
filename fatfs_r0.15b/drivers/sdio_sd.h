@@ -13,9 +13,10 @@
 #include "stm32f7xx_ll_gpio.h"
 #include "stm32f7xx_ll_sdmmc.h"
 #include "stm32f7xx_hal_sd.h"
+#include "main.h"
 
 #include "diskio.h"
-
+#include "ff.h"
 
 #ifndef FATFS_USE_DETECT_PIN
 #define FATFS_USE_DETECT_PIN				1
@@ -42,6 +43,22 @@
 #define FATFS_USE_WRITEPROTECT_PIN_PIN		GPIO_PIN_7
 #endif
 #endif
+
+#define SDIO_USE_HAL_LIB                   0
+
+#if SDIO_USE_HAL_LIB
+
+extern SD_HandleTypeDef hsd;
+HAL_SD_ErrorTypedef SD_Init(void);
+
+DSTATUS TM_FATFS_SD_SDIO_disk_initialize(void);
+uint8_t TM_FATFS_CheckCardDetectPin(void);
+DSTATUS TM_FATFS_SD_SDIO_disk_status(void);
+DRESULT TM_FATFS_SD_SDIO_disk_read(BYTE *buff, DWORD sector, UINT count);
+DRESULT TM_FATFS_SD_SDIO_disk_write(const BYTE *buff, DWORD sector, UINT count);
+DRESULT TM_FATFS_SD_SDIO_disk_ioctl(BYTE cmd, void *buff);
+
+#else
 
 typedef enum
 {
@@ -345,6 +362,24 @@ extern void SD_LowLevel_DMA_TxConfig (uint32_t *BufferSRC, uint32_t BufferSize);
 extern void SD_LowLevel_DMA_RxConfig (uint32_t *BufferDST, uint32_t BufferSize);
 extern void SDMMC1_IRQHandler(void);
 
+/**
+ * @brief  Checks card detect pin (if activated) if card is inserted
+ * @note   Pin must be set low in order to get card inserted, otherwise card is not inserted
+ * @note   Card detect pin must be activated in order to get this functionality to work
+ * @param  None
+ * @retval Card detected status:
+ *            - 0: Card is not inserted
+ *            - > 0: Card is inserted
+ */
+
+DSTATUS TM_FATFS_SD_SDIO_disk_initialize(void);
+uint8_t TM_FATFS_CheckCardDetectPin(void);
+DSTATUS TM_FATFS_SD_SDIO_disk_status(void);
+DRESULT TM_FATFS_SD_SDIO_disk_read(BYTE *buff, DWORD sector, UINT count);
+DRESULT TM_FATFS_SD_SDIO_disk_write(const BYTE *buff, DWORD sector, UINT count);
+DRESULT TM_FATFS_SD_SDIO_disk_ioctl(BYTE cmd, void *buff);
+
+#endif
 
 #ifdef __cplusplus
 }

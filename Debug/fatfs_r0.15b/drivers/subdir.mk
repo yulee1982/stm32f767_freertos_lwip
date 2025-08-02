@@ -5,12 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../fatfs_r0.15b/drivers/sdio_sd.c \
 ../fatfs_r0.15b/drivers/tm_stm32f7_fatfs.c 
 
 OBJS += \
+./fatfs_r0.15b/drivers/sdio_sd.o \
 ./fatfs_r0.15b/drivers/tm_stm32f7_fatfs.o 
 
 C_DEPS += \
+./fatfs_r0.15b/drivers/sdio_sd.d \
 ./fatfs_r0.15b/drivers/tm_stm32f7_fatfs.d 
 
 
@@ -21,7 +24,7 @@ fatfs_r0.15b/drivers/%.o fatfs_r0.15b/drivers/%.su fatfs_r0.15b/drivers/%.cyclo:
 clean: clean-fatfs_r0-2e-15b-2f-drivers
 
 clean-fatfs_r0-2e-15b-2f-drivers:
-	-$(RM) ./fatfs_r0.15b/drivers/tm_stm32f7_fatfs.cyclo ./fatfs_r0.15b/drivers/tm_stm32f7_fatfs.d ./fatfs_r0.15b/drivers/tm_stm32f7_fatfs.o ./fatfs_r0.15b/drivers/tm_stm32f7_fatfs.su
+	-$(RM) ./fatfs_r0.15b/drivers/sdio_sd.cyclo ./fatfs_r0.15b/drivers/sdio_sd.d ./fatfs_r0.15b/drivers/sdio_sd.o ./fatfs_r0.15b/drivers/sdio_sd.su ./fatfs_r0.15b/drivers/tm_stm32f7_fatfs.cyclo ./fatfs_r0.15b/drivers/tm_stm32f7_fatfs.d ./fatfs_r0.15b/drivers/tm_stm32f7_fatfs.o ./fatfs_r0.15b/drivers/tm_stm32f7_fatfs.su
 
 .PHONY: clean-fatfs_r0-2e-15b-2f-drivers
 

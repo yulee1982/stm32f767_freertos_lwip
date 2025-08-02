@@ -35,7 +35,7 @@
 #include "lwiperf_example.h"
 
 #include "sdio_sd.h"
-
+#include "tm_stm32f7_fatfs.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -143,7 +143,8 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
-  SD_Init();
+  //SD_Init();
+  sd_card_fatfs_test();
 
   /* Start the task that executes on the M7 core. */
   xTaskCreate(prvButtonTask, 			/* Function that implements the task. */

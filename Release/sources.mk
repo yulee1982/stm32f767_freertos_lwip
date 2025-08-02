@@ -26,6 +26,8 @@ Bsp \
 Core/Src \
 Core/Startup \
 Drivers/STM32F7xx_HAL_Driver/Src \
+fatfs_r0.15b/drivers \
+fatfs_r0.15b/source \
 freertos \
 freertos/portable \
 lwip-2.2.2/src/api \
