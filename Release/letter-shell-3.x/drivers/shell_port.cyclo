@@ -1,0 +1,7 @@
+../letter-shell-3.x/drivers/shell_port.c:47:7:userShellWrite	1
+../letter-shell-3.x/drivers/shell_port.c:67:7:userShellRead	1
+../letter-shell-3.x/drivers/shell_port.c:85:5:userShellLock	1
+../letter-shell-3.x/drivers/shell_port.c:99:5:userShellUnlock	1
+../letter-shell-3.x/drivers/shell_port.c:107:6:shellTask1	2
+../letter-shell-3.x/drivers/shell_port.c:120:6:USART_RxCpltCallback	1
+../letter-shell-3.x/drivers/shell_port.c:130:6:userShellInit	2

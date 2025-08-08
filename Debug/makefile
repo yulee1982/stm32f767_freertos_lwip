@@ -27,6 +27,8 @@ RM := rm -rf
 -include lwip-2.2.2/src/apps/http/subdir.mk
 -include lwip-2.2.2/src/apps/altcp_tls/subdir.mk
 -include lwip-2.2.2/src/api/subdir.mk
+-include letter-shell-3.x/src/subdir.mk
+-include letter-shell-3.x/drivers/subdir.mk
 -include freertos/portable/subdir.mk
 -include freertos/subdir.mk
 -include fatfs_r0.15b/source/subdir.mk

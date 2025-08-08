@@ -27,6 +27,7 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
+#include "stm32f767xx.h"
 #include "stm32f7xx_hal.h"
 #include "stm32f7xx_ll_rcc.h"
 #include "stm32f7xx_ll_bus.h"
@@ -99,7 +100,7 @@ void DMA1_TransmitComplete_Callback(void);
 void DMA1_ReceiveComplete_Callback(void);
 void USART_TransferError_Callback(void);
 void UserButton_Callback(void);
-void BufferTransferConst(const char * pBuffer);
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

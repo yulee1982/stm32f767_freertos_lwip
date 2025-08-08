@@ -19,7 +19,12 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include "stm32f7xx_it.h"
+
+#include "usart.h"
+#include "shell_port.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -107,6 +112,19 @@ void MemManage_Handler(void)
     /* USER CODE END W1_MemoryManagement_IRQn 0 */
   }
 }
+
+
+// USER_LEETTER_SHELL
+void USART2_IRQHandler(void)
+{
+  uint32_t ulReturn;
+
+  //ulReturn = taskENTER_CRITICAL_FROM_ISR();
+  USART_IRQHandler(USART2);
+  USART_RxCpltCallback(USART2);
+  //taskEXIT_CRITICAL_FROM_ISR( ulReturn );
+}
+
 
 /**
   * @brief This function handles Pre-fetch fault, memory access fault.

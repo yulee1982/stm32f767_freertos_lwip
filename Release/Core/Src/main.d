@@ -1,9 +1,4 @@
 Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
- ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
- ../Core/Inc/stm32f7xx_hal_conf.h \
- ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
- ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h \
- ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f7xx.h \
  ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h \
  ../Drivers/CMSIS/Include/core_cm7.h \
  ../Drivers/CMSIS/Include/cmsis_version.h \
@@ -11,6 +6,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/CMSIS/Include/cmsis_gcc.h \
  ../Drivers/CMSIS/Include/mpu_armv7.h \
  ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
+ ../Core/Inc/stm32f7xx_hal_conf.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h \
+ ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f7xx.h \
+ ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_exti.h \
@@ -80,19 +81,20 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Inc/ethernetif.h ../Core/Inc/app_ethernet.h \
  ../Core/Inc/httpserver-netconn.h ../Core/Inc/lwiperf_example.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/drivers/sdio_sd.h \
- ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/diskio.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ffconf.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/drivers/tm_stm32f7_fatfs.h
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/drivers/tm_stm32f7_fatfs.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/drivers/shell_port.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/src/shell.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/src/shell_cfg.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/semphr.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/queue.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/drivers/usart.h
 ../Core/Inc/main.h:
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
-../Core/Inc/stm32f7xx_hal_conf.h:
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h:
-../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f7xx.h:
 ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h:
 ../Drivers/CMSIS/Include/core_cm7.h:
 ../Drivers/CMSIS/Include/cmsis_version.h:
@@ -100,6 +102,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/CMSIS/Include/cmsis_gcc.h:
 ../Drivers/CMSIS/Include/mpu_armv7.h:
 ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
+../Core/Inc/stm32f7xx_hal_conf.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h:
+../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f7xx.h:
+../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_exti.h:
@@ -171,10 +179,16 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/priv/me
 ../Core/Inc/httpserver-netconn.h:
 ../Core/Inc/lwiperf_example.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/drivers/sdio_sd.h:
-../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/diskio.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ffconf.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/drivers/tm_stm32f7_fatfs.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/drivers/shell_port.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/src/shell.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/src/shell_cfg.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/semphr.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/queue.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/drivers/usart.h:

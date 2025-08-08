@@ -331,12 +331,14 @@ void sd_card_fatfs_test(void)
       res_sd = f_mount(&fs,"1:",1);
     }else{
       printf(">> Create file system failed! %d \r\n", res_sd);
-      while(1);
+      //while(1);
+      return;
     }
   }
   else if(res_sd != FR_OK) {
     printf(">> SD Card Mount File System failed! %d \r\n",res_sd);
-    while(1);
+    //while(1);
+    return;
   }
   else{
     printf(">> Mount file system success! \r\n");

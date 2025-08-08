@@ -30,6 +30,8 @@ fatfs_r0.15b/drivers \
 fatfs_r0.15b/source \
 freertos \
 freertos/portable \
+letter-shell-3.x/drivers \
+letter-shell-3.x/src \
 lwip-2.2.2/src/api \
 lwip-2.2.2/src/apps/altcp_tls \
 lwip-2.2.2/src/apps/http \

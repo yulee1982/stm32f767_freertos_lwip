@@ -235,7 +235,7 @@ static void low_level_init(struct netif *netif)
     netif_set_down(netif);
     //printf("STM32F7xx LAN8742 init status != OK !!! status = 0x%08X \r\n", PHYInit_result);
     printf("STM32F7xx LAN8742 init status != OK ! ");
-    printf(PHYLinkStateStr[(uint16_t)(PHYInit_result + 5)]);
+    printf(PHYLinkStateStr[(uint8_t)(PHYInit_result + 5)]);
     return;
   }
 

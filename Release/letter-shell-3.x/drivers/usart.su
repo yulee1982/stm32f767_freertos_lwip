@@ -1,0 +1,8 @@
+../letter-shell-3.x/drivers/usart.c:44:9:Usart_Transmit	24	static
+../letter-shell-3.x/drivers/usart.c:33:5:_write	8	static
+../letter-shell-3.x/drivers/usart.c:135:6:MX_USART2_UART_Init	32	static,ignoring_inline_asm
+../letter-shell-3.x/drivers/usart.c:205:9:Usart_Receive	24	static
+../letter-shell-3.x/drivers/usart.c:346:9:Usart_Start_Receive_IT	0	static
+../letter-shell-3.x/drivers/usart.c:323:9:Usart_Receive_IT	0	static
+../letter-shell-3.x/drivers/usart.c:469:9:Usart_Receive_IT_Get_Flag	0	static
+../letter-shell-3.x/drivers/usart.c:474:6:USART_IRQHandler	12	static

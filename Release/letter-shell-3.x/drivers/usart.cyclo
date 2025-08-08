@@ -1,0 +1,8 @@
+../letter-shell-3.x/drivers/usart.c:44:9:Usart_Transmit	15
+../letter-shell-3.x/drivers/usart.c:33:5:_write	1
+../letter-shell-3.x/drivers/usart.c:135:6:MX_USART2_UART_Init	2
+../letter-shell-3.x/drivers/usart.c:205:9:Usart_Receive	17
+../letter-shell-3.x/drivers/usart.c:346:9:Usart_Start_Receive_IT	8
+../letter-shell-3.x/drivers/usart.c:323:9:Usart_Receive_IT	5
+../letter-shell-3.x/drivers/usart.c:469:9:Usart_Receive_IT_Get_Flag	1
+../letter-shell-3.x/drivers/usart.c:474:6:USART_IRQHandler	31

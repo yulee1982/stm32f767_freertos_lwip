@@ -36,6 +36,9 @@
 
 #include "sdio_sd.h"
 #include "tm_stm32f7_fatfs.h"
+
+#include "shell_port.h"
+#include "usart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -87,8 +90,7 @@ void MX_LED_Init(void);
 //void LED_On(void);
 //void LED_Reverse(void);
 //void LED_Off(void);
-void MX_USART2_UART_Init(void);
-//void BufferTransfer(uint8_t* pBuffer);
+
 void MX_USART2_DMA(void);
 void StartTransfers(void);
 static void MPU_Config(void);
@@ -145,6 +147,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //SD_Init();
   sd_card_fatfs_test();
+
+  userShellInit();
 
   /* Start the task that executes on the M7 core. */
   xTaskCreate(prvButtonTask, 			/* Function that implements the task. */
@@ -523,139 +527,8 @@ void LED_Reverse(void)
 }
 #endif
 
-void MX_USART2_UART_Init(void)
-{
-  /* (1) Enable GPIO clock and configures the USART pins **********************/
 
-   /* Enable the peripheral clock of GPIO Port */
-  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOD);
 
-  /* Configure Tx Pin as : Alternate function, High Speed, Push pull, Pull up */
-  LL_GPIO_SetPinMode(GPIOD, LL_GPIO_PIN_5, LL_GPIO_MODE_ALTERNATE);
-  LL_GPIO_SetAFPin_0_7(GPIOD, LL_GPIO_PIN_5, LL_GPIO_AF_7);
-  LL_GPIO_SetPinSpeed(GPIOD, LL_GPIO_PIN_5, LL_GPIO_SPEED_FREQ_HIGH);
-  LL_GPIO_SetPinOutputType(GPIOD, LL_GPIO_PIN_5, LL_GPIO_OUTPUT_PUSHPULL);
-  LL_GPIO_SetPinPull(GPIOD, LL_GPIO_PIN_5, LL_GPIO_PULL_UP);
-
-  /* Configure Rx Pin as : Alternate function, High Speed, Push pull, Pull up */
-  LL_GPIO_SetPinMode(GPIOD, LL_GPIO_PIN_6, LL_GPIO_MODE_ALTERNATE);
-  LL_GPIO_SetAFPin_0_7(GPIOD, LL_GPIO_PIN_6, LL_GPIO_AF_7);
-  LL_GPIO_SetPinSpeed(GPIOD, LL_GPIO_PIN_6, LL_GPIO_SPEED_FREQ_HIGH);
-  LL_GPIO_SetPinOutputType(GPIOD, LL_GPIO_PIN_6, LL_GPIO_OUTPUT_PUSHPULL);
-  LL_GPIO_SetPinPull(GPIOD, LL_GPIO_PIN_6, LL_GPIO_PULL_UP);
-
-  /* (2) Enable USART2 peripheral clock and clock source ****************/
-  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART2);
-
-  /* Set clock source */
-  LL_RCC_SetUSARTClockSource(LL_RCC_USART2_CLKSOURCE_PCLK1);
-
-  /* (3) Configure USART3 functional parameters ********************************/
-
-  /* Disable USART prior modifying configuration registers */
-  /* Note: Commented as corresponding to Reset value */
-  // LL_USART_Disable(USART2);
-
-  /* TX/RX direction */
-  LL_USART_SetTransferDirection(USART2, LL_USART_DIRECTION_TX_RX);
-
-  /* 8 data bit, 1 start bit, 1 stop bit, no parity */
-  LL_USART_ConfigCharacter(USART2, LL_USART_DATAWIDTH_8B, LL_USART_PARITY_NONE, LL_USART_STOPBITS_1);
-
-  /* No Hardware Flow control */
-  /* Reset value is LL_USART_HWCONTROL_NONE */
-  // LL_USART_SetHWFlowCtrl(USART2, LL_USART_HWCONTROL_NONE);
-
-  /* Oversampling by 16 */
-  /* Reset value is LL_USART_OVERSAMPLING_16 */
-  // LL_USART_SetOverSampling(USART2, LL_USART_OVERSAMPLING_16);
-
-  /* Set Baudrate to 115200 using APB frequency set to 54000000 Hz */
-  /* Frequency available for USART peripheral can also be calculated through LL RCC macro */
-  /* Ex :
-        Periphclk = LL_RCC_GetUSARTClockFreq(Instance); or LL_RCC_GetUARTClockFreq(Instance); depending on USART/UART instance
-
-	    In this example, Peripheral Clock is expected to be equal to 54000000 Hz => equal to SystemCoreClock/4
-  */
-  LL_USART_SetBaudRate(USART2, SystemCoreClock/4, LL_USART_OVERSAMPLING_16, 115200);
-
-  /* (4) Enable USART3 **********************************************************/
-  LL_USART_Enable(USART2);
-
-  /* transfer Tx buffer to PC application */
-  BufferTransferConst("STM32F7xx USART initial ...\r\n");
-}
-/**
-  * @brief  Function called for achieving TX buffer sending
-  * @param  None
-  * @retval None
-  */
-void BufferTransferConst(const char * pBuffer)
-{
-  uint8_t ubSend = 0;
-  uint32_t ubNbDataToTransmit = 0;
-
-  ubNbDataToTransmit = strlen(pBuffer);
-  /* Send characters one per one, until last char to be sent */
-  while (ubSend < ubNbDataToTransmit) // while (ubSend < sizeof(aTxBuffer_init))
-  {
-#if (USE_TIMEOUT == 1)
-    Timeout = USART_SEND_TIMEOUT_TXE_MS;
-#endif /* USE_TIMEOUT */
-
-    /* Wait for TXE flag to be raised */
-    while (!LL_USART_IsActiveFlag_TXE(USART2))
-    {
-#if (USE_TIMEOUT == 1)
-      /* Check Systick counter flag to decrement the time-out value */
-      if (LL_SYSTICK_IsActiveCounterFlag())
-      {
-        if(Timeout-- == 0)
-        {
-          /* Time-out occurred. Set LED to blinking mode */
-          LED_Blinking(LED_BLINK_SLOW);
-        }
-      }
-#endif /* USE_TIMEOUT */
-    }
-
-    /* If last char to be sent, clear TC flag */
-    if (ubSend == (ubNbDataToTransmit - 1)) //if (ubSend == (sizeof(aTxBuffer_init) - 1))
-    {
-      LL_USART_ClearFlag_TC(USART2);
-    }
-
-    /* Write character in Transmit Data register.
-       TXE flag is cleared by writing data in TDR register */
-    LL_USART_TransmitData8(USART2, *pBuffer++); //LL_USART_TransmitData8(USART2, aTxBuffer_init[ubSend++]);
-    ubSend++;
-  }
-
-#if (USE_TIMEOUT == 1)
-  Timeout = USART_SEND_TIMEOUT_TC_MS;
-#endif /* USE_TIMEOUT */
-
-  /* Wait for TC flag to be raised for last char */
-  while (!LL_USART_IsActiveFlag_TC(USART2))
-  {
-#if (USE_TIMEOUT == 1)
-    /* Check Systick counter flag to decrement the time-out value */
-    if (LL_SYSTICK_IsActiveCounterFlag())
-    {
-      if(Timeout-- == 0)
-      {
-        /* Time-out occurred. Set LED to blinking mode */
-        LED_Blinking(LED_BLINK_SLOW);
-      }
-    }
-#endif /* USE_TIMEOUT */
-  }
-
-  //ubButtonPress =0;
-
-  /* Turn LED1 On at end of transfer : Tx sequence completed successfully */
-  //LED_On();
-}
 void MX_USART2_DMA(void)
 {
   /* DMA1 used for USART3 Transmission and Reception
@@ -708,6 +581,7 @@ void MX_USART2_DMA(void)
   LL_DMA_EnableIT_TE(DMA1, LL_DMA_STREAM_5);
   printf(aTxBuffer);
 }
+
 void StartTransfers(void)
 {
   /* Enable DMA RX Interrupt */
@@ -991,69 +865,7 @@ void Error_Handler(void)
   /* USER CODE END Error_Handler_Debug */
 }
 
-int __io_putchar(int ch)
-{
-  /* Place your implementation of fputc here */
-  //uint8_t ubSend = 0;
-  //uint32_t ubNbDataToTransmit = 0;
 
-  //ubNbDataToTransmit = strlen(pBuffer);
-  /* Send characters one per one, until last char to be sent */
-  //while (ubSend < ubNbDataToTransmit) // while (ubSend < sizeof(aTxBuffer_init))
-  {
-	#if (USE_TIMEOUT == 1)
-    Timeout = USART_SEND_TIMEOUT_TXE_MS;
-	#endif /* USE_TIMEOUT */
-
-    /* Wait for TXE flag to be raised */
-    while (!LL_USART_IsActiveFlag_TXE(USART2))
-    {
-      #if (USE_TIMEOUT == 1)
-      /* Check Systick counter flag to decrement the time-out value */
-      if (LL_SYSTICK_IsActiveCounterFlag())
-      {
-        if(Timeout-- == 0)
-        {
-          /* Time-out occurred. Set LED to blinking mode */
-          LED_Blinking(LED_BLINK_SLOW);
-        }
-      }
-      #endif /* USE_TIMEOUT */
-    }
-
-    /* If last char to be sent, clear TC flag */
-    //if (ubSend == (ubNbDataToTransmit - 1)) //if (ubSend == (sizeof(aTxBuffer_init) - 1))
-    {
-      LL_USART_ClearFlag_TC(USART2);
-    }
-
-    /* Write character in Transmit Data register.
-    TXE flag is cleared by writing data in TDR register */
-    LL_USART_TransmitData8(USART2, (uint8_t)ch); //LL_USART_TransmitData8(USART2, aTxBuffer_init[ubSend++]);
-    //ubSend++;
-  }
-
-  #if (USE_TIMEOUT == 1)
-  Timeout = USART_SEND_TIMEOUT_TC_MS;
-  #endif /* USE_TIMEOUT */
-
-	  /* Wait for TC flag to be raised for last char */
-  while (!LL_USART_IsActiveFlag_TC(USART2))
-  {
-    #if (USE_TIMEOUT == 1)
-    /* Check Systick counter flag to decrement the time-out value */
-    if (LL_SYSTICK_IsActiveCounterFlag())
-    {
-      if(Timeout-- == 0)
-      {
-        /* Time-out occurred. Set LED to blinking mode */
-        LED_Blinking(LED_BLINK_SLOW);
-      }
-    }
-	#endif /* USE_TIMEOUT */
-  }
-  return ch;
-}
 #ifdef  USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
