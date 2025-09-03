@@ -9,6 +9,8 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include usb-framework/libusb_stm32/src/subdir.mk
+-include usb-framework/subdir.mk
 -include lwip-2.2.2/system/os/subdir.mk
 -include lwip-2.2.2/src/netif/ppp/polarssl/subdir.mk
 -include lwip-2.2.2/src/netif/ppp/subdir.mk
@@ -28,6 +30,8 @@ RM := rm -rf
 -include lwip-2.2.2/src/apps/altcp_tls/subdir.mk
 -include lwip-2.2.2/src/api/subdir.mk
 -include letter-shell-3.x/src/subdir.mk
+-include letter-shell-3.x/extensions/shell_enhance/subdir.mk
+-include letter-shell-3.x/extensions/log/subdir.mk
 -include letter-shell-3.x/drivers/subdir.mk
 -include freertos/portable/subdir.mk
 -include freertos/subdir.mk
@@ -85,7 +89,7 @@ all: main-build
 main-build: stm32f767_freertos.elf secondary-outputs
 
 dependents:
-	-cd D:/stm32/workspace_1.12.1/stm32f767_freertos/Release && $(MAKE) all
+	-cd D:/stm32/workspace_1.12.1/stm32f767_freertos/Release && $(MAKE) clean all
 
 # Tool invocations
 stm32f767_freertos.elf stm32f767_freertos.map: $(OBJS) $(USER_OBJS) D:/stm32/workspace_1.12.1/stm32f767_freertos/Release/stm32f767_freertos.elf D:\stm32\workspace_1.12.1\stm32f767_freertos\STM32F767ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)

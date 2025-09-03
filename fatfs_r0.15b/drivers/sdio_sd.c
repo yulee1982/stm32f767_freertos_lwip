@@ -1126,7 +1126,6 @@ SD_Error SD_Init(void)
   SD_LowLevel_Init();
 
   errorstatus = SD_PowerON();
-
   if (errorstatus != SDMMC_OK)
   {
     /*!< CMD Response TimeOut (wait for CMDSENT flag) */
@@ -1134,18 +1133,13 @@ SD_Error SD_Init(void)
     return(errorstatus);
   }
 
-  //printf("SD_PowerON OK\r\n");
-
   errorstatus = SD_InitializeCards();
-
   if (errorstatus != SDMMC_OK)
   {
     /*!< CMD Response TimeOut (wait for CMDSENT flag) */
     //printf("SD_InitializeCards failed\r\n");
     return(errorstatus);
   }
-
-  //printf("SD_InitializeCards OK\r\n");
 
   /*----------------- Read CSD/CID MSD registers ------------------*/
   errorstatus = SD_GetCardInfo(&SDCardInfo);
@@ -1157,19 +1151,6 @@ SD_Error SD_Init(void)
   }else{
     printf("SD_SelectDeselect failed\r\n");
   }
-
-  /*!< Configure the SDIO peripheral */
-  /*!< SDIO_CK = SDIOCLK / (SDIO_TRANSFER_CLK_DIV + 2) */
-  /*!< on STM32F4xx devices, SDIOCLK is fixed to 48MHz */
-  tempreg = 0;
-  tempreg |= (0x0UL<<14) & SDMMC_CLKCR_HWFC_EN; //SDMMC_HardwareFlowControl_Disable
-  tempreg |= (0x0UL<<13) & SDMMC_CLKCR_NEGEDGE; //在 SDMMC_CK 上升沿后的 SDMMCCLK 下降沿更改命令和数据
-  tempreg |= (0x0UL<<11) & SDMMC_CLKCR_WIDBUS;  //BusWide_4b err
-  tempreg |= (0x0UL<<10) & SDMMC_CLKCR_BYPASS;  //SDIO_ClockBypass_Disable
-  tempreg |= (0x0UL<<9) & SDMMC_CLKCR_PWRSAV;   //SDIO_ClockPowerSave_Disable 非节能模式始终使能 SDMMC_CK 时钟
-  tempreg |= (0x1UL<<8) & SDMMC_CLKCR_CLKEN_Msk;  //SDMMC_CK
-  tempreg |= (SDMMC_TRANSFER_CLK_DIV<<0) & SDMMC_CLKCR_CLKDIV;
-  SDMMC1->CLKCR = tempreg;
 
   //The above code runs OK, and the following steps are not verified.
   if (errorstatus == SDMMC_OK)
@@ -1187,6 +1168,26 @@ SD_Error SD_Init(void)
     //printf("SD_SelectDeselect OK\r\n");
 #if FATFS_SDIO_4BIT == 1
     errorstatus = SD_EnableWideBusOperation(SDMMC_BUS_WIDE_4B); //4 bit data width
+    /*!< Configure the SDIO peripheral */
+    /*!< SDIO_CK = SDIOCLK / (SDIO_TRANSFER_CLK_DIV + 2) */
+    /*!< on STM32F4xx devices, SDIOCLK is fixed to 48MHz */
+    if((errorstatus == SDMMC_OK) ||(CardType == SDIO_MULTIMEDIA_CARD))
+    {
+      tempreg = 0;
+      tempreg |= (0x0UL<<14) & SDMMC_CLKCR_HWFC_EN; //SDMMC_HardwareFlowControl_Disable
+      tempreg |= (0x0UL<<13) & SDMMC_CLKCR_NEGEDGE; //在 SDMMC_CK 上升沿后的 SDMMCCLK 下降沿更改命令和数据
+      tempreg |= (0x1UL<<11) & SDMMC_CLKCR_WIDBUS;  //BusWide_4b
+      tempreg |= (0x0UL<<10) & SDMMC_CLKCR_BYPASS;  //SDIO_ClockBypass_Disable
+      tempreg |= (0x0UL<<9) & SDMMC_CLKCR_PWRSAV;   //SDIO_ClockPowerSave_Disable 非节能模式始终使能 SDMMC_CK 时钟
+      tempreg |= (0x1UL<<8) & SDMMC_CLKCR_CLKEN_Msk;  //SDMMC_CK
+      if((SDCardInfo.CardType == SDIO_STD_CAPACITY_SD_CARD_V1_1) || (SDCardInfo.CardType == SDIO_STD_CAPACITY_SD_CARD_V2_0))
+      {
+        tempreg |= SDMMC_TRANSFER_CLK_DIV + 2;	//V1.1/V2.0卡，设置最高48/4=12Mhz
+      }else{
+        tempreg |= SDMMC_TRANSFER_CLK_DIV;	//SDHC等其他卡，设置最高48/2=24Mhz
+      }
+      SDMMC1->CLKCR = tempreg;
+    }
 #else
     errorstatus = SD_EnableWideBusOperation(SDMMC_BUS_WIDE_1B);
 #endif
@@ -1240,6 +1241,18 @@ void SD_LowLevel_DeInit(void)
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;    // 无上下拉
   GPIO_InitStruct.Alternate = GPIO_AF0_MCO;
   LL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*
+  SDMMC1->POWER = 0x00000000;
+  SDMMC1->CLKCR = 0x00000000;
+  SDMMC1->ARG = 0x00000000;
+  SDMMC1->CMD = 0x00000000;
+  SDMMC1->DTIMER = 0x00000000;
+  SDMMC1->DLEN = 0x00000000;
+  SDMMC1->DCTRL = 0x00000000;
+  SDMMC1->ICR = 0x00C007FF;
+  SDMMC1->MASK = 0x00000000;
+  */
 }
 
 void SD_LowLevel_Init(void)

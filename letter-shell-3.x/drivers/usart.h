@@ -25,12 +25,20 @@
 #define  USART_STATE_ERROR       0x000000E0U    /*!< Error. Value is allowed for TxState only */
 
 void MX_USART2_UART_Init(void);
+void MX_USART2_DMA(void);
 uint8_t Usart_Transmit(USART_TypeDef *pUSARTx, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+uint8_t Usart_Transmit_DMA(USART_TypeDef *pUSARTx, const uint8_t *pData, uint16_t Size);
+uint8_t DMA_Usart2_Start_Transfers_IT(uint32_t SrcAddress, uint32_t DataLength);
+
 uint8_t Usart_Receive(USART_TypeDef *pUSARTx, uint8_t *pData, uint16_t Size, uint32_t Timeout);
 uint8_t Usart_Receive_IT(USART_TypeDef *pUSARTx, uint8_t *pData, uint16_t Size);
 uint8_t Usart_Receive_IT_Get_Flag(void);
 uint8_t Usart_Start_Receive_IT(USART_TypeDef *pUSARTx, uint8_t *pData, uint16_t Size);
-uint8_t Usart_Start_Receive_DMA(USART_TypeDef *pUSARTx, uint8_t *pData, uint16_t Size);
 
 void USART_IRQHandler(USART_TypeDef *pUSARTx);
+
+typedef void (*USART_RxCpltCallback)(int);              //声明回调函数指针 定义回调函数类型
+//USART_RxCpltCallback USART_RxCallback = NULL;         //定义回调函数指针
+void USART_RxFinishCallback(int value, USART_RxCpltCallback callback);  //需要回调的函数
+void USART_RxFinish(int value);	                        //实际处理函数(回调函数)
 #endif

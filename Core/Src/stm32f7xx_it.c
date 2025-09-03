@@ -24,7 +24,7 @@
 #include "stm32f7xx_it.h"
 
 #include "usart.h"
-#include "shell_port.h"
+//#include "shell_port.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -117,11 +117,11 @@ void MemManage_Handler(void)
 // USER_LEETTER_SHELL
 void USART2_IRQHandler(void)
 {
-  uint32_t ulReturn;
+  //uint32_t ulReturn;
 
   //ulReturn = taskENTER_CRITICAL_FROM_ISR();
   USART_IRQHandler(USART2);
-  USART_RxCpltCallback(USART2);
+  //USART_RxCpltCallback(USART2);
   //taskEXIT_CRITICAL_FROM_ISR( ulReturn );
 }
 
@@ -256,13 +256,19 @@ void DMA1_Stream6_IRQHandler(void)
   if(LL_DMA_IsActiveFlag_TC6(DMA1))
   {
     LL_DMA_ClearFlag_TC6(DMA1);
+    LL_DMA_ClearFlag_HT6(DMA1);
     /* Call function Transmission complete Callback */
-    DMA1_TransmitComplete_Callback();
+    //DMA1_TransmitComplete_Callback();
   }
   else if(LL_DMA_IsActiveFlag_TE6(DMA1))
   {
     /* Call Error function */
     USART_TransferError_Callback();
+  }
+  else if(LL_DMA_IsActiveFlag_HT6(DMA1))
+  {
+    /* Call Error function */
+    LL_DMA_ClearFlag_HT6(DMA1);
   }
 }
 
@@ -278,7 +284,7 @@ void DMA1_Stream5_IRQHandler(void)
   {
     LL_DMA_ClearFlag_TC5(DMA1);
     /* Call function Reception complete Callback */
-    DMA1_ReceiveComplete_Callback();
+    //DMA1_ReceiveComplete_Callback();
   }
   else if(LL_DMA_IsActiveFlag_TE5(DMA1))
   {

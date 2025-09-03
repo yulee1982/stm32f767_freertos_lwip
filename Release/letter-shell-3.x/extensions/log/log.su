@@ -1,0 +1,6 @@
+../letter-shell-3.x/extensions/log/log.c:155:13:logWriteBuffer.constprop	24	static
+../letter-shell-3.x/extensions/log/log.c:220:6:logHexDump	64	static
+../letter-shell-3.x/extensions/log/log.c:87:6:logRegister	8	static
+../letter-shell-3.x/extensions/log/log.c:112:6:logUnRegister	8	static
+../letter-shell-3.x/extensions/log/log.c:189:6:logWrite	24	static
+../letter-shell-3.x/extensions/log/log.c:131:6:logSetLevel	24	static

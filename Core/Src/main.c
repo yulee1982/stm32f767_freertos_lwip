@@ -39,6 +39,7 @@
 
 #include "shell_port.h"
 #include "usart.h"
+#include "usb_app.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,22 +60,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
-//SD_HandleTypeDef uSdHandle;
-
-/* USER CODE BEGIN PV */
-__IO uint8_t ubButtonPress = 0;
-__IO uint8_t ubSend = 0;
-const uint8_t aTxBuffer_init[] = "STM32F7xx USART initial ...\r\n";
-/* Buffer used for transmission */
-const uint8_t aTxBuffer[] = "STM32F7xx USART LL API Example : TX/RX in DMA mode\r\nConfiguration UART 115200 bps, 8 data bit/1 stop bit/No parity/No HW flow control\r\n";
-uint8_t ubNbDataToTransmit = sizeof(aTxBuffer);
-__IO uint8_t ubTransmissionComplete = 0;
-
-/* Buffer used for reception */
-const uint8_t aStringToReceive[] = "END";
-uint8_t ubNbDataToReceive = sizeof(aStringToReceive) - 1;
-uint8_t aRxBuffer[sizeof(aStringToReceive) - 1];
-__IO uint8_t ubReceptionComplete = 0;
 
 struct netif gnetif;
 /* USER CODE END PV */
@@ -91,7 +76,6 @@ void MX_LED_Init(void);
 //void LED_Reverse(void);
 //void LED_Off(void);
 
-void MX_USART2_DMA(void);
 void StartTransfers(void);
 static void MPU_Config(void);
 static void CPU_CACHE_Enable(void);
@@ -140,14 +124,11 @@ int main(void)
   MX_GPIO_Init();
   MX_LED_Init();
   //MX_ETH_Init();
-  MX_USART2_UART_Init();
-  MX_USART2_DMA();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
   //SD_Init();
   sd_card_fatfs_test();
-
   userShellInit();
 
   /* Start the task that executes on the M7 core. */
@@ -156,21 +137,27 @@ int main(void)
 			  BUTTON_STK_SIZE,          /* Size of stack (in words) to allocate for this task. */
               NULL, 					/* Task parameter, not used in this case. */
 			  BUTTON_TASK_PRIO, 		/* Task priority. */
-              NULL );		/* Task handle, used to unblock task from interrupt. */
-  xTaskCreate(prvLedBreathTask, 			/* Function that implements the task. */
+              NULL );		            /* Task handle, used to unblock task from interrupt. */
+  xTaskCreate(prvLedBreathTask, 		/* Function that implements the task. */
               "LedBreathTask", 			/* Task name, for debugging only. */
 			  BUTTON_STK_SIZE,          /* Size of stack (in words) to allocate for this task. */
               NULL, 					/* Task parameter, not used in this case. */
 			  BUTTON_TASK_PRIO, 		/* Task priority. */
-              NULL );		/* Task handle, used to unblock task from interrupt. */
+              NULL );		            /* Task handle, used to unblock task from interrupt. */
 
   xTaskCreate(lwipinitTask, 			/* Function that implements the task. */
               "lwipinitTask", 			/* Task name, for debugging only. */
-			  configMINIMAL_STACK_SIZE * 5,     /* Size of stack (in words) to allocate for this task. */
+			  configMINIMAL_STACK_SIZE * 5,    /* Size of stack (in words) to allocate for this task. */
               NULL, 					/* Task parameter, not used in this case. */
-			  0, 	/* Task priority. */
+			  0, 	                    /* Task priority. */
 			  NULL );		            /* Task handle, used to unblock task from interrupt. */
 
+  xTaskCreate(prvUSBappTask, 			/* Function that implements the task. */
+              "USBappTask", 			/* Task name, for debugging only. */
+			  configMINIMAL_STACK_SIZE * 5,    /* Size of stack (in words) to allocate for this task. */
+              NULL, 					/* Task parameter, not used in this case. */
+			  0, 		                /* Task priority. */
+              NULL );		            /* Task handle, used to unblock task from interrupt. */
   /* Start the scheduler. */
   vTaskStartScheduler();
   /* USER CODE END 2 */
@@ -359,12 +346,13 @@ static void MX_USB_OTG_FS_PCD_Init(void)
 {
 
   /* USER CODE BEGIN USB_OTG_FS_Init 0 */
-
+	LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* USER CODE END USB_OTG_FS_Init 0 */
 
   /* USER CODE BEGIN USB_OTG_FS_Init 1 */
 
   /* USER CODE END USB_OTG_FS_Init 1 */
+#if 0
   hpcd_USB_OTG_FS.Instance = USB_OTG_FS;
   hpcd_USB_OTG_FS.Init.dev_endpoints = 6;
   hpcd_USB_OTG_FS.Init.speed = PCD_SPEED_FULL;
@@ -379,8 +367,56 @@ static void MX_USB_OTG_FS_PCD_Init(void)
   {
     Error_Handler();
   }
+#endif
   /* USER CODE BEGIN USB_OTG_FS_Init 2 */
+  //LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+  /* Configure USB FS GPIOs */
+  //Enables the clock for GPIOA GPIOG
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA); //SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOG);//SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOGEN);
+
+  /**USBOTG GPIO Configuration
+  PA9    ------> OTG_FS_VBUS ?
+  PA10   ------> USB_ID      OTG_FS_ID
+  PA11   ------> USB_DM D-   OTG_FS_DM
+  PA12   ------> USB_DP D+   OTG_FS_DP
+  PG6    ------> USB_PowerSwitchOn
+  PG7    ------> USB_OverCurrent
+  */
+  /* Configure DM DP Pins */
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_11|LL_GPIO_PIN_12;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;  // 备用功能模式
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;    // 推挽输出模式
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;    // 无上下拉
+  GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
+  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* This for ID line debug */
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_10;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;  // 备用功能模式
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;    // 开漏输出类型
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+  GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
+  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* Configure Power Switch Vbus Pin */
+  LL_GPIO_SetPinMode(GPIOG, LL_GPIO_PIN_6, LL_GPIO_MODE_OUTPUT); //无上下拉，推挽输出
+  LL_GPIO_ResetOutputPin(GPIOG, LL_GPIO_PIN_6);
+
+  LL_GPIO_SetPinMode(GPIOG, LL_GPIO_PIN_7, LL_GPIO_MODE_INPUT);
+  LL_GPIO_SetPinPull(GPIOG, LL_GPIO_PIN_7, LL_GPIO_PULL_NO);
+
+  /* Enable USB FS Clocks */
+  //RCC->AHB2ENR |= RCC_AHB2ENR_OTGFSEN;
+  //RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+
+  /* Set USBFS Interrupt to the lowest priority */
+  /* Enable USBFS Interrupt */
+  //NVIC_SetPriority(OTG_FS_IRQn, 3);
+  //NVIC_EnableIRQ(OTG_FS_IRQn);
   /* USER CODE END USB_OTG_FS_Init 2 */
 
 }
@@ -529,102 +565,12 @@ void LED_Reverse(void)
 
 
 
-void MX_USART2_DMA(void)
-{
-  /* DMA1 used for USART3 Transmission and Reception
-   */
-  /* (1) Enable the clock of DMA1 */
-  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA1);
-
-  /* (2) Configure NVIC for DMA transfer complete/error interrupts */
-  NVIC_SetPriority(DMA1_Stream6_IRQn, 0);
-  NVIC_EnableIRQ(DMA1_Stream6_IRQn);
-  NVIC_SetPriority(DMA1_Stream5_IRQn, 0);
-  NVIC_EnableIRQ(DMA1_Stream5_IRQn);
-
-  /* (3) Configure the DMA functional parameters for transmission */
-  LL_DMA_SetChannelSelection(DMA1, LL_DMA_STREAM_6, LL_DMA_CHANNEL_4);
-  LL_DMA_ConfigTransfer(DMA1, LL_DMA_STREAM_6,
-                        LL_DMA_DIRECTION_MEMORY_TO_PERIPH |  /*设备 to memory bit:6  */
-                        LL_DMA_PRIORITY_HIGH              |  /*优先级   */
-                        LL_DMA_MODE_NORMAL                |  /*   */
-                        LL_DMA_PERIPH_NOINCREMENT         |  /*外设地址指针固定，不增量 bit:9  */
-                        LL_DMA_MEMORY_INCREMENT           |  /*memory地址指针增量   */
-                        LL_DMA_PDATAALIGN_BYTE            |  /*外设数据大小8位，bit:12-11   */
-                        LL_DMA_MDATAALIGN_BYTE);             /*memory数据大小8位，bit:14-13   */
-  LL_DMA_ConfigAddresses(DMA1, LL_DMA_STREAM_6,
-                         (uint32_t)aTxBuffer,
-                         LL_USART_DMA_GetRegAddr(USART2, LL_USART_DMA_REG_DATA_TRANSMIT),
-                         LL_DMA_GetDataTransferDirection(DMA1, LL_DMA_STREAM_6));
-  LL_DMA_SetDataLength(DMA1, LL_DMA_STREAM_6, ubNbDataToTransmit);
-
-  /* (4) Configure the DMA functional parameters for reception */
-  LL_DMA_SetChannelSelection(DMA1, LL_DMA_STREAM_5, LL_DMA_CHANNEL_4);
-  LL_DMA_ConfigTransfer(DMA1, LL_DMA_STREAM_5,
-                        LL_DMA_DIRECTION_PERIPH_TO_MEMORY |
-                        LL_DMA_PRIORITY_HIGH              |
-                        LL_DMA_MODE_NORMAL                |
-                        LL_DMA_PERIPH_NOINCREMENT         |
-                        LL_DMA_MEMORY_INCREMENT           |
-                        LL_DMA_PDATAALIGN_BYTE            |
-                        LL_DMA_MDATAALIGN_BYTE);
-  LL_DMA_ConfigAddresses(DMA1, LL_DMA_STREAM_5,
-                         LL_USART_DMA_GetRegAddr(USART2, LL_USART_DMA_REG_DATA_RECEIVE),
-                         (uint32_t)aRxBuffer,
-                         LL_DMA_GetDataTransferDirection(DMA1, LL_DMA_STREAM_5));
-  LL_DMA_SetDataLength(DMA1, LL_DMA_STREAM_5, ubNbDataToReceive);
-
-  /* (5) Enable DMA transfer complete/error interrupts  */
-  LL_DMA_EnableIT_TC(DMA1, LL_DMA_STREAM_6);
-  LL_DMA_EnableIT_TE(DMA1, LL_DMA_STREAM_6);
-  LL_DMA_EnableIT_TC(DMA1, LL_DMA_STREAM_5);
-  LL_DMA_EnableIT_TE(DMA1, LL_DMA_STREAM_5);
-  printf(aTxBuffer);
-}
-
-void StartTransfers(void)
-{
-  /* Enable DMA RX Interrupt */
-  LL_USART_EnableDMAReq_RX(USART2);
-
-  /* Enable DMA TX Interrupt */
-  LL_USART_EnableDMAReq_TX(USART2);
-
-  /* Enable DMA Channel Rx */
-  LL_DMA_EnableStream(DMA1, LL_DMA_STREAM_5);
-
-  /* Enable DMA Channel Tx */
-  LL_DMA_EnableStream(DMA1, LL_DMA_STREAM_6);
-}
-
 /* Callback **********************************************************/
 void UserButton_Callback(void)
 {
   /* Update User push-button variable : to be checked in waiting loop in main program */
-  ubButtonPress = 1;
+  //ubButtonPress = 1;
   //LL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-}
-/**
-  * @brief  Function called from DMA1 IRQ Handler when Tx transfer is completed
-  * @param  None
-  * @retval None
-  */
-void DMA1_TransmitComplete_Callback(void)
-{
-  /* DMA Tx transfer completed */
-  ubTransmissionComplete = 1;
-  LL_DMA_DisableStream(DMA1, LL_DMA_STREAM_3);
-}
-
-/**
-  * @brief  Function called from DMA1 IRQ Handler when Rx transfer is completed
-  * @param  None
-  * @retval None
-  */
-void DMA1_ReceiveComplete_Callback(void)
-{
-  /* DMA Rx transfer completed */
-  ubReceptionComplete = 1;
 }
 
 /**
@@ -635,10 +581,10 @@ void DMA1_ReceiveComplete_Callback(void)
 void USART_TransferError_Callback(void)
 {
   /* Disable DMA1 Tx Channel */
-  LL_DMA_DisableStream(DMA1, LL_DMA_STREAM_3);
+  //LL_DMA_DisableStream(DMA1, LL_DMA_STREAM_3);
 
   /* Disable DMA1 Rx Channel */
-  LL_DMA_DisableStream(DMA1, LL_DMA_STREAM_1);
+  //LL_DMA_DisableStream(DMA1, LL_DMA_STREAM_1);
 
   /* Set LED1 to Blinking mode to indicate error occurs */
   //LED_Blinking(LED_BLINK_ERROR);

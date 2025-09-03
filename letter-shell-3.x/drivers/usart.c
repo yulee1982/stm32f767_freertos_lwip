@@ -1,9 +1,12 @@
-//#include "shell_port.h"
+
 #include "usart.h"
 #include <string.h>
 
-uint8_t TxState = USART_STATE_RESET;    /*!< UART state information related to Tx operations. */
-uint8_t RxState = USART_STATE_RESET;   /*!< UART state information related to Rx operations. */
+
+const uint8_t aTxBuffer[] = "STM32F7xx USART LL API Example : TX/RX in DMA mode\r\nConfiguration UART 115200 bps, 8 data bit/1 stop bit/No parity/No HW flow control\r\n";
+
+uint32_t TxState = USART_STATE_RESET;    /*!< UART state information related to Tx operations. */
+uint32_t RxState = USART_STATE_RESET;   /*!< UART state information related to Rx operations. */
 uint32_t ErrorCode;
 static uint8_t *pRxData = NULL;
 static uint16_t RxSize;
@@ -11,9 +14,11 @@ static uint16_t RxMask;
 static volatile uint32_t usart_rx_buff_tail = 0;
 uint8_t rx_it_flag = 0;
 
-static uint8_t *pTxData = NULL;
+static const uint8_t *pTxData = NULL;
 static uint16_t TxSize;
 
+//__IO uint8_t ubTransmissionComplete = 0;
+//__IO uint8_t ubReceptionComplete = 0;
 /*
 uint8_t usart_rx_buff[1024];
 volatile uint32_t usart_rx_buff_head = 0;
@@ -41,7 +46,7 @@ int _write(int fd, char *ptr, int len)
   * @param  None
   * @retval None
   */
-uint8_t Usart_Transmit( USART_TypeDef *pUSARTx, const uint8_t *pData, uint16_t Size, uint32_t Timeout)
+uint8_t Usart_Transmit(USART_TypeDef *pUSARTx, const uint8_t *pData, uint16_t Size, uint32_t Timeout)
 {
   const uint8_t  *pdata8bits;
   const uint16_t *pdata16bits;
@@ -130,7 +135,39 @@ uint8_t Usart_Transmit( USART_TypeDef *pUSARTx, const uint8_t *pData, uint16_t S
   }
 }
 
+uint8_t Usart_Transmit_DMA(USART_TypeDef *pUSARTx, const uint8_t *pData, uint16_t Size)
+{
+  /* Check that a Tx process is not already ongoing */
+  //if(TxState == USART_STATE_READY)
+  //{
+    if ((pData == NULL) || (Size == 0U))
+    {
+      return USART_ERROR;
+    }
 
+    pTxData = pData;
+    TxSize = Size;
+
+    TxState = USART_STATE_BUSY_TX;
+
+    /* Enable the UART transmit DMA channel */
+    DMA_Usart2_Start_Transfers_IT((uint32_t)pTxData, TxSize);
+
+    /* Clear the TC flag in the ICR register. Transmission complete clear flag */
+    USART2->ICR = USART_ICR_TCCF;
+
+    /* Enable the DMA transfer for transmit request by setting the DMAT bit
+    in the UART CR3 register */
+    //ATOMIC_SET_BIT(huart->Instance->CR3, USART_CR3_DMAT);
+    LL_USART_EnableDMAReq_TX(USART2);
+
+    return USART_OK;
+  //}
+  //else
+  //{
+  //  return USART_BUSY;
+  //}
+}
 
 void MX_USART2_UART_Init(void)
 {
@@ -199,8 +236,117 @@ void MX_USART2_UART_Init(void)
   RxState = USART_STATE_READY;
   /* transfer Tx buffer to PC application */
   Usart_Transmit(USART2, (const uint8_t *)("STM32F7xx USART initial ...\r\n"), 29, 0x1ff);
+  Usart_Transmit(USART2, (const uint8_t *)aTxBuffer, sizeof(aTxBuffer), 0x1ff);
 }
 
+void MX_USART2_DMA(void)
+{
+  /* DMA1 used for USART3 Transmission and Reception
+   */
+  /* (1) Enable the clock of DMA1 */
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA1);
+
+  /* (2) Configure NVIC for DMA transfer complete/error interrupts */
+  NVIC_SetPriority(DMA1_Stream6_IRQn, 9);
+  NVIC_EnableIRQ(DMA1_Stream6_IRQn);
+  //NVIC_SetPriority(DMA1_Stream5_IRQn, 0);
+  //NVIC_EnableIRQ(DMA1_Stream5_IRQn);
+
+  /* (3) Configure the DMA functional parameters for transmission */
+  LL_DMA_SetChannelSelection(DMA1, LL_DMA_STREAM_6, LL_DMA_CHANNEL_4);
+  LL_DMA_ConfigTransfer(DMA1, LL_DMA_STREAM_6,
+                        LL_DMA_DIRECTION_MEMORY_TO_PERIPH |  /*memory to interface bit:6  */
+                        LL_DMA_PRIORITY_HIGH              |  /*优先级   */
+                        LL_DMA_MODE_NORMAL                |  /*   */
+                        LL_DMA_PERIPH_NOINCREMENT         |  /*外设地址指针固定，不增量 bit:9  */
+                        LL_DMA_MEMORY_INCREMENT           |  /*memory地址指针增量   */
+                        LL_DMA_PDATAALIGN_BYTE            |  /*外设数据大小8位，bit:12-11   */
+                        LL_DMA_MDATAALIGN_BYTE);             /*memory数据大小8位，bit:14-13   */
+#if 0
+  LL_DMA_ConfigAddresses(DMA1, LL_DMA_STREAM_6,
+                         (uint32_t)aTxBuffer,
+                         LL_USART_DMA_GetRegAddr(USART2, LL_USART_DMA_REG_DATA_TRANSMIT),
+                         LL_DMA_GetDataTransferDirection(DMA1, LL_DMA_STREAM_6));
+  LL_DMA_SetDataLength(DMA1, LL_DMA_STREAM_6, ubNbDataToTransmit);
+
+  /* (4) Configure the DMA functional parameters for reception , here not use*/
+  LL_DMA_SetChannelSelection(DMA1, LL_DMA_STREAM_5, LL_DMA_CHANNEL_4);
+  LL_DMA_ConfigTransfer(DMA1, LL_DMA_STREAM_5,
+                        LL_DMA_DIRECTION_PERIPH_TO_MEMORY |
+                        LL_DMA_PRIORITY_HIGH              |
+                        LL_DMA_MODE_NORMAL                |
+                        LL_DMA_PERIPH_NOINCREMENT         |
+                        LL_DMA_MEMORY_INCREMENT           |
+                        LL_DMA_PDATAALIGN_BYTE            |
+                        LL_DMA_MDATAALIGN_BYTE);
+  LL_DMA_ConfigAddresses(DMA1, LL_DMA_STREAM_5,
+                         LL_USART_DMA_GetRegAddr(USART2, LL_USART_DMA_REG_DATA_RECEIVE),
+                         (uint32_t)aRxBuffer,
+                         LL_DMA_GetDataTransferDirection(DMA1, LL_DMA_STREAM_5));
+  LL_DMA_SetDataLength(DMA1, LL_DMA_STREAM_5, ubNbDataToReceive);
+
+  /* (5) Enable DMA transfer complete/error interrupts  */
+  LL_DMA_EnableIT_TC(DMA1, LL_DMA_STREAM_6);
+  LL_DMA_EnableIT_TE(DMA1, LL_DMA_STREAM_6);
+  LL_DMA_EnableIT_TC(DMA1, LL_DMA_STREAM_5);
+  LL_DMA_EnableIT_TE(DMA1, LL_DMA_STREAM_5);
+#endif
+}
+
+#if 0
+void StartTransfers(void)
+{
+  /* Enable DMA RX Interrupt */
+  LL_USART_EnableDMAReq_RX(USART2);
+  /* Enable DMA TX Interrupt */
+  LL_USART_EnableDMAReq_TX(USART2);
+  /* Enable DMA Channel Rx */
+  LL_DMA_EnableStream(DMA1, LL_DMA_STREAM_5);
+  /* Enable DMA Channel Tx */
+  LL_DMA_EnableStream(DMA1, LL_DMA_STREAM_6);
+}
+#endif
+uint8_t DMA_Usart2_Start_Transfers_IT(uint32_t SrcAddress, uint32_t DataLength)
+{
+  /* Clear DBM bit */
+  DMA1_Stream6->CR &= (uint32_t)(~DMA_SxCR_DBM);
+
+  /* Configure DMA Stream source, destination address and the data length */
+  //LL_DMA_SetDataLength(DMA1, LL_DMA_STREAM_6, ubNbDataToTransmit);
+  DMA1_Stream6->NDTR = DataLength;
+
+  /* Memory to Peripheral */
+  /* Configure DMA Stream destination address */
+  //DMA1_Stream6->PAR = LL_USART_DMA_GetRegAddr(USART2, LL_USART_DMA_REG_DATA_TRANSMIT);
+  /* Configure DMA Stream source address */
+  //DMA1_Stream6->M0AR = SrcAddress;
+  LL_DMA_ConfigAddresses(DMA1, LL_DMA_STREAM_6,
+                         (uint32_t)SrcAddress,
+                         LL_USART_DMA_GetRegAddr(USART2, LL_USART_DMA_REG_DATA_TRANSMIT),
+                         LL_DMA_GetDataTransferDirection(DMA1, LL_DMA_STREAM_6));
+
+  /* Clear all interrupt flags at correct offset within the register */
+  //regs->IFCR = 0x3FU << hdma->StreamIndex;
+  //DMA1->HIFCR = 0x003D0000U;  ???
+
+  /* Enable Common interrupts*/
+  DMA1_Stream6->CR  |= DMA_IT_TC | DMA_IT_TE | DMA_IT_DME; //
+  DMA1_Stream6->FCR |= DMA_IT_FE;
+
+  /* Enable DMA RX Interrupt */
+  //LL_USART_EnableDMAReq_RX(USART2);
+  /* Enable DMA TX Interrupt */
+  //LL_USART_EnableDMAReq_TX(USART2);
+
+  /* Enable DMA Channel Rx */
+  //LL_DMA_EnableStream(DMA1, LL_DMA_STREAM_5);
+
+  /* Enable DMA Channel Tx */
+  LL_DMA_EnableStream(DMA1, LL_DMA_STREAM_6);
+  //DMA1_Stream6->CR |= DMA_SxCR_EN;
+
+  return 0;
+}
 
 uint8_t Usart_Receive(USART_TypeDef *pUSARTx, uint8_t *pData, uint16_t Size, uint32_t Timeout)
 {
@@ -461,11 +607,22 @@ static uint8_t RxISR(USART_TypeDef *pUSARTx)
 
     /*Call legacy weak Rx Event callback*/
     rx_it_flag = 1;
-    USART_RxCpltCallback(pUSARTx);
+    USART_RxFinishCallback(1, USART_RxFinish);
   }
 
   return 0;
 }
+
+void USART_RxFinishCallback(int value, USART_RxCpltCallback callback)  //需要回调的函数
+{
+  //UNUSED(value);
+  callback(value);
+}
+__weak void USART_RxFinish(int value)
+{
+  UNUSED(value);
+}
+
 uint8_t Usart_Receive_IT_Get_Flag(void)
 {
   return rx_it_flag;

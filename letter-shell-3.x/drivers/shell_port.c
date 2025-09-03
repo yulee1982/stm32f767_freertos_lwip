@@ -48,10 +48,8 @@ short userShellWrite(char *data, unsigned short len)
 {
   //serialTransmit(&debugSerial, (uint8_t *)data, len, 0x1FF);
   Usart_Transmit(USART2, (const uint8_t *)data, (uint16_t)len, 0x1FF);
-  //if(Usart_Transmit(USART2, (const uint8_t *)data, (uint16_t)len, 0x1FF) != USART_OK)
-  //  return 0;
-  //else
-  //  return 1;
+  //Usart_Transmit_DMA(USART2, (const uint8_t *)data, (uint16_t)len);  //fifo err
+
   return len;
 }
 
@@ -117,10 +115,12 @@ void shellTask1(void *param)
     Usart_Receive_IT(USART2, (uint8_t*)recv_buf, 1);
   }
 }
-void USART_RxCpltCallback(USART_TypeDef *pUSARTx)
+//void USART_RxCpltCallback(USART_TypeDef *pUSARTx)
+void USART_RxFinish(int value)
 {
   BaseType_t pxHigherPriorityTaskWoken;
   xSemaphoreGiveFromISR(Usart2_BinarySem_Handle,&pxHigherPriorityTaskWoken);
+  UNUSED(value);
 }
 /**
  * @brief 用户shell初始化
@@ -129,6 +129,8 @@ void USART_RxCpltCallback(USART_TypeDef *pUSARTx)
 SemaphoreHandle_t Usart2_BinarySem_Handle;
 void userShellInit(void)
 {
+  MX_USART2_UART_Init();
+  //MX_USART2_DMA();
   shellMutex = xSemaphoreCreateMutex();
 
   shell.write = userShellWrite;
@@ -144,5 +146,5 @@ void userShellInit(void)
     printf("shell task creat failed");
   }
 }
-CEVENT_EXPORT(EVENT_INIT_STAGE2, userShellInit);
+
 

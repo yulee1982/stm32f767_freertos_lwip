@@ -1050,7 +1050,7 @@ typedef struct
   */
 typedef struct
 {
- __IO uint32_t GOTGCTL;               /*!< USB_OTG Control and Status Register          000h */
+  __IO uint32_t GOTGCTL;              /*!< USB_OTG Control and Status Register          000h */
   __IO uint32_t GOTGINT;              /*!< USB_OTG Interrupt Register                   004h */
   __IO uint32_t GAHBCFG;              /*!< Core AHB Configuration Register              008h */
   __IO uint32_t GUSBCFG;              /*!< Core USB Configuration Register              00Ch */

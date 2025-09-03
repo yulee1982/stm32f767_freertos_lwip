@@ -31,6 +31,8 @@ fatfs_r0.15b/source \
 freertos \
 freertos/portable \
 letter-shell-3.x/drivers \
+letter-shell-3.x/extensions/log \
+letter-shell-3.x/extensions/shell_enhance \
 letter-shell-3.x/src \
 lwip-2.2.2/src/api \
 lwip-2.2.2/src/apps/altcp_tls \
@@ -50,4 +52,6 @@ lwip-2.2.2/src/netif \
 lwip-2.2.2/src/netif/ppp \
 lwip-2.2.2/src/netif/ppp/polarssl \
 lwip-2.2.2/system/os \
+usb-framework/libusb_stm32/src \
+usb-framework \
 

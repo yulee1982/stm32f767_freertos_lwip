@@ -1,0 +1,14 @@
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:164:13:setaddr	1
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:173:13:set_tx_fifo	4
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:200:13:ep_config	13
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:298:13:ep_deconfig	7
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:327:16:ep_read	6
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:350:16:ep_write	7
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:377:17:get_frame	1
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:381:13:evt_poll	12
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:60:17:getinfo	2
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:66:13:ep_setstall	6
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:93:13:ep_isstalled	2
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:102:13:enable	4
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:154:16:connect	2
+../usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.c:481:17:get_serialno_desc	5

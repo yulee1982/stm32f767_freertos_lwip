@@ -1,0 +1,10 @@
+D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usbd_core.h:401:20:usbd_ep_deconfig	0	static
+D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usbd_core.h:427:23:usbd_ep_write	4	static
+../usb-framework/usb_app.c:269:21:cdc_getdesc	0	static
+../usb-framework/usb_app.c:301:21:cdc_control	8	static
+../usb-framework/usb_app.c:391:13:hid_mouse_move	12	static
+../usb-framework/usb_app.c:424:13:cdc_loopback	16	static
+D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usbd_core.h:393:20:usbd_ep_config.isra	4	static
+../usb-framework/usb_app.c:441:21:cdc_setconf	16	static
+../usb-framework/usb_app.c:522:6:OTG_FS_IRQHandler	0	static
+../usb-framework/usb_app.c:538:6:prvUSBappTask	8	static

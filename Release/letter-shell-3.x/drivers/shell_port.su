@@ -1,7 +1,7 @@
 ../letter-shell-3.x/drivers/shell_port.c:47:7:userShellWrite	8	static
-../letter-shell-3.x/drivers/shell_port.c:67:7:userShellRead	8	static
-../letter-shell-3.x/drivers/shell_port.c:85:5:userShellLock	8	static
-../letter-shell-3.x/drivers/shell_port.c:99:5:userShellUnlock	8	static
-../letter-shell-3.x/drivers/shell_port.c:107:6:shellTask1	24	static
-../letter-shell-3.x/drivers/shell_port.c:120:6:USART_RxCpltCallback	16	static
+../letter-shell-3.x/drivers/shell_port.c:65:7:userShellRead	8	static
+../letter-shell-3.x/drivers/shell_port.c:83:5:userShellLock	8	static
+../letter-shell-3.x/drivers/shell_port.c:97:5:userShellUnlock	8	static
+../letter-shell-3.x/drivers/shell_port.c:105:6:shellTask1	24	static
+../letter-shell-3.x/drivers/shell_port.c:119:6:USART_RxFinish	16	static
 ../letter-shell-3.x/drivers/shell_port.c:130:6:userShellInit	16	static

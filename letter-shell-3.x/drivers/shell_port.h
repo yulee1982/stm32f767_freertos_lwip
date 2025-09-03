@@ -20,5 +20,6 @@
 extern Shell shell;
 
 void userShellInit(void);
-void USART_RxCpltCallback(USART_TypeDef *pUSARTx);
+//__attribute__((externally_visible)) void USART_RxCpltCallback(USART_TypeDef *pUSARTx);
+
 #endif
