@@ -5,6 +5,8 @@
 #define USE_LIBUSB_STM32
 //#define USE_CHERRY_USB
 
+static void usb_otgfs_low_level_init(void);
+
 #if defined(USE_LIBUSB_STM32)
 #include <stdint.h>
 #include <stdbool.h>
@@ -538,10 +540,7 @@ void main(void) {
 void prvUSBappTask(void * pvParameters)
 {
   cdc_init_usbd();
-  //NVIC_SetPriority(OTG_FS_IRQn, 3);
-  //NVIC_EnableIRQ(OTG_FS_IRQn);
-  NVIC_SetPriority(USB_NVIC_IRQ, 3);
-  NVIC_EnableIRQ(USB_NVIC_IRQ);
+  usb_otgfs_low_level_init();
   usbd_enable(&udev, true);
   usbd_connect(&udev, true);
   for(;;)
@@ -559,7 +558,7 @@ void prvUSBappTask(void * pvParameters)
   for(;;)
   {
     usbd_poll(&udev);
-    vTaskDelay(10);
+    //vTaskDelay(10);
   }
 }
 #endif
@@ -611,3 +610,98 @@ void usb_dc_low_level_deinit(void)
 }
 #endif
 
+
+static void usb_otgfs_low_level_init(void)
+{
+  /**USBOTG GPIO Configuration
+  PA9    ------> OTG_FS_VBUS ?
+  PA10   ------> USB_ID      OTG_FS_ID
+  PA11   ------> USB_DM D-   OTG_FS_DM
+  PA12   ------> USB_DP D+   OTG_FS_DP
+  PG6    ------> USB_PowerSwitchOn
+  PG7    ------> USB_OverCurrent
+  */
+  //Enables the clock for GPIOA
+  SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);
+  SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOGEN);
+
+  //Configures USB pins (in GPIOA) to work in alternate function mode.
+  //Sets alternate function 10 for : PA11 (-) otg_fs_dm , and PA12 (+) otg_fs_dp.
+  GPIOA->MODER &= ~((0x3 << 24) | (0x3 << 22));
+  GPIOA->MODER |= ((0x2 << 24) | (0x2 << 22)); //复用功能模式
+  GPIOA->AFR[1] &= 0xfff00fff;
+  GPIOA->AFR[1] |= 0x000aa000;  //AFR12[3:0] = AFR11[3:0] = af10(0xa)
+  GPIOA->OTYPER &= ~((0x1 << 12) | (0x1 << 11)); // 复位状态 推挽输出
+  GPIOA->OSPEEDR |= ((0x3 << 24) | (0x3 << 22)); // IO速度 高速
+  GPIOA->PUPDR &= ~((0x3 << 24) | (0x3 << 22)); // 无上下拉
+
+  /* This for ID line debug  PA10 (id) otg_fs_id*/
+  //GPIOA->AFR[2] &= 0xfffff0ff;
+  //GPIOA->AFR[2] |= 0x00000a00;  //AFR10[3:0] = af10(0xa)
+  //GPIOA->OTYPER |= (0x1 << 10); // 开漏输出类型
+  //GPIOA->OSPEEDR |= (0x3 << 20); // IO速度 高速
+  //GPIOA->PUPDR &= ~(0x3 << 20);
+  //GPIOA->PUPDR |= ~(0x1 << 20); //上拉
+
+  /* Configure Power Switch Vbus Pin  PA6 */
+  GPIOA->MODER &= ~(0x3 << 12);
+  GPIOA->MODER |= (0x1 << 12); //输出模式
+
+  /* Configure PA7 */
+  GPIOA->MODER &= ~(0x3 << 14); //输入模式
+
+  /* Enable USB FS Clocks */
+  RCC->AHB2ENR |= RCC_AHB2ENR_OTGFSEN;
+  RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+
+  /* Set USBFS Interrupt to the lowest priority */
+  /* Enable USBFS Interrupt */
+  //NVIC_SetPriority(OTG_FS_IRQn, 7);
+  //NVIC_EnableIRQ(OTG_FS_IRQn);
+  NVIC_SetPriority(USB_NVIC_IRQ, 7);
+  NVIC_EnableIRQ(USB_NVIC_IRQ);
+
+#if 0
+  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  /* Configure USB FS GPIOs */
+  //Enables the clock for GPIOA GPIOG
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA); //SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOG);//SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOGEN);
+
+  /* Configure DM DP Pins */
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_11|LL_GPIO_PIN_12;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;  // 备用功能模式
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;    // 推挽输出模式
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;    // 无上下拉
+  GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
+  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* This for ID line debug */
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_10;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;  // 备用功能模式
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;    // 开漏输出类型
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+  GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
+  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* Configure Power Switch Vbus Pin */
+  LL_GPIO_SetPinMode(GPIOG, LL_GPIO_PIN_6, LL_GPIO_MODE_OUTPUT); //无上下拉，推挽输出
+  LL_GPIO_ResetOutputPin(GPIOG, LL_GPIO_PIN_6);
+
+  LL_GPIO_SetPinMode(GPIOG, LL_GPIO_PIN_7, LL_GPIO_MODE_INPUT);
+  LL_GPIO_SetPinPull(GPIOG, LL_GPIO_PIN_7, LL_GPIO_PULL_NO);
+
+  /* Enable USB FS Clocks */
+  //RCC->AHB2ENR |= RCC_AHB2ENR_OTGFSEN;
+  //RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+
+  /* Set USBFS Interrupt to the lowest priority */
+  /* Enable USBFS Interrupt */
+  //NVIC_SetPriority(OTG_FS_IRQn, 3);
+  //NVIC_EnableIRQ(OTG_FS_IRQn);
+
+#endif
+}

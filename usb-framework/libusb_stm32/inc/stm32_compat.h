@@ -22,8 +22,8 @@
 /* bit value */
 #define _BV(bit)                (0x01 << (bit))
 
+
 #define STM32F7xx
-//#define STM32F767xx
 #include "stm32f767xx.h"
 
 #if defined(STM32F0xx)

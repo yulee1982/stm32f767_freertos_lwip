@@ -59,7 +59,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 
-PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 struct netif gnetif;
 /* USER CODE END PV */
@@ -69,7 +68,6 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 //static void MX_ETH_Init(void);
 static void MX_USART3_UART_Init(void);
-static void MX_USB_OTG_FS_PCD_Init(void);
 /* USER CODE BEGIN PFP */
 void MX_LED_Init(void);
 //void LED_On(void);
@@ -125,7 +123,7 @@ int main(void)
   MX_LED_Init();
   //MX_ETH_Init();
   MX_USART3_UART_Init();
-  MX_USB_OTG_FS_PCD_Init();
+  //MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
   //SD_Init();
   sd_card_fatfs_test();
@@ -144,14 +142,14 @@ int main(void)
               NULL, 					/* Task parameter, not used in this case. */
 			  BUTTON_TASK_PRIO, 		/* Task priority. */
               NULL );		            /* Task handle, used to unblock task from interrupt. */
-
+#if 1
   xTaskCreate(lwipinitTask, 			/* Function that implements the task. */
               "lwipinitTask", 			/* Task name, for debugging only. */
 			  configMINIMAL_STACK_SIZE * 5,    /* Size of stack (in words) to allocate for this task. */
               NULL, 					/* Task parameter, not used in this case. */
 			  0, 	                    /* Task priority. */
 			  NULL );		            /* Task handle, used to unblock task from interrupt. */
-
+#endif
   xTaskCreate(prvUSBappTask, 			/* Function that implements the task. */
               "USBappTask", 			/* Task name, for debugging only. */
 			  configMINIMAL_STACK_SIZE * 5,    /* Size of stack (in words) to allocate for this task. */
@@ -337,89 +335,6 @@ static void MX_USART3_UART_Init(void)
 
 }
 
-/**
-  * @brief USB_OTG_FS Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USB_OTG_FS_PCD_Init(void)
-{
-
-  /* USER CODE BEGIN USB_OTG_FS_Init 0 */
-	LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
-  /* USER CODE END USB_OTG_FS_Init 0 */
-
-  /* USER CODE BEGIN USB_OTG_FS_Init 1 */
-
-  /* USER CODE END USB_OTG_FS_Init 1 */
-#if 0
-  hpcd_USB_OTG_FS.Instance = USB_OTG_FS;
-  hpcd_USB_OTG_FS.Init.dev_endpoints = 6;
-  hpcd_USB_OTG_FS.Init.speed = PCD_SPEED_FULL;
-  hpcd_USB_OTG_FS.Init.dma_enable = DISABLE;
-  hpcd_USB_OTG_FS.Init.phy_itface = PCD_PHY_EMBEDDED;
-  hpcd_USB_OTG_FS.Init.Sof_enable = ENABLE;
-  hpcd_USB_OTG_FS.Init.low_power_enable = DISABLE;
-  hpcd_USB_OTG_FS.Init.lpm_enable = DISABLE;
-  hpcd_USB_OTG_FS.Init.vbus_sensing_enable = ENABLE;
-  hpcd_USB_OTG_FS.Init.use_dedicated_ep1 = DISABLE;
-  if (HAL_PCD_Init(&hpcd_USB_OTG_FS) != HAL_OK)
-  {
-    Error_Handler();
-  }
-#endif
-  /* USER CODE BEGIN USB_OTG_FS_Init 2 */
-  //LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-  /* Configure USB FS GPIOs */
-  //Enables the clock for GPIOA GPIOG
-  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA); //SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);
-  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOG);//SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOGEN);
-
-  /**USBOTG GPIO Configuration
-  PA9    ------> OTG_FS_VBUS ?
-  PA10   ------> USB_ID      OTG_FS_ID
-  PA11   ------> USB_DM D-   OTG_FS_DM
-  PA12   ------> USB_DP D+   OTG_FS_DP
-  PG6    ------> USB_PowerSwitchOn
-  PG7    ------> USB_OverCurrent
-  */
-  /* Configure DM DP Pins */
-  GPIO_InitStruct.Pin = LL_GPIO_PIN_11|LL_GPIO_PIN_12;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;  // 备用功能模式
-  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;    // 推挽输出模式
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;    // 无上下拉
-  GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
-  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /* This for ID line debug */
-  GPIO_InitStruct.Pin = LL_GPIO_PIN_10;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;  // 备用功能模式
-  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;    // 开漏输出类型
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
-  GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
-  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /* Configure Power Switch Vbus Pin */
-  LL_GPIO_SetPinMode(GPIOG, LL_GPIO_PIN_6, LL_GPIO_MODE_OUTPUT); //无上下拉，推挽输出
-  LL_GPIO_ResetOutputPin(GPIOG, LL_GPIO_PIN_6);
-
-  LL_GPIO_SetPinMode(GPIOG, LL_GPIO_PIN_7, LL_GPIO_MODE_INPUT);
-  LL_GPIO_SetPinPull(GPIOG, LL_GPIO_PIN_7, LL_GPIO_PULL_NO);
-
-  /* Enable USB FS Clocks */
-  //RCC->AHB2ENR |= RCC_AHB2ENR_OTGFSEN;
-  //RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
-
-  /* Set USBFS Interrupt to the lowest priority */
-  /* Enable USBFS Interrupt */
-  //NVIC_SetPriority(OTG_FS_IRQn, 3);
-  //NVIC_EnableIRQ(OTG_FS_IRQn);
-  /* USER CODE END USB_OTG_FS_Init 2 */
-
-}
 
 /**
   * @brief GPIO Initialization Function

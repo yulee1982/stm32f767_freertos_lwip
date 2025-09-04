@@ -427,9 +427,9 @@ static void evt_poll(usbd_device *dev, usbd_evt_callback callback)
     {
       _t = OTG->GRXSTSR;
       ep = _t & USB_OTG_GRXSTSP_EPNUM;
-      //switch(_FLD2VAL(USB_OTG_GRXSTSP_PKTSTS, _t))
-      _t = ((_t & USB_OTG_GRXSTSP_PKTSTS_Msk) >> USB_OTG_GRXSTSP_PKTSTS);
-      switch(_t)
+      switch(_FLD2VAL(USB_OTG_GRXSTSP_PKTSTS, _t))
+      //_t = ((_t & USB_OTG_GRXSTSP_PKTSTS_Msk) >> USB_OTG_GRXSTSP_PKTSTS);
+      //switch(_t)
       {
         case 0x02:  // 接收到 OUT 数据包
           evt = usbd_evt_eprx;

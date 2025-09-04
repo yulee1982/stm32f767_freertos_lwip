@@ -125,7 +125,8 @@
     #endif  //__ASSEMBLER__
 #elif defined (STM32F767xx)
   #define USBD_STM32F767FS
-  #define USBD_STM32F767HS
+  //#define USBD_STM32F767HS
+  //#define USBD_STM32F446FS
 
   #if !defined(__ASSEMBLER__)
   extern const struct usbd_driver usbd_otgfs;
