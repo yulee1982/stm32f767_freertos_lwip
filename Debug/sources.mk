@@ -53,5 +53,5 @@ lwip-2.2.2/src/netif/ppp \
 lwip-2.2.2/src/netif/ppp/polarssl \
 lwip-2.2.2/system/os \
 usb-framework/libusb_stm32/src \
-usb-framework \
+usb-framework/usb_app \
 

@@ -94,7 +94,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/queue.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/drivers/usart.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/usb_app.h
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/usb_app/usb_app.h
 ../Core/Inc/main.h:
 ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h:
 ../Drivers/CMSIS/Include/core_cm7.h:
@@ -193,4 +193,4 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/semphr.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/queue.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/drivers/usart.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/usb_app.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/usb_app/usb_app.h:

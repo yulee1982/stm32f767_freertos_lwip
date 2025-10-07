@@ -137,6 +137,7 @@
   #define usbd_hw usbd_otgfs
   #endif
   #endif  //__ASSEMBLER__
+
 #elif defined(STM32F102x6) || defined(STM32F102xB) || \
       defined(STM32F103x6) || defined(STM32F103xB) || \
       defined(STM32F103xE) || defined(STM32F103xG) || \

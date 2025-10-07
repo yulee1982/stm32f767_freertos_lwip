@@ -212,4 +212,4 @@
 "./usb-framework/libusb_stm32/src/usbd_stm32f446_otgfs.o"
 "./usb-framework/libusb_stm32/src/usbd_stm32f446_otghs.o"
 "./usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.o"
-"./usb-framework/usb_app.o"
+"./usb-framework/usb_app/usb_app.o"

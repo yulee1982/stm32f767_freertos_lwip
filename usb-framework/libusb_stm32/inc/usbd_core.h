@@ -19,6 +19,8 @@
     extern "C" {
 #endif
 
+#include <stdint.h>
+
 /**\addtogroup USBD_HW_CORE USB Device HW driver and core API
  * @{ */
 #if defined(__DOXYGEN__)
@@ -219,9 +221,10 @@ typedef usbd_respond (*usbd_cfg_callback)(usbd_device *dev, uint8_t cfg);
 
 /**\addtogroup USBD_HW
  * @{ */
+typedef void (*usbd_hw_low_level_init)(void);
+
 /**\brief Get USB device status and capabilities.
  * \return Hardware status and capabilities \ref USBD_HW_CAPS */
-
 typedef uint32_t (*usbd_hw_getinfo)(void);
 
 /**\brief Enables or disables USB hardware
@@ -308,20 +311,22 @@ typedef uint16_t (*usbd_hw_get_serialno)(void *buffer);
 
 /**\brief Represents a hardware USB driver call table.*/
 struct usbd_driver {
-    usbd_hw_getinfo         getinfo;            /**<\copybrief usbd_hw_getinfo */
-    usbd_hw_enable          enable;             /**<\copybrief usbd_hw_enable */
-    usbd_hw_connect         connect;            /**<\copybrief usbd_hw_connect */
-    usbd_hw_setaddr         setaddr;            /**<\copybrief usbd_hw_setaddr */
-    usbd_hw_ep_config       ep_config;          /**<\copybrief usbd_hw_ep_config */
-    usbd_hw_ep_deconfig     ep_deconfig;        /**<\copybrief usbd_hw_ep_deconfig */
-    usbd_hw_ep_read         ep_read;            /**<\copybrief usbd_hw_ep_read */
-    usbd_hw_ep_write        ep_write;           /**<\copybrief usbd_hw_ep_write */
-    usbd_hw_ep_setstall     ep_setstall;        /**<\copybrief usbd_hw_ep_setstall */
-    usbd_hw_ep_isstalled    ep_isstalled;       /**<\copybrief usbd_hw_ep_isstalled */
-    usbd_hw_poll            poll;               /**<\copybrief usbd_hw_poll */
-    usbd_hw_get_frameno     frame_no;           /**<\copybrief usbd_hw_get_frameno */
-    usbd_hw_get_serialno    get_serialno_desc;  /**<\copybrief usbd_hw_get_serialno */
+  usbd_hw_getinfo         getinfo;            /**<\copybrief usbd_hw_getinfo */
+  usbd_hw_enable          enable;             /**<\copybrief usbd_hw_enable */
+  usbd_hw_connect         connect;            /**<\copybrief usbd_hw_connect */
+  usbd_hw_setaddr         setaddr;            /**<\copybrief usbd_hw_setaddr */
+  usbd_hw_ep_config       ep_config;          /**<\copybrief usbd_hw_ep_config */
+  usbd_hw_ep_deconfig     ep_deconfig;        /**<\copybrief usbd_hw_ep_deconfig */
+  usbd_hw_ep_read         ep_read;            /**<\copybrief usbd_hw_ep_read */
+  usbd_hw_ep_write        ep_write;           /**<\copybrief usbd_hw_ep_write */
+  usbd_hw_ep_setstall     ep_setstall;        /**<\copybrief usbd_hw_ep_setstall */
+  usbd_hw_ep_isstalled    ep_isstalled;       /**<\copybrief usbd_hw_ep_isstalled */
+  usbd_hw_poll            poll;               /**<\copybrief usbd_hw_poll */
+  usbd_hw_get_frameno     frame_no;           /**<\copybrief usbd_hw_get_frameno */
+  usbd_hw_get_serialno    get_serialno_desc;  /**<\copybrief usbd_hw_get_serialno */
 };
+
+
 
 /** @} */
 
@@ -330,14 +335,14 @@ struct usbd_driver {
 
 /**\brief Represents a USB device data.*/
 struct _usbd_device {
-    const struct usbd_driver    *driver;                /**<\copybrief usbd_driver */
-    usbd_ctl_callback           control_callback;       /**<\copybrief usbd_ctl_callback */
-    usbd_rqc_callback           complete_callback;      /**<\copybrief usbd_rqc_callback */
-    usbd_cfg_callback           config_callback;        /**<\copybrief usbd_cfg_callback */
-    usbd_dsc_callback           descriptor_callback;    /**<\copybrief usbd_dsc_callback */
-    usbd_evt_callback           events[usbd_evt_count]; /**<\brief array of the event callbacks.*/
-    usbd_evt_callback           endpoint[8];            /**<\brief array of the endpoint callbacks.*/
-    usbd_status                 status;                 /**<\copybrief usbd_status */
+  const struct usbd_driver    *driver;                /**<\copybrief usbd_driver */
+  usbd_ctl_callback           control_callback;       /**<\copybrief usbd_ctl_callback */
+  usbd_rqc_callback           complete_callback;      /**<\copybrief usbd_rqc_callback */
+  usbd_cfg_callback           config_callback;        /**<\copybrief usbd_cfg_callback */
+  usbd_dsc_callback           descriptor_callback;    /**<\copybrief usbd_dsc_callback */
+  usbd_evt_callback           events[usbd_evt_count]; /**<\brief array of the event callbacks.*/
+  usbd_evt_callback           endpoint[8];            /**<\brief array of the endpoint callbacks.*/
+  usbd_status                 status;                 /**<\copybrief usbd_status */
 };
 
 /**\brief Initializes device structure
@@ -348,12 +353,13 @@ struct _usbd_device {
  * \param bsize Size of the data buffer
  */
 inline static void usbd_init(usbd_device *dev, const struct usbd_driver *drv,
-                             const uint8_t ep0size, uint32_t *buffer, const uint16_t bsize) {
-    dev->driver = drv;
-    dev->status.ep0size = ep0size;
-    dev->status.data_ptr = buffer;
-    dev->status.data_buf = buffer;
-    dev->status.data_maxsize = bsize - offsetof(usbd_ctlreq, data);
+                             const uint8_t ep0size, uint32_t *buffer, const uint16_t bsize)
+{
+  dev->driver = drv;
+  dev->status.ep0size = ep0size;
+  dev->status.data_ptr = buffer;
+  dev->status.data_buf = buffer;
+  dev->status.data_maxsize = bsize - offsetof(usbd_ctlreq, data);
 }
 
 /**\brief Polls USB for events

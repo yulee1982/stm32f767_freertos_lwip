@@ -38,7 +38,8 @@ usb-framework/libusb_stm32/src/usbd_stm32f767_otgfs.o: \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usb.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usbd_core.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usb_std.h
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usb_std.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usb_dwc2_param.h
 D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/stm32_compat.h:
 ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h:
 ../Drivers/CMSIS/Include/core_cm7.h:
@@ -78,3 +79,4 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/stm3
 D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usb.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usbd_core.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usb_std.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/usb-framework/libusb_stm32/inc/usb_dwc2_param.h:

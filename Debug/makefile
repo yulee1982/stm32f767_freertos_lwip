@@ -9,8 +9,8 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include usb-framework/usb_app/subdir.mk
 -include usb-framework/libusb_stm32/src/subdir.mk
--include usb-framework/subdir.mk
 -include lwip-2.2.2/system/os/subdir.mk
 -include lwip-2.2.2/src/netif/ppp/polarssl/subdir.mk
 -include lwip-2.2.2/src/netif/ppp/subdir.mk

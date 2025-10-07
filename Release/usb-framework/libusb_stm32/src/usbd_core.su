@@ -1,7 +1,7 @@
-../usb-framework/libusb_stm32/src/usbd_core.c:42:13:usbd_set_address	16	static
-../usb-framework/libusb_stm32/src/usbd_core.c:194:13:usbd_stall_pid	16	static
-../usb-framework/libusb_stm32/src/usbd_core.c:347:13:usbd_process_evt	16	static
-../usb-framework/libusb_stm32/src/usbd_core.c:51:13:usbd_process_callback.constprop	8	static
-../usb-framework/libusb_stm32/src/usbd_core.c:205:13:usbd_process_eptx	24	static
-../usb-framework/libusb_stm32/src/usbd_core.c:323:13:usbd_process_ep0	24	static
-../usb-framework/libusb_stm32/src/usbd_core.c:367:43:usbd_poll	0	static
+../usb-framework/libusb_stm32/src/usbd_core.c:46:13:usbd_set_address	16	static
+../usb-framework/libusb_stm32/src/usbd_core.c:200:13:usbd_stall_pid	16	static
+../usb-framework/libusb_stm32/src/usbd_core.c:371:13:usbd_process_evt	16	static
+../usb-framework/libusb_stm32/src/usbd_core.c:55:13:usbd_process_callback.constprop	8	static
+../usb-framework/libusb_stm32/src/usbd_core.c:212:13:usbd_process_eptx	24	static
+../usb-framework/libusb_stm32/src/usbd_core.c:345:13:usbd_process_ep0	24	static
+../usb-framework/libusb_stm32/src/usbd_core.c:392:6:usbd_poll	0	static
