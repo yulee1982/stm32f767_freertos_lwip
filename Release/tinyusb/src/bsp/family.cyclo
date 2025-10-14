@@ -1,0 +1,8 @@
+../tinyusb/src/bsp/family.c:67:6:OTG_FS_IRQHandler	1
+../tinyusb/src/bsp/family.c:73:6:OTG_HS_IRQHandler	1
+../tinyusb/src/bsp/family.c:81:6:board_init	1
+../tinyusb/src/bsp/family.c:181:6:board_led_write	1
+../tinyusb/src/bsp/family.c:186:10:board_button_read	1
+../tinyusb/src/bsp/family.c:191:8:board_get_unique_id	1
+../tinyusb/src/bsp/family.c:205:5:board_uart_read	1
+../tinyusb/src/bsp/family.c:212:5:board_uart_write	1

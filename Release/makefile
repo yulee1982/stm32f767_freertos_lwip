@@ -9,8 +9,24 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include usb-framework/usb_app/subdir.mk
--include usb-framework/libusb_stm32/src/subdir.mk
+-include tinyusb/src/portable/subdir.mk
+-include tinyusb/src/host/subdir.mk
+-include tinyusb/src/device/subdir.mk
+-include tinyusb/src/common/subdir.mk
+-include tinyusb/src/class/video/subdir.mk
+-include tinyusb/src/class/vendor/subdir.mk
+-include tinyusb/src/class/usbtmc/subdir.mk
+-include tinyusb/src/class/net/subdir.mk
+-include tinyusb/src/class/msc/subdir.mk
+-include tinyusb/src/class/midi/subdir.mk
+-include tinyusb/src/class/hid/subdir.mk
+-include tinyusb/src/class/dfu/subdir.mk
+-include tinyusb/src/class/cdc/subdir.mk
+-include tinyusb/src/class/bth/subdir.mk
+-include tinyusb/src/class/audio/subdir.mk
+-include tinyusb/src/bsp/subdir.mk
+-include tinyusb/src/subdir.mk
+-include tinyusb/demo/subdir.mk
 -include lwip-2.2.2/system/os/subdir.mk
 -include lwip-2.2.2/src/netif/ppp/polarssl/subdir.mk
 -include lwip-2.2.2/src/netif/ppp/subdir.mk
@@ -29,10 +45,6 @@ RM := rm -rf
 -include lwip-2.2.2/src/apps/http/subdir.mk
 -include lwip-2.2.2/src/apps/altcp_tls/subdir.mk
 -include lwip-2.2.2/src/api/subdir.mk
--include letter-shell-3.x/src/subdir.mk
--include letter-shell-3.x/extensions/shell_enhance/subdir.mk
--include letter-shell-3.x/extensions/log/subdir.mk
--include letter-shell-3.x/drivers/subdir.mk
 -include freertos/portable/subdir.mk
 -include freertos/subdir.mk
 -include fatfs_r0.15b/source/subdir.mk

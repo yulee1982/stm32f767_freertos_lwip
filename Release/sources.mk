@@ -30,10 +30,6 @@ fatfs_r0.15b/drivers \
 fatfs_r0.15b/source \
 freertos \
 freertos/portable \
-letter-shell-3.x/drivers \
-letter-shell-3.x/extensions/log \
-letter-shell-3.x/extensions/shell_enhance \
-letter-shell-3.x/src \
 lwip-2.2.2/src/api \
 lwip-2.2.2/src/apps/altcp_tls \
 lwip-2.2.2/src/apps/http \
@@ -52,6 +48,22 @@ lwip-2.2.2/src/netif \
 lwip-2.2.2/src/netif/ppp \
 lwip-2.2.2/src/netif/ppp/polarssl \
 lwip-2.2.2/system/os \
-usb-framework/libusb_stm32/src \
-usb-framework/usb_app \
+tinyusb/demo \
+tinyusb/src/bsp \
+tinyusb/src/class/audio \
+tinyusb/src/class/bth \
+tinyusb/src/class/cdc \
+tinyusb/src/class/dfu \
+tinyusb/src/class/hid \
+tinyusb/src/class/midi \
+tinyusb/src/class/msc \
+tinyusb/src/class/net \
+tinyusb/src/class/usbtmc \
+tinyusb/src/class/vendor \
+tinyusb/src/class/video \
+tinyusb/src/common \
+tinyusb/src/device \
+tinyusb/src/host \
+tinyusb/src/portable \
+tinyusb/src \
 

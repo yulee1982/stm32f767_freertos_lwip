@@ -47,18 +47,20 @@
 //------  add by yulee 20250626
 #define configENABLE_FPU                        1
 #define configENABLE_MPU                        0
+#define configENABLE_TRUSTZONE                  0   //add from tinyusb
+#define configUSE_PORT_OPTIMISED_TASK_SELECTION 0   //add from tinyusb
 //------  end add
 
 #define configUSE_PREEMPTION					1
-//#define configSUPPORT_STATIC_ALLOCATION		1
-//#define configSUPPORT_DYNAMIC_ALLOCATION		1
+#define configSUPPORT_STATIC_ALLOCATION		    0  //add from tinyusb
+#define configSUPPORT_DYNAMIC_ALLOCATION		1  //add from tinyusb
 #define configUSE_IDLE_HOOK						0
 #define configUSE_TICK_HOOK						0
 #define configCPU_CLOCK_HZ						( SystemCoreClock ) //( SystemCoreClock ) ( 216000000 )
 #define configTICK_RATE_HZ						( ( TickType_t ) 1000 )
-#define configMAX_PRIORITIES					( 7 )  //56
+#define configMAX_PRIORITIES					( 5 )  //56
 #define configMINIMAL_STACK_SIZE				( ( uint16_t ) 128 )  //512
-#define configTOTAL_HEAP_SIZE					( ( size_t ) 25 * 1024 )
+#define configTOTAL_HEAP_SIZE					( ( size_t )configSUPPORT_DYNAMIC_ALLOCATION * 25 * 1024 )
 #define configMAX_TASK_NAME_LEN					( 16 )
 #define configUSE_TRACE_FACILITY				1
 #define configUSE_16_BIT_TICKS					0
@@ -67,8 +69,15 @@
 #define configUSE_RECURSIVE_MUTEXES				1
 #define configUSE_COUNTING_SEMAPHORES			1
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION	0
-#define configUSE_MALLOC_FAILED_HOOK			1
-#define configCHECK_FOR_STACK_OVERFLOW			2
+//#define configUSE_MALLOC_FAILED_HOOK			1
+//#define configCHECK_FOR_STACK_OVERFLOW			2
+
+/* Hook function related definitions.  add from tinyusb */
+#define configUSE_IDLE_HOOK                    0
+#define configUSE_TICK_HOOK                    0
+#define configUSE_MALLOC_FAILED_HOOK           1 // cause nested extern warning
+#define configCHECK_FOR_STACK_OVERFLOW         2
+#define configCHECK_HANDLER_INSTALLATION       0
 
 /* Defaults to size_t for backward compatibility, but can be changed
  * if lengths will always be less than the number of bytes in a size_t. */
@@ -78,7 +87,7 @@
 /* Software timer definitions. */
 #define configUSE_TIMERS						1
 #define configTIMER_TASK_PRIORITY				( 2 )
-#define configTIMER_QUEUE_LENGTH				10
+#define configTIMER_QUEUE_LENGTH				32 //10  Change from tinyusb
 #define configTIMER_TASK_STACK_DEPTH			( configMINIMAL_STACK_SIZE * 2 ) //256
 
 /* Set the following definitions to 1 to include the API function, or zero

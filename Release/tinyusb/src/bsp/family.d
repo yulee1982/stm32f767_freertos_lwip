@@ -1,0 +1,163 @@
+tinyusb/src/bsp/family.o: ../tinyusb/src/bsp/family.c \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
+ ../Core/Inc/stm32f7xx_hal_conf.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h \
+ ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f7xx.h \
+ ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h \
+ ../Drivers/CMSIS/Include/core_cm7.h \
+ ../Drivers/CMSIS/Include/cmsis_version.h \
+ ../Drivers/CMSIS/Include/cmsis_compiler.h \
+ ../Drivers/CMSIS/Include/cmsis_gcc.h \
+ ../Drivers/CMSIS/Include/mpu_armv7.h \
+ ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_exti.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio_ex.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma_ex.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_cortex.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_eth.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_flash.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_flash_ex.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c_ex.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr_ex.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_sd.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/bsp/board_api.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_compiler.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/tusb_config.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_mcu.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_compiler.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_verify.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_types.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_debug.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal_freertos.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/FreeRTOS.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/FreeRTOSConfig.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/projdefs.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/portable.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/deprecated_definitions.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/portable/portmacro.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/mpu_wrappers.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/semphr.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/queue.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/list.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/queue.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_fifo.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/device/usbd.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid_device.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/timers.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/Bsp/usart.h \
+ ../Core/Inc/main.h \
+ ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_rcc.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_bus.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_system.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_exti.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_cortex.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_utils.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_pwr.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_dma.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usart.h \
+ ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h \
+ ../tinyusb/src/bsp/board.h
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
+../Core/Inc/stm32f7xx_hal_conf.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h:
+../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f7xx.h:
+../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h:
+../Drivers/CMSIS/Include/core_cm7.h:
+../Drivers/CMSIS/Include/cmsis_version.h:
+../Drivers/CMSIS/Include/cmsis_compiler.h:
+../Drivers/CMSIS/Include/cmsis_gcc.h:
+../Drivers/CMSIS/Include/mpu_armv7.h:
+../Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc_ex.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_exti.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_gpio_ex.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dma_ex.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_cortex.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_eth.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_flash.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_flash_ex.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_i2c_ex.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pwr_ex.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_sd.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/bsp/board_api.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_compiler.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/tusb_config.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_mcu.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_compiler.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_verify.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_types.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_debug.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal_freertos.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/FreeRTOS.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/FreeRTOSConfig.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/projdefs.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/portable.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/deprecated_definitions.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/portable/portmacro.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/mpu_wrappers.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/semphr.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/queue.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/list.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/queue.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_fifo.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/device/usbd.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid_device.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/timers.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/Bsp/usart.h:
+../Core/Inc/main.h:
+../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_rcc.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_bus.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_system.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_exti.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_cortex.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_utils.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_pwr.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_dma.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usart.h:
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:
+../tinyusb/src/bsp/board.h:

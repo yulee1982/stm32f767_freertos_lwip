@@ -1,6 +1,0 @@
-../letter-shell-3.x/extensions/log/log.c:155:13:logWriteBuffer.constprop	9
-../letter-shell-3.x/extensions/log/log.c:220:6:logHexDump	12
-../letter-shell-3.x/extensions/log/log.c:87:6:logRegister	4
-../letter-shell-3.x/extensions/log/log.c:112:6:logUnRegister	3
-../letter-shell-3.x/extensions/log/log.c:189:6:logWrite	1
-../letter-shell-3.x/extensions/log/log.c:131:6:logSetLevel	2

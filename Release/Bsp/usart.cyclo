@@ -1,0 +1,13 @@
+../Bsp/usart.c:621:13:USART_RxFinish	1
+../Bsp/usart.c:49:9:Usart_Transmit	15
+../Bsp/usart.c:38:5:_write	1
+../Bsp/usart.c:172:6:MX_USART2_UART_Init	2
+../Bsp/usart.c:242:6:MX_USART2_DMA	1
+../Bsp/usart.c:309:9:DMA_Usart2_Start_Transfers_IT	2
+../Bsp/usart.c:138:9:Usart_Transmit_DMA	4
+../Bsp/usart.c:351:9:Usart_Receive	17
+../Bsp/usart.c:492:9:Usart_Start_Receive_IT	8
+../Bsp/usart.c:469:9:Usart_Receive_IT	5
+../Bsp/usart.c:616:6:USART_RxFinishCallback	1
+../Bsp/usart.c:626:9:Usart_Receive_IT_Get_Flag	1
+../Bsp/usart.c:631:6:USART_IRQHandler	31

@@ -1,3 +1,0 @@
-../letter-shell-3.x/src/shell_ext.c:177:13:shellExtParseChar	7
-../letter-shell-3.x/src/shell_ext.c:361:5:shellExtParsePara	28
-../letter-shell-3.x/src/shell_ext.c:647:5:shellExtRun	11

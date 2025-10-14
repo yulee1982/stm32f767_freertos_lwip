@@ -1,0 +1,12 @@
+../tinyusb/demo/usb_app.c:89:6:usb_device_task	2
+../tinyusb/demo/usb_app.c:340:6:led_blinky_cb	1
+../tinyusb/demo/usb_app.c:158:13:send_hid_report	12
+../tinyusb/demo/usb_app.c:248:6:hid_task	3
+../tinyusb/demo/usb_app.c:63:6:usb_main	1
+../tinyusb/demo/usb_app.c:121:6:tud_mount_cb	1
+../tinyusb/demo/usb_app.c:127:6:tud_umount_cb	1
+../tinyusb/demo/usb_app.c:135:6:tud_suspend_cb	1
+../tinyusb/demo/usb_app.c:142:6:tud_resume_cb	2
+../tinyusb/demo/usb_app.c:277:6:tud_hid_report_complete_cb	2
+../tinyusb/demo/usb_app.c:294:10:tud_hid_get_report_cb	1
+../tinyusb/demo/usb_app.c:308:6:tud_hid_set_report_cb	5

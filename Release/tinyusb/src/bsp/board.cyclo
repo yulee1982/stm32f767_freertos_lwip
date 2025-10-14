@@ -1,0 +1,8 @@
+../tinyusb/src/bsp/board.c:107:5:_read	1
+../tinyusb/src/bsp/board.c:147:5:board_getchar	2
+../tinyusb/src/bsp/board.c:152:6:board_putchar	1
+../tinyusb/src/bsp/board.c:156:10:tusb_time_millis_api	1
+../tinyusb/src/bsp/board.c:167:6:vApplicationMallocFailedHook	2
+../tinyusb/src/bsp/board.c:172:6:vApplicationStackOverflowHook	2
+../tinyusb/src/bsp/board.c:183:6:vApplicationGetIdleTaskMemory	1
+../tinyusb/src/bsp/board.c:206:6:vApplicationGetTimerTaskMemory	1
