@@ -50,34 +50,13 @@
 //#define PINID_VBUS0_EN 4
 //#define PINID_VBUS1_EN 5
 
-static board_pindef_t board_pindef[] = {
-  { // LED
-    .port = GPIOB,
-    .pin_init = { .Pin = GPIO_PIN_14, .Mode = GPIO_MODE_OUTPUT_PP, .Pull = GPIO_PULLDOWN, .Speed = GPIO_SPEED_HIGH, .Alternate = 0 },
-    .active_state = 1
-  },
-  { // Button
-    .port = GPIOC,
-    .pin_init = { .Pin = GPIO_PIN_13, .Mode = GPIO_MODE_INPUT, .Pull = GPIO_PULLDOWN, .Speed = GPIO_SPEED_HIGH, .Alternate = 0 },
-    .active_state = 1
-  },
-  { // UART TX
-    .port = GPIOD,
-    .pin_init = { .Pin = GPIO_PIN_8, .Mode = GPIO_MODE_AF_PP, .Pull = GPIO_PULLUP, .Speed = GPIO_SPEED_HIGH, .Alternate = GPIO_AF7_USART3 },
-    .active_state = 0
-  },
-  { // UART RX
-    .port = GPIOD,
-    .pin_init = { .Pin = GPIO_PIN_9, .Mode = GPIO_MODE_AF_PP, .Pull = GPIO_PULLUP, .Speed = GPIO_SPEED_HIGH, .Alternate = GPIO_AF7_USART3 },
-    .active_state = 0
-  },
-};
 
 //--------------------------------------------------------------------+
 // RCC Clock
 //--------------------------------------------------------------------+
 static inline void board_clock_init(void)
 {
+#if 0
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   RCC_OscInitTypeDef RCC_OscInitStruct;
 
@@ -114,6 +93,7 @@ static inline void board_clock_init(void)
   HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_7);
 
   UART_CLK_EN();
+#endif
 }
 
 static inline void board_vbus_set(uint8_t rhport, bool state) {

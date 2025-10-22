@@ -1,0 +1,10 @@
+../tinyusb/demo/msc_disk.c:170:13:io_task	3
+../tinyusb/demo/msc_disk.c:159:6:msc_disk_init	1
+../tinyusb/demo/msc_disk.c:200:10:tud_msc_inquiry2_cb	2
+../tinyusb/demo/msc_disk.c:216:6:tud_msc_test_unit_ready_cb	2
+../tinyusb/demo/msc_disk.c:231:6:tud_msc_capacity_cb	1
+../tinyusb/demo/msc_disk.c:240:6:tud_msc_start_stop_cb	3
+../tinyusb/demo/msc_disk.c:258:9:tud_msc_read10_cb	5
+../tinyusb/demo/msc_disk.c:285:6:tud_msc_is_writable_cb	1
+../tinyusb/demo/msc_disk.c:297:9:tud_msc_write10_cb	5
+../tinyusb/demo/msc_disk.c:333:9:tud_msc_scsi_cb	1

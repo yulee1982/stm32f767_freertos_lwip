@@ -29,8 +29,10 @@ tinyusb/src/bsp/board.o: ../tinyusb/src/bsp/board.c \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_fifo.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/device/usbd.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid_device.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/cdc/cdc_device.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/cdc/cdc.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/msc/msc_device.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/msc/msc.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/timers.h
 ../tinyusb/src/bsp/board_api.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb.h:
@@ -62,6 +64,8 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_fifo.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/device/usbd.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid_device.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/cdc/cdc_device.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/cdc/cdc.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/msc/msc_device.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/msc/msc.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/timers.h:

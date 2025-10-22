@@ -33,33 +33,12 @@
 #include "stm32f7xx_hal.h"
 #include "bsp/board_api.h"
 #include "usart.h"
-
-typedef struct {
-  GPIO_TypeDef* port;
-  GPIO_InitTypeDef pin_init;
-  uint8_t active_state;
-} board_pindef_t;
-
 #include "board.h"
 
 //--------------------------------------------------------------------+
 // MACRO TYPEDEF CONSTANT ENUM
 //--------------------------------------------------------------------+
 
-#ifdef UART_DEV
-UART_HandleTypeDef UartHandle = {
-  .Instance = UART_DEV,
-  .Init = {
-    .BaudRate = CFG_BOARD_UART_BAUDRATE,
-    .WordLength = UART_WORDLENGTH_8B,
-    .StopBits = UART_STOPBITS_1,
-    .Parity = UART_PARITY_NONE,
-    .HwFlowCtl = UART_HWCONTROL_NONE,
-    .Mode = UART_MODE_TX_RX,
-    .OverSampling = UART_OVERSAMPLING_16,
-  }
-};
-#endif
 
 //--------------------------------------------------------------------+
 // Forward USB interrupt events to TinyUSB IRQ Handler
@@ -180,12 +159,28 @@ void board_init(void)
 
 void board_led_write(bool state)
 {
+#ifdef PINID_LED
+  if(state != 0)
+  {
+    GPIOB->BSRR = (0x1UL << 14);
+  }else{
+    GPIOB->BSRR = ((0x1UL << 14) << 16);
+  }
+#else
   (void) state;
+#endif
 }
 
 uint32_t board_button_read(void)
 {
+#ifdef PINID_BUTTON
+  uint32_t ret;
+  ret = GPIOC->IDR & (0x1UL << 13U);
+  ret = (ret >> 13);
+  return ret;
+#else
   return 0;
+#endif
 }
 
 size_t board_get_unique_id(uint8_t id[], size_t max_len)

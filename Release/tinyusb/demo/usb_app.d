@@ -37,9 +37,10 @@ tinyusb/demo/usb_app.o: ../tinyusb/demo/usb_app.c \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_fifo.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/device/usbd.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid_device.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid.h \
- ../tinyusb/demo/usb_descriptors.h
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/cdc/cdc_device.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/cdc/cdc.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/msc/msc_device.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/msc/msc.h
 D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/FreeRTOS.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/FreeRTOSConfig.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/projdefs.h:
@@ -78,6 +79,7 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal_freertos.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_fifo.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/device/usbd.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid_device.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/hid/hid.h:
-../tinyusb/demo/usb_descriptors.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/cdc/cdc_device.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/cdc/cdc.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/msc/msc_device.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/class/msc/msc.h:

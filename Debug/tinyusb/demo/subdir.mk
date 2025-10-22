@@ -5,14 +5,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../tinyusb/demo/msc_disk.c \
 ../tinyusb/demo/usb_app.c \
 ../tinyusb/demo/usb_descriptors.c 
 
 OBJS += \
+./tinyusb/demo/msc_disk.o \
 ./tinyusb/demo/usb_app.o \
 ./tinyusb/demo/usb_descriptors.o 
 
 C_DEPS += \
+./tinyusb/demo/msc_disk.d \
 ./tinyusb/demo/usb_app.d \
 ./tinyusb/demo/usb_descriptors.d 
 
@@ -24,7 +27,7 @@ tinyusb/demo/%.o tinyusb/demo/%.su tinyusb/demo/%.cyclo: ../tinyusb/demo/%.c tin
 clean: clean-tinyusb-2f-demo
 
 clean-tinyusb-2f-demo:
-	-$(RM) ./tinyusb/demo/usb_app.cyclo ./tinyusb/demo/usb_app.d ./tinyusb/demo/usb_app.o ./tinyusb/demo/usb_app.su ./tinyusb/demo/usb_descriptors.cyclo ./tinyusb/demo/usb_descriptors.d ./tinyusb/demo/usb_descriptors.o ./tinyusb/demo/usb_descriptors.su
+	-$(RM) ./tinyusb/demo/msc_disk.cyclo ./tinyusb/demo/msc_disk.d ./tinyusb/demo/msc_disk.o ./tinyusb/demo/msc_disk.su ./tinyusb/demo/usb_app.cyclo ./tinyusb/demo/usb_app.d ./tinyusb/demo/usb_app.o ./tinyusb/demo/usb_app.su ./tinyusb/demo/usb_descriptors.cyclo ./tinyusb/demo/usb_descriptors.d ./tinyusb/demo/usb_descriptors.o ./tinyusb/demo/usb_descriptors.su
 
 .PHONY: clean-tinyusb-2f-demo
 

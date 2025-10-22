@@ -42,7 +42,7 @@
 ../tinyusb/src/device/usbd.c:1465:6:usbd_edpt_stall	1
 ../tinyusb/src/device/usbd.c:1478:6:usbd_edpt_clear_stall	1
 ../tinyusb/src/device/usbd.c:1491:6:usbd_edpt_stalled	1
-../tinyusb/src/device/usbd.c:613:6:tud_task_ext	112
+../tinyusb/src/device/usbd.c:613:6:tud_task_ext	113
 ../tinyusb/src/device/usbd.c:1504:6:usbd_edpt_close	1
 ../tinyusb/src/device/usbd.c:1525:6:usbd_sof_enable	3
 ../tinyusb/src/device/usbd.c:462:6:tud_sof_cb_enable	1
