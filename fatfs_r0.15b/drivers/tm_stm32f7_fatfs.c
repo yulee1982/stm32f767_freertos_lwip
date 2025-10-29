@@ -117,7 +117,7 @@ FRESULT TM_FATFS_TruncateBeginning(FIL* fil, uint32_t index) {
 
 		fr = f_lseek(fil, WriteIndex);						/* Go back to the write index */
 		if (fr) return fr;									/* Check for success */
-		fr = f_write(fil, &Buffer, BlockSize, &Written);/* Write data */
+		fr = f_write(fil, &Buffer, BlockSize, &Written);    /* Write data */
 		if (fr) return fr;									/* Check for success */
 
 		TotalSize -= BlockSize;								/* Calculate new total size we have more to move everything */
@@ -389,9 +389,5 @@ void sd_card_fatfs_test(void)
   /* 不再使用文件系统，取消挂载文件系统 */
   f_mount(NULL,"1:",1);
 
-  //while(1)
-  //{
-
-  //}
 }
 #endif

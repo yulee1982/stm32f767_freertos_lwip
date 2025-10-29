@@ -34,8 +34,18 @@
 #include "task.h"
 #include "timers.h"
 
+
+#define CFG_SDMMC_MSC_RW
+
+#ifdef CFG_SDMMC_MSC_RW
+#include "sdio_sd.h"
+#include "tm_stm32f7_fatfs.h"
+  SD_CardInfo msc_cardinfo;
+#endif
+
 // Use async IO in example or not
 #define CFG_EXAMPLE_MSC_ASYNC_IO    1
+//#define CFG_EXAMPLE_MSC_READONLY
 
 // Simulate read/write operation delay
 #define CFG_EXAMPLE_MSC_IO_DELAY_MS 0
@@ -175,10 +185,75 @@ static void io_task(void *params) {
       uint8_t* addr = (uint8_t*) (uintptr_t) (msc_disk[io_ops.lba] + io_ops.offset);
       int32_t nbytes = io_ops.bufsize;
       if (io_ops.is_read) {
+#ifndef CFG_SDMMC_MSC_RW
         memcpy(io_ops.buffer, addr, io_ops.bufsize);
+#else
+        uint64_t ReadAddr;
+        uint32_t NumberOfBlocks, retsize;
+
+        ReadAddr = (uint64_t)io_ops.lba * 512;
+        NumberOfBlocks = (io_ops.offset + io_ops.bufsize)/512;
+        if((io_ops.offset + io_ops.bufsize)%512)
+          NumberOfBlocks++;
+        if(NumberOfBlocks > 16)
+          NumberOfBlocks = 16;
+
+        //retsize = TM_FATFS_SD_SDIO_disk_read(&msc_disk[0][0], io_ops.lba, NumberOfBlocks);
+        retsize = SD_ReadMultiBlocks(&msc_disk[0][0], ReadAddr, 512, NumberOfBlocks);
+        if(retsize == SDMMC_OK)
+        {
+          SDTransferState State;
+          retsize = SD_WaitReadOperation();
+          while((State = SD_GetStatus()) == SDMMC_TRANSFER_BUSY);
+          if((State == SDMMC_TRANSFER_ERROR) || (retsize != SDMMC_OK))
+            retsize = RES_ERROR;
+          else
+            retsize = RES_OK;
+        }else{
+          retsize = RES_ERROR;
+        }
+
+        if(retsize != 0)
+          printf("An err at here, sd_sdio_disk_read err =  0x%08X\r\n", (unsigned int)retsize);
+
+        uint8_t* addr = (uint8_t*) (uintptr_t) (msc_disk[0] + io_ops.offset);
+        if((io_ops.bufsize + io_ops.offset) <= 16*512)
+          retsize = io_ops.bufsize;
+        else
+          retsize = NumberOfBlocks * 512 - io_ops.offset;
+        memcpy(io_ops.buffer, addr, retsize);
+
+#endif
       } else {
 #ifndef CFG_EXAMPLE_MSC_READONLY
+
+#ifndef CFG_SDMMC_MSC_RW
         memcpy((uint8_t*) addr, io_ops.buffer, io_ops.bufsize);
+#else
+        uint64_t WriteAddr;
+        uint32_t NumberOfBlocks, Status;
+
+        WriteAddr = (uint64_t)io_ops.lba * 512;
+        NumberOfBlocks = io_ops.bufsize/512;
+
+        Status = SD_WriteMultiBlocks(io_ops.buffer, WriteAddr, 512, NumberOfBlocks);
+        if(Status == SDMMC_OK)
+        {
+          SDTransferState State;
+          Status = SD_WaitWriteOperation(); // Check if the Transfer is finished
+          while((State = SD_GetStatus()) == SDMMC_TRANSFER_BUSY); // BUSY, OK (DONE), ERROR (FAIL)
+          if((State == SDMMC_TRANSFER_ERROR) || (Status != SDMMC_OK))
+            Status = RES_ERROR;
+          else
+        	Status =  RES_OK;
+        }else{
+          Status =  RES_ERROR;
+        }
+
+        if(Status != 0)
+          printf("An err at here, sd_sdio_disk_write err =  0x%08X\r\n", (unsigned int)Status);
+#endif
+
 #else
         nbytes = -1; // failed to write
 #endif
@@ -213,11 +288,13 @@ uint32_t tud_msc_inquiry2_cb(uint8_t lun, scsi_inquiry_resp_t* inquiry_resp, uin
 
 // Invoked when received Test Unit Ready command.
 // return true allowing host to read/write this LUN e.g SD card inserted
-bool tud_msc_test_unit_ready_cb(uint8_t lun) {
+bool tud_msc_test_unit_ready_cb(uint8_t lun)
+{
   (void) lun;
 
   // RAM disk is ready until ejected
-  if (ejected) {
+  if(ejected)
+  {
     // Additional Sense 3A-00 is NOT_FOUND
     tud_msc_set_sense(lun, SCSI_SENSE_NOT_READY, 0x3a, 0x00);
     return false;
@@ -228,23 +305,34 @@ bool tud_msc_test_unit_ready_cb(uint8_t lun) {
 
 // Invoked when received SCSI_CMD_READ_CAPACITY_10 and SCSI_CMD_READ_FORMAT_CAPACITY to determine the disk size
 // Application update block count and block size
-void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_size) {
+void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_size)
+{
   (void) lun;
+#ifndef CFG_SDMMC_MSC_RW
   *block_count = DISK_BLOCK_NUM;
   *block_size  = DISK_BLOCK_SIZE;
+#else
+  SD_GetCardInfo(&msc_cardinfo);
+  *block_count = msc_cardinfo.CardCapacity/512;
+  *block_size  = msc_cardinfo.CardBlockSize;
+#endif
+
 }
 
 // Invoked when received Start Stop Unit command
 // - Start = 0 : stopped power mode, if load_eject = 1 : unload disk storage
 // - Start = 1 : active mode, if load_eject = 1 : load disk storage
-bool tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, bool load_eject) {
+bool tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, bool load_eject)
+{
   (void) lun;
   (void) power_condition;
 
-  if (load_eject) {
-    if (start) {
+  if(load_eject)
+  {
+    if(start)
+    {
       // load disk storage
-    } else {
+    }else{
       // unload disk storage
       ejected = true;
     }
@@ -255,10 +343,12 @@ bool tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, boo
 
 // Callback invoked when received READ10 command.
 // Copy disk's data to buffer (up to bufsize) and return number of copied bytes.
-int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buffer, uint32_t bufsize) {
+int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buffer, uint32_t bufsize)
+{
   (void) lun;
 
   // out of ramdisk
+#ifndef CFG_SDMMC_MSC_RW
   if (lba >= DISK_BLOCK_NUM) {
     return TUD_MSC_RET_ERROR;
   }
@@ -267,22 +357,76 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buff
   if (lba * DISK_BLOCK_SIZE + offset + bufsize > DISK_BLOCK_NUM * DISK_BLOCK_SIZE) {
     return TUD_MSC_RET_ERROR;
   }
+#else
+  int64_t readsize;
+  if (lba >= msc_cardinfo.CardCapacity/512) {
+    return TUD_MSC_RET_ERROR;
+  }
 
-  #if CFG_EXAMPLE_MSC_ASYNC_IO
+  // Check for overflow of offset + bufsize
+  readsize = (int64_t)lba * msc_cardinfo.CardBlockSize + offset + bufsize;
+  if (readsize > msc_cardinfo.CardCapacity) {
+    return TUD_MSC_RET_ERROR;
+  }
+#endif
+
+
+#if CFG_EXAMPLE_MSC_ASYNC_IO
   io_ops_t io_ops = {.is_read = true, .lun = lun, .lba = lba, .offset = offset, .buffer = buffer, .bufsize = bufsize};
 
   // Send IO operation to IO task
   TU_ASSERT(xQueueSend(io_queue, &io_ops, 0) == pdPASS);
 
   return TUD_MSC_RET_ASYNC;
-  #else
+
+#else
+
+#ifndef CFG_SDMMC_MSC_RW
   uint8_t const *addr = msc_disk[lba] + offset;
   memcpy(buffer, addr, bufsize);
   return bufsize;
-  #endif
+#else
+  uint64_t ReadAddr;
+  uint32_t NumberOfBlocks, retsize;
+
+  ReadAddr = (uint64_t)lba * 512;
+  NumberOfBlocks = (offset + bufsize)/512;
+  if((offset + bufsize)%512)
+    NumberOfBlocks++;
+  if(NumberOfBlocks > 16)
+    NumberOfBlocks = 16;
+
+  //retsize = TM_FATFS_SD_SDIO_disk_read(&msc_disk[0][0], lba, NumberOfBlocks);
+  retsize = SD_ReadMultiBlocks(&msc_disk[0][0], ReadAddr, 512, NumberOfBlocks);
+  if(retsize == SDMMC_OK)
+  {
+    SDTransferState State;
+    retsize = SD_WaitReadOperation();
+    while((State = SD_GetStatus()) == SDMMC_TRANSFER_BUSY);
+    if((State == SDMMC_TRANSFER_ERROR) || (retsize != SDMMC_OK))
+      retsize = RES_ERROR;
+    else
+      retsize = RES_OK;
+  }else{
+    retsize = RES_ERROR;
+  }
+  if(retsize != 0)
+    printf("An err at here, sd_sdio_disk_read err =  0x%08X\r\n", (unsigned int)retsize);
+
+  uint8_t* addr = (uint8_t*) (uintptr_t) (msc_disk[0] + offset);
+  if((bufsize + offset) <= 16*512)
+    retsize = bufsize;
+  else
+    retsize = NumberOfBlocks * 512 - offset;
+  memcpy(buffer, addr, retsize);
+  return retsize;
+#endif
+
+#endif
 }
 
-bool tud_msc_is_writable_cb (uint8_t lun) {
+bool tud_msc_is_writable_cb (uint8_t lun)
+{
   (void) lun;
 
   #ifdef CFG_EXAMPLE_MSC_READONLY
@@ -294,8 +438,10 @@ bool tud_msc_is_writable_cb (uint8_t lun) {
 
 // Callback invoked when received WRITE10 command.
 // Process data in buffer to disk's storage and return number of written bytes
-int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* buffer, uint32_t bufsize) {
+int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* buffer, uint32_t bufsize)
+{
   // out of ramdisk
+#ifndef CFG_SDMMC_MSC_RW
   if (lba >= DISK_BLOCK_NUM) {
     return TUD_MSC_RET_ERROR;
   }
@@ -304,6 +450,18 @@ int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* 
   if (lba * DISK_BLOCK_SIZE + offset + bufsize > DISK_BLOCK_NUM * DISK_BLOCK_SIZE) {
     return TUD_MSC_RET_ERROR;
   }
+#else
+  int64_t writesize;
+  if (lba >= msc_cardinfo.CardCapacity/512) {
+    return TUD_MSC_RET_ERROR;
+  }
+
+  // Check for overflow of offset + bufsize
+  writesize = (int64_t)lba * msc_cardinfo.CardBlockSize + offset + bufsize;
+  if (writesize > msc_cardinfo.CardCapacity) {
+    return TUD_MSC_RET_ERROR;
+  }
+#endif
 
   #ifdef CFG_EXAMPLE_MSC_READONLY
   (void) lun;
