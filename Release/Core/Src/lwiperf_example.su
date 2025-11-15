@@ -1,2 +1,2 @@
-../Core/Src/lwiperf_example.c:33:13:lwiperf_report	24	static
+../Core/Src/lwiperf_example.c:33:13:lwiperf_report	0	static
 ../Core/Src/lwiperf_example.c:45:6:lwiperf_example_init	0	static

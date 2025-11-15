@@ -1,0 +1,5 @@
+../helix-mp3/libhelix/imdct.c:185:12:FreqInvertRescale	12
+../helix-mp3/libhelix/imdct.c:260:22:idct9	1
+../helix-mp3/libhelix/imdct.c:471:22:imdct12	1
+../helix-mp3/libhelix/imdct.c:132:13:WinPrevious	3
+../helix-mp3/libhelix/imdct.c:717:5:xmp3_IMDCT	27

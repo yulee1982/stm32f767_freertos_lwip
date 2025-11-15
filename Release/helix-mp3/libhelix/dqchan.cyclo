@@ -1,0 +1,2 @@
+../helix-mp3/libhelix/dqchan.c:132:12:DequantBlock	12
+../helix-mp3/libhelix/dqchan.c:244:5:xmp3_DequantChannel	14

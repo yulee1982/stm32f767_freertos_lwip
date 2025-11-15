@@ -21,6 +21,7 @@ tinyusb/demo/usb_app.o: ../tinyusb/demo/usb_app.c \
  ../Drivers/CMSIS/Include/mpu_armv7.h \
  ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/bsp/board_api.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h \
@@ -63,6 +64,7 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/timers.h:
 ../Drivers/CMSIS/Include/mpu_armv7.h:
 ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/system_stm32f7xx.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/bsp/board_api.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h:

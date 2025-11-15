@@ -1,0 +1,9 @@
+../helix-mp3/music_app/proc_player.c:21:6:RandomPlay_Reset	0	static
+../helix-mp3/music_app/proc_player.c:28:9:RandomPlay_CheckRepetation	8	static
+../helix-mp3/music_app/proc_player.c:41:6:RandomPlay_InsertTrackNumber	16	static
+../helix-mp3/music_app/proc_player.c:57:10:RandomPlay_GetNextTrack	16	static
+../helix-mp3/music_app/proc_player.c:72:10:RandomPlay_GetPrevTrack	0	static
+../helix-mp3/music_app/proc_player.c:87:14:MusicPlayingProcess	16	static,ignoring_inline_asm
+../helix-mp3/music_app/proc_player.c:131:6:MusicSwitchProc	8	static
+../helix-mp3/music_app/proc_player.c:193:6:FolderSwitchProc	0	static
+../helix-mp3/music_app/proc_player.c:221:14:MP3_Player	40	static

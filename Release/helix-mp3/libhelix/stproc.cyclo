@@ -1,0 +1,3 @@
+../helix-mp3/libhelix/stproc.c:64:6:xmp3_MidSideProc	2
+../helix-mp3/libhelix/stproc.c:106:6:xmp3_IntensityProcMPEG1	14
+../helix-mp3/libhelix/stproc.c:212:6:xmp3_IntensityProcMPEG2	16

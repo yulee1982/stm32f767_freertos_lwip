@@ -40,6 +40,8 @@
 #include "shell_port.h"
 #include "usart.h"
 #include "usb_app.h"
+#include "music_app.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -158,6 +160,14 @@ int main(void)
 #ifndef USE_TINYUSB
   xTaskCreate(prvUSBappTask, 			/* Function that implements the task. */
               "USBappTask", 			/* Task name, for debugging only. */
+			  configMINIMAL_STACK_SIZE * 5,    /* Size of stack (in words) to allocate for this task. */
+              NULL, 					/* Task parameter, not used in this case. */
+			  0, 		                /* Task priority. */
+              NULL );		            /* Task handle, used to unblock task from interrupt. */
+#endif
+#if 1
+  xTaskCreate(prvMusicappTask, 			/* Function that implements the task. */
+              "MusicappTask", 			/* Task name, for debugging only. */
 			  configMINIMAL_STACK_SIZE * 5,    /* Size of stack (in words) to allocate for this task. */
               NULL, 					/* Task parameter, not used in this case. */
 			  0, 		                /* Task priority. */

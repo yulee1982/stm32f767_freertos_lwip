@@ -5,6 +5,7 @@ tinyusb/src/class/msc/msc_device.o: ../tinyusb/src/class/msc/msc_device.c \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_mcu.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/device/dcd.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_compiler.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_verify.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_types.h \
@@ -35,6 +36,7 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/tusb_config.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_mcu.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/device/dcd.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_compiler.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_verify.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_types.h:

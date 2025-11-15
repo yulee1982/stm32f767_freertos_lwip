@@ -32,6 +32,11 @@ fatfs_r0.15b/drivers \
 fatfs_r0.15b/source \
 freertos \
 freertos/portable \
+helix-mp3/audio \
+helix-mp3/libflac \
+helix-mp3/libhelix/arm \
+helix-mp3/libhelix \
+helix-mp3/music_app \
 lwip-2.2.2/src/api \
 lwip-2.2.2/src/apps/altcp_tls \
 lwip-2.2.2/src/apps/http \

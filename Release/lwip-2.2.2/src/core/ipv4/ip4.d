@@ -5,6 +5,7 @@ lwip-2.2.2/src/core/ipv4/ip4.o: ../lwip-2.2.2/src/core/ipv4/ip4.c \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/arch.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cc.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cpu.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/ip.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/def.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/pbuf.h \
@@ -44,6 +45,7 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/debug.h
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/arch.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cc.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cpu.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/ip.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/def.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/pbuf.h:

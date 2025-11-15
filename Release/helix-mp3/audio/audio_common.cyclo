@@ -1,0 +1,12 @@
+../helix-mp3/audio/audio_common.c:29:6:MonoChannelFill	2
+../helix-mp3/audio/audio_common.c:44:7:AudioPlay_GetNextBuff	1
+../helix-mp3/audio/audio_common.c:56:7:AudioPlay_GetPlayingBuff	1
+../helix-mp3/audio/audio_common.c:68:6:AudioPlay_BuffSwitch	2
+../helix-mp3/audio/audio_common.c:80:6:AudioPlay_PendSem	2
+../helix-mp3/audio/audio_common.c:89:6:AudioPlay_ClearSem	1
+../helix-mp3/audio/audio_common.c:94:6:AudioPlay_ClearBuf	2
+../helix-mp3/audio/audio_common.c:116:9:AudioPlay_I2SConfig	5
+../helix-mp3/audio/audio_common.c:157:15:Audio_CheckFileExtname	4
+../helix-mp3/audio/audio_common.c:175:6:AudioPlayFile	4
+../helix-mp3/audio/audio_common.c:198:6:Play_Start	1
+../helix-mp3/audio/audio_common.c:205:6:Play_Stop	1

@@ -1,5 +1,6 @@
 tinyusb/demo/msc_disk.o: ../tinyusb/demo/msc_disk.c \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/bsp/board_api.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h \
@@ -88,6 +89,7 @@ tinyusb/demo/msc_disk.o: ../tinyusb/demo/msc_disk.c \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/drivers/tm_stm32f7_fatfs.h
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/bsp/board_api.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h:

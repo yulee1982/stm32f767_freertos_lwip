@@ -34,6 +34,7 @@ tinyusb/src/bsp/family.o: ../tinyusb/src/bsp/family.c \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/bsp/board_api.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h \
@@ -117,6 +118,7 @@ tinyusb/src/bsp/family.o: ../tinyusb/src/bsp/family.c \
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_usb.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_pcd_ex.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/bsp/board_api.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_common.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h:

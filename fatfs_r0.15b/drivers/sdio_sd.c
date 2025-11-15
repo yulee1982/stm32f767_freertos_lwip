@@ -3704,7 +3704,7 @@ void SD_LowLevel_DMA_RxConfig (uint32_t *BufferDST, uint32_t BufferSize)
   tempreg |= (0x01<<21) & DMA_SxCR_PBURST;  //4 beat memory burst Mode ([Burst Size*Psize] must be equal to [FIFO size] to prevent FIFO underrun and overrun errors) (burst also does not work in direct mode).
   tempreg |= (0x00<<18) & DMA_SxCR_DBM;   //Disable double buffer mode (when this is set, circluar mode is also automatically set. (the actual value is don't care)
   tempreg |= (0x00<<16) & DMA_SxCR_PL;     //Priority is very_high
-  tempreg|=(0x00<<15) & DMA_SxCR_PINCOS;  //Peripheral increment offset (if this is 1 and Pinc=1, then Peripheral will be incremented by 4 regardless of Psize)
+  tempreg |= (0x00<<15) & DMA_SxCR_PINCOS;  //Peripheral increment offset (if this is 1 and Pinc=1, then Peripheral will be incremented by 4 regardless of Psize)
   tempreg |= (0x02<<13) & DMA_SxCR_MSIZE;  //Memory data size is 32bit (word)
   tempreg |= (0x02<<11) & DMA_SxCR_PSIZE;  //Peripheral data size is 32bit (word)
   tempreg |= (0x01<<10) & DMA_SxCR_MINC;  //Enable Memory Increment

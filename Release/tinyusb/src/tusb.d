@@ -3,6 +3,7 @@ tinyusb/src/tusb.o: ../tinyusb/src/tusb.c ../tinyusb/src/tusb_option.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/tusb_config.h \
  ../tinyusb/src/common/tusb_mcu.h ../tinyusb/src/tusb.h \
  ../tinyusb/src/common/tusb_common.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h \
  ../tinyusb/src/common/tusb_compiler.h \
  ../tinyusb/src/common/tusb_verify.h ../tinyusb/src/common/tusb_types.h \
@@ -36,6 +37,7 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/tusb_config.h:
 ../tinyusb/src/common/tusb_mcu.h:
 ../tinyusb/src/tusb.h:
 ../tinyusb/src/common/tusb_common.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h:
 ../tinyusb/src/common/tusb_compiler.h:
 ../tinyusb/src/common/tusb_verify.h:

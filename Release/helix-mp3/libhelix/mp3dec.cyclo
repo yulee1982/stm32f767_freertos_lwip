@@ -1,0 +1,7 @@
+../helix-mp3/libhelix/mp3dec.c:248:13:MP3ClearBadFrame	3
+../helix-mp3/libhelix/mp3dec.c:60:13:MP3InitDecoder	1
+../helix-mp3/libhelix/mp3dec.c:81:6:MP3FreeDecoder	2
+../helix-mp3/libhelix/mp3dec.c:104:5:MP3FindSyncWord	4
+../helix-mp3/libhelix/mp3dec.c:184:6:MP3GetLastFrameInfo	3
+../helix-mp3/libhelix/mp3dec.c:221:5:MP3GetNextFrameInfo	4
+../helix-mp3/libhelix/mp3dec.c:280:5:MP3Decode	27
