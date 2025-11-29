@@ -1,4 +1,0 @@
-../helix-mp3/libflac/flacdecoder.c:250:5:decode_subframe	24	static
-../helix-mp3/libflac/flacdecoder.c:331:9:get_utf8	24	static
-../helix-mp3/libflac/flacdecoder.c:73:5:decode_frame	32	static
-../helix-mp3/libflac/flacdecoder.c:47:5:flac_decode_frame	16	static

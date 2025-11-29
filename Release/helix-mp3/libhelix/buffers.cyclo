@@ -1,3 +1,0 @@
-../helix-mp3/libhelix/buffers.c:83:6:ClearBuffer	2
-../helix-mp3/libhelix/buffers.c:112:13:xmp3_AllocateBuffers	1
-../helix-mp3/libhelix/buffers.c:200:6:xmp3_FreeBuffers	1

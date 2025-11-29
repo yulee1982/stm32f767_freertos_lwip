@@ -1,8 +1,0 @@
-../fatfs_r0.15b/drivers/tm_stm32f7_fatfs.c:26:9:TM_FATFS_GetDriveSize	16	static
-../fatfs_r0.15b/drivers/tm_stm32f7_fatfs.c:45:9:TM_FATFS_DriveSize	24	static
-../fatfs_r0.15b/drivers/tm_stm32f7_fatfs.c:64:9:TM_FATFS_USBDriveSize	24	static
-../fatfs_r0.15b/drivers/tm_stm32f7_fatfs.c:83:9:TM_FATFS_TruncateBeginning	296	static
-../fatfs_r0.15b/drivers/tm_stm32f7_fatfs.c:182:16:TM_FATFS_SearchCallback	0	static
-../fatfs_r0.15b/drivers/tm_stm32f7_fatfs.c:194:16:scan_files	408	static
-../fatfs_r0.15b/drivers/tm_stm32f7_fatfs.c:136:9:TM_FATFS_Search	24	static
-../fatfs_r0.15b/drivers/tm_stm32f7_fatfs.c:301:6:sd_card_fatfs_test	4128	static

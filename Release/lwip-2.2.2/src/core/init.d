@@ -5,7 +5,6 @@ lwip-2.2.2/src/core/init.o: ../lwip-2.2.2/src/core/init.c \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/arch.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cc.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cpu.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/init.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/stats.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/mem.h \
@@ -57,7 +56,6 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/debug.h
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/arch.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cc.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cpu.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/init.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/stats.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/mem.h:

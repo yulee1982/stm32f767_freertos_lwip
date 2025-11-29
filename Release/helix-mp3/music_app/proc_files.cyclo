@@ -1,3 +1,0 @@
-../helix-mp3/music_app/proc_files.c:9:9:CheckExtName	5
-../helix-mp3/music_app/proc_files.c:30:10:ReadRootDir	5
-../helix-mp3/music_app/proc_files.c:62:10:ReadFileList	6

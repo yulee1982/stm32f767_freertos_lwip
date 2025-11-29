@@ -1,2 +1,0 @@
-../helix-mp3/audio/audio_wav.c:7:14:WAV_GetInfo	96	static
-../helix-mp3/audio/audio_wav.c:66:14:WAV_Play	56	static

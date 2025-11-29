@@ -1,2 +1,0 @@
-../helix-mp3/audio/audio_flac.c:34:14:FLAC_GetInfo	40	static
-../helix-mp3/audio/audio_flac.c:146:14:FLAC_Play	128	static

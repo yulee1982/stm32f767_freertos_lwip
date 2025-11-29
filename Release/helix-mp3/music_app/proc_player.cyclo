@@ -1,9 +1,0 @@
-../helix-mp3/music_app/proc_player.c:21:6:RandomPlay_Reset	1
-../helix-mp3/music_app/proc_player.c:28:9:RandomPlay_CheckRepetation	3
-../helix-mp3/music_app/proc_player.c:41:6:RandomPlay_InsertTrackNumber	3
-../helix-mp3/music_app/proc_player.c:57:10:RandomPlay_GetNextTrack	2
-../helix-mp3/music_app/proc_player.c:72:10:RandomPlay_GetPrevTrack	2
-../helix-mp3/music_app/proc_player.c:87:14:MusicPlayingProcess	8
-../helix-mp3/music_app/proc_player.c:131:6:MusicSwitchProc	13
-../helix-mp3/music_app/proc_player.c:193:6:FolderSwitchProc	5
-../helix-mp3/music_app/proc_player.c:221:14:MP3_Player	11

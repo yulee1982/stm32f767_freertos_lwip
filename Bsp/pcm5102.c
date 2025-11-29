@@ -30,6 +30,12 @@ static void I2S2_LowLevel_DMA_TxConfig (uint32_t *BufferSRE, uint32_t BufferSize
    GND  ---- GND
    3.3V ---- Vin(3.3V或5V供电均可，推荐使用5V)
    PCM5102模块的耳机座直接插耳机或音箱即可听到声音
+
+   1  FLT     to L     Low:正常延迟 / High:低延迟
+   2  DEMP    to L     44.1 kHz采样率的去重控制(1)：关闭(低)/开启(高)
+   3  XSMT    to H     软静音(低)/软取消静音(高)
+   4  FMT     to L     Low:I2S模式/ High:左对齐
+
  */
 void pcm5102_init(void)
 {
@@ -81,16 +87,7 @@ void pcm5102_init(void)
   tempreg |= (0x0<<1) & SPI_I2SCFGR_DATLEN;   //Data length to be transferred is 16bit
   tempreg |= (0x0<<0) & SPI_I2SCFGR_CHLEN;    //Channel length (number of bits per audio channel) is 16bit
   SPI2->I2SCFGR = tempreg;
-  /*
-  //настройка I2S3
-  I2S_InitStruct.Mode = LL_I2S_MODE_MASTER_TX;
-  I2S_InitStruct.Standard = LL_I2S_STANDARD_PHILIPS;
-  I2S_InitStruct.MCLKOutput = LL_I2S_MCLK_OUTPUT_DISABLE;
-  I2S_InitStruct.DataFormat = LL_I2S_DATAFORMAT_16B_EXTENDED;
-  I2S_InitStruct.ClockPolarity = LL_I2S_POLARITY_LOW;
-  I2S_InitStruct.AudioFreq = LL_I2S_AUDIOFREQ_44K;
-  LL_I2S_Init(SPI3, &I2S_InitStruct);
-  */
+
 }
 
 /**
@@ -116,7 +113,7 @@ static void I2S2_LowLevel_DMA_TxConfig (uint32_t *BufferSRE, uint32_t BufferSize
   DMA1_Stream4->M0AR = (uint32_t)BufferSRE;    //Memory address
 
   //Set the number of data to transfer
-  DMA2_Stream3->NDTR = BufferSize;   //0 ?? Peripheral controls, therefore we don't need to indicate a size
+  DMA1_Stream4->NDTR = BufferSize;   //0 ?? Peripheral controls, therefore we don't need to indicate a size
 
   /* Configure the DMA functional DMA Tx parameters for transmission */
   //Set the DMA CR
@@ -146,12 +143,12 @@ static void I2S2_LowLevel_DMA_TxConfig (uint32_t *BufferSRE, uint32_t BufferSize
   DMA1_Stream4->FCR = tempreg;
 
   /* Enable DMA transfer complete/error interrupts  */
-  DMA2_Stream3->CR |= (DMA_SxCR_TCIE | DMA_SxCR_TEIE);
+  DMA1_Stream4->CR |= (DMA_SxCR_TCIE | DMA_SxCR_TEIE);
   //LL_DMA_EnableIT_TC(DMA2, LL_DMA_STREAM_3);
   //LL_DMA_EnableIT_TE(DMA2, LL_DMA_STREAM_3);
 
   //Enable the DMA (When it is enabled, it starts to respond dma requests)
-  DMA2_Stream3->CR |= DMA_SxCR_EN;
+  DMA1_Stream4->CR |= DMA_SxCR_EN;
   //END of PART I
 }
 
@@ -328,13 +325,14 @@ uint8_t I2S_Config(SPI_TypeDef* SPIx, uint16_t I2S_Mode, uint32_t SampleRate, ui
           { 48000, 192/2, LL_RCC_PLLI2SR_DIV_5, 384/2, LL_RCC_PLLI2SR_DIV_5},
 		  { 88200, 192/2, LL_RCC_PLLI2SR_DIV_5, 192/2, LL_RCC_PLLI2SR_DIV_3}, //
           { 96000, 384/2, LL_RCC_PLLI2SR_DIV_5, 424/2, LL_RCC_PLLI2SR_DIV_3},
-		  {176400, 192/2, LL_RCC_PLLI2SR_DIV_5, 192/2, LL_RCC_PLLI2SR_DIV_3}, //
+		  {128000, 256/2, LL_RCC_PLLI2SR_DIV_2, 256/2, LL_RCC_PLLI2SR_DIV_4}, //
+		  {176400, 424/2, LL_RCC_PLLI2SR_DIV_3, 258/2, LL_RCC_PLLI2SR_DIV_3}, //
           {192000, 424/2, LL_RCC_PLLI2SR_DIV_3, 258/2, LL_RCC_PLLI2SR_DIV_3}
   };
   const PLL_data *tbl_ptr = pll_table;
   uint8_t i = 0;
   //在表格中查找PLLI2S模块的设置
-  for(i = 0; i < 11; i++)
+  for(i = 0; i < 12; i++)
   {
     if(SampleRate == tbl_ptr->freq)
     {
@@ -541,7 +539,7 @@ void I2S_TX_DMA_Init(void* buf0, void* buf1, uint16_t datnum, uint8_t datsize)
   tmpreg |= (0x0UL << 25) & DMA_SxCR_CHSEL;  //Select Channel 0.
   tmpreg |= (0x0UL << 23) & DMA_SxCR_MBURST; //存储器突发单次传输
   tmpreg |= (0x0UL << 21) & DMA_SxCR_PBURST; //外设突发单次传输
-  tmpreg |= (0x1UL << 18) & DMA_SxCR_DBM;   //Disable double buffer mode (when this is set, circluar mode is also automatically set.
+  tmpreg |= (0x0UL << 18) & DMA_SxCR_DBM;   //Disable double buffer mode (when this is set, circluar mode is also automatically set.
   tmpreg |= (0x2UL << 16) & DMA_SxCR_PL;     //Priority is high
   tmpreg |= (0x0UL << 15) & DMA_SxCR_PINCOS;  //Peripheral increment offset (if this is 1 and Pinc=1, then Peripheral will be incremented by 4 regardless of Psize)
   if(datsize == 16)
@@ -601,26 +599,44 @@ void I2S_TX_DMA_Init(void* buf0, void* buf1, uint16_t datnum, uint8_t datsize)
   NVIC_EnableIRQ(DMA1_Stream4_IRQn);
 }
 
+__weak void I2S_TxHalfCpltCallback(uint32_t value)
+{
+  UNUSED(value);
+}
 
-
-volatile uint8_t DataRequestFlag = 1;
+__weak void I2S_TxCpltCallback(uint32_t value)
+{
+  UNUSED(value);
+}
 
 void DMA1_Stream4_IRQHandler(void)
 {
+
   DMA_TypeDef *dma = DMA1;
   int stream = 4;
   uint8_t shift[8] = {0, 6, 16, 22, 0, 6, 16, 22}; //寄存器中的位移
   volatile uint32_t *isr = (stream > 3) ? &(dma->HISR) : &(dma->LISR);    //中断状态寄存器
   volatile uint32_t *ifcr = (stream > 3) ? &(dma->HIFCR) : &(dma->LIFCR); //中断标志重置寄存器
   int offset = -1;
-  if((*isr) & (0x10 << shift[stream])){ //这是由于向DAC传输PCM缓冲区一半而产生的中断
+  if((*isr) & (0x10 << shift[stream]))//这是由于向DAC传输PCM缓冲区一半而产生的中断
+  {
     offset = 0;
+    I2S_TxHalfCpltCallback(offset);
   }
-  if((*isr) & (0x20 << shift[stream])){ //这是将整个PCM缓冲区传输到DAC的中断
+  if((*isr) & (0x20 << shift[stream]))//这是将整个PCM缓冲区传输到DAC的中断
+  {
     offset = 1;
-    DataRequestFlag = 1;
+    I2S_TxCpltCallback(offset);
   }
   //(void)PlayersUpdate(offset); //正在更新播放器数据
   *ifcr = 0x3F << shift[stream]; //重置tx中断标志
+
+  /*
+  if(DMA1->HISR & (0x1U << 4))//DMA1_Stream4,传输完成标志
+  {
+    DMA1->HIFCR = 0x1U << 4;
+    DataRequestFlag = 1;
+  }
+  */
 }
 

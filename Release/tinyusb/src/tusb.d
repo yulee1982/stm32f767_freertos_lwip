@@ -1,9 +1,9 @@
 tinyusb/src/tusb.o: ../tinyusb/src/tusb.c ../tinyusb/src/tusb_option.h \
  ../tinyusb/src/common/tusb_compiler.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/tusb_config.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/usb_descriptors.h \
  ../tinyusb/src/common/tusb_mcu.h ../tinyusb/src/tusb.h \
  ../tinyusb/src/common/tusb_common.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h \
  ../tinyusb/src/common/tusb_compiler.h \
  ../tinyusb/src/common/tusb_verify.h ../tinyusb/src/common/tusb_types.h \
@@ -25,19 +25,18 @@ tinyusb/src/tusb.o: ../tinyusb/src/tusb.c ../tinyusb/src/tusb_option.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h \
  ../tinyusb/src/common/tusb_fifo.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal.h \
- ../tinyusb/src/device/usbd.h ../tinyusb/src/class/cdc/cdc_device.h \
- ../tinyusb/src/class/cdc/cdc.h ../tinyusb/src/class/msc/msc_device.h \
- ../tinyusb/src/class/msc/msc.h ../tinyusb/src/common/tusb_private.h \
+ ../tinyusb/src/device/usbd.h ../tinyusb/src/class/audio/audio_device.h \
+ ../tinyusb/src/class/audio/audio.h ../tinyusb/src/common/tusb_private.h \
  ../tinyusb/src/device/usbd_pvt.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_fifo.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_private.h
 ../tinyusb/src/tusb_option.h:
 ../tinyusb/src/common/tusb_compiler.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/tusb_config.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/usb_descriptors.h:
 ../tinyusb/src/common/tusb_mcu.h:
 ../tinyusb/src/tusb.h:
 ../tinyusb/src/common/tusb_common.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/tusb_option.h:
 ../tinyusb/src/common/tusb_compiler.h:
 ../tinyusb/src/common/tusb_verify.h:
@@ -62,10 +61,8 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h:
 ../tinyusb/src/common/tusb_fifo.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/osal/osal.h:
 ../tinyusb/src/device/usbd.h:
-../tinyusb/src/class/cdc/cdc_device.h:
-../tinyusb/src/class/cdc/cdc.h:
-../tinyusb/src/class/msc/msc_device.h:
-../tinyusb/src/class/msc/msc.h:
+../tinyusb/src/class/audio/audio_device.h:
+../tinyusb/src/class/audio/audio.h:
 ../tinyusb/src/common/tusb_private.h:
 ../tinyusb/src/device/usbd_pvt.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/src/common/tusb_fifo.h:

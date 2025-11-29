@@ -7,7 +7,6 @@ lwip-2.2.2/src/netif/bridgeif.o: ../lwip-2.2.2/src/netif/bridgeif.c \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/arch.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cc.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cpu.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/err.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/prot/ethernet.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/prot/ieee.h \
@@ -42,7 +41,6 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/debug.h
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/arch.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cc.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cpu.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/err.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/prot/ethernet.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/prot/ieee.h:

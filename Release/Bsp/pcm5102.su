@@ -1,5 +1,7 @@
-../Bsp/pcm5102.c:34:6:pcm5102_init	0	static
-../Bsp/pcm5102.c:200:5:Start_DAC_DMA	200	static,ignoring_inline_asm
-../Bsp/pcm5102.c:311:9:I2S_Config	248	static,ignoring_inline_asm
-../Bsp/pcm5102.c:487:6:I2S_TX_DMA_Init	12	static
-../Bsp/pcm5102.c:608:6:DMA1_Stream4_IRQHandler	0	static
+../Bsp/pcm5102.c:40:6:pcm5102_init	0	static
+../Bsp/pcm5102.c:197:5:Start_DAC_DMA	200	static,ignoring_inline_asm
+../Bsp/pcm5102.c:308:9:I2S_Config	264	static,ignoring_inline_asm
+../Bsp/pcm5102.c:485:6:I2S_TX_DMA_Init	12	static
+../Bsp/pcm5102.c:602:13:I2S_TxHalfCpltCallback	0	static
+../Bsp/pcm5102.c:607:13:I2S_TxCpltCallback	0	static
+../Bsp/pcm5102.c:612:6:DMA1_Stream4_IRQHandler	8	static

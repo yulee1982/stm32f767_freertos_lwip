@@ -1,4 +1,0 @@
-../helix-mp3/libflac/golomb.h:39:21:av_log2	3
-../helix-mp3/libflac/subframe_decoders.c:208:5:decode_residuals	11
-../helix-mp3/libflac/subframe_decoders.c:28:5:decode_subframe_fixed	12
-../helix-mp3/libflac/subframe_decoders.c:120:5:decode_subframe_lpc	12

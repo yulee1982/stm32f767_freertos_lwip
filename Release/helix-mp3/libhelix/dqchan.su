@@ -1,2 +1,0 @@
-../helix-mp3/libhelix/dqchan.c:132:12:DequantBlock	64	static,ignoring_inline_asm
-../helix-mp3/libhelix/dqchan.c:244:5:xmp3_DequantChannel	112	static

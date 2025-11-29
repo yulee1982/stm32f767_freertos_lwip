@@ -1,9 +1,0 @@
-../helix-mp3/libflac/bitstreamf.c:38:6:init_get_bits	8	static
-../helix-mp3/libflac/bitstreamf.c:63:14:get_bits	8	static
-../helix-mp3/libflac/bitstreamf.c:74:5:get_bits_count	0	static
-../helix-mp3/libflac/bitstreamf.c:79:5:get_sbits	8	static
-../helix-mp3/libflac/bitstreamf.c:93:14:get_bits_long	16	static
-../helix-mp3/libflac/bitstreamf.c:106:14:get_bits1	0	static
-../helix-mp3/libflac/bitstreamf.c:122:14:show_bits	0	static
-../helix-mp3/libflac/bitstreamf.c:132:6:skip_bits	0	static
-../helix-mp3/libflac/bitstreamf.c:144:6:align_get_bits	0	static

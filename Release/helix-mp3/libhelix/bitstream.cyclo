@@ -1,6 +1,0 @@
-../helix-mp3/libhelix/bitstream.c:60:6:xmp3_SetBitstreamPointer	1
-../helix-mp3/libhelix/bitstream.c:129:14:xmp3_GetBits	4
-../helix-mp3/libhelix/bitstream.c:165:5:xmp3_CalcBitsUsed	1
-../helix-mp3/libhelix/bitstream.c:188:5:xmp3_CheckPadBit	3
-../helix-mp3/libhelix/bitstream.c:218:5:xmp3_UnpackFrameHeader	13
-../helix-mp3/libhelix/bitstream.c:299:5:xmp3_UnpackSideInfo	14

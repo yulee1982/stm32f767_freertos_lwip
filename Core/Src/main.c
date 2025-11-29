@@ -40,7 +40,7 @@
 #include "shell_port.h"
 #include "usart.h"
 #include "usb_app.h"
-#include "music_app.h"
+//#include "music_app.h"
 
 /* USER CODE END Includes */
 
@@ -165,7 +165,7 @@ int main(void)
 			  0, 		                /* Task priority. */
               NULL );		            /* Task handle, used to unblock task from interrupt. */
 #endif
-#if 1
+#if 0
   xTaskCreate(prvMusicappTask, 			/* Function that implements the task. */
               "MusicappTask", 			/* Task name, for debugging only. */
 			  configMINIMAL_STACK_SIZE * 5,    /* Size of stack (in words) to allocate for this task. */

@@ -1,5 +1,0 @@
-../fatfs_r0.15b/source/diskio.c:24:9:disk_status	2
-../fatfs_r0.15b/source/diskio.c:60:9:disk_initialize	2
-../fatfs_r0.15b/source/diskio.c:96:9:disk_read	2
-../fatfs_r0.15b/source/diskio.c:141:9:disk_write	2
-../fatfs_r0.15b/source/diskio.c:185:9:disk_ioctl	2

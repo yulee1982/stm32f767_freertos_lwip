@@ -61,7 +61,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/arch.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cc.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cpu.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/err.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/timeouts.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/sys.h \
@@ -81,13 +80,13 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/priv/mem_priv.h \
  ../Core/Inc/ethernetif.h ../Core/Inc/app_ethernet.h \
  ../Core/Inc/httpserver-netconn.h ../Core/Inc/lwiperf_example.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/drivers/sdio_sd.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/drivers/sdio_sd.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/diskio.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ffconf.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/drivers/tm_stm32f7_fatfs.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/source/diskio.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/source/ff.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/source/ffconf.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/source/ff.h \
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/drivers/tm_stm32f7_fatfs.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/drivers/shell_port.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/src/shell.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/src/shell_cfg.h \
@@ -95,8 +94,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/queue.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h \
  D:/stm32/workspace_1.12.1/stm32f767_freertos/Bsp/usart.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/usb_app.h \
- D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/music_app/music_app.h
+ D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/usb_app.h
 ../Core/Inc/main.h:
 ../Drivers/CMSIS/Device/ST/STM32F7xx/Include/stm32f767xx.h:
 ../Drivers/CMSIS/Include/core_cm7.h:
@@ -160,7 +158,6 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/debug.h
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/arch.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cc.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/system/arch/cpu.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/libflac/inttypes.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/err.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/timeouts.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/sys.h:
@@ -182,13 +179,13 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/lwip-2.2.2/src/include/lwip/priv/me
 ../Core/Inc/app_ethernet.h:
 ../Core/Inc/httpserver-netconn.h:
 ../Core/Inc/lwiperf_example.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/drivers/sdio_sd.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/drivers/sdio_sd.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_sdmmc.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/diskio.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ffconf.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/source/ff.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs_r0.15b/drivers/tm_stm32f7_fatfs.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/source/diskio.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/source/ff.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/source/ffconf.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/source/ff.h:
+D:/stm32/workspace_1.12.1/stm32f767_freertos/fatfs/drivers/tm_stm32f7_fatfs.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/drivers/shell_port.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/src/shell.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/letter-shell-3.x/src/shell_cfg.h:
@@ -197,4 +194,3 @@ D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/queue.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/freertos/include/task.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/Bsp/usart.h:
 D:/stm32/workspace_1.12.1/stm32f767_freertos/tinyusb/demo/usb_app.h:
-D:/stm32/workspace_1.12.1/stm32f767_freertos/helix-mp3/music_app/music_app.h:

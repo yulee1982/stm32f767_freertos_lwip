@@ -1,4 +1,0 @@
-../helix-mp3/audio/audio_mp3.c:14:14:MP3_GetID3v1	24	static
-../helix-mp3/audio/audio_mp3.c:34:14:MP3_GetID3v2	24	static
-../helix-mp3/audio/audio_mp3.c:64:14:MP3_GetInfo	80	static
-../helix-mp3/audio/audio_mp3.c:175:14:MP3_Play	120	static
